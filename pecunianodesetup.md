@@ -31,10 +31,12 @@ Pecunia is a lot cheaper than 1-click hosting for both small and mid sizes. $6 f
 Part 3
 
 Setting up the node:
+1. Return to your control wallet and create a new receiving address. In our example, MINI D.I.N. we will create.
 
-1.  Return to your control wallet and create a new receiving address. In our example, BIG D.I.N. we will create. ![](https://lh3.googleusercontent.com/hnOPMsjSLghcUIT5vXsaZikgdE6rs1hBq3XfeNV-D5W2PqEC4Ex-jrfinsJQUsofgVOeXJag9sUtO9szO8THpxrU_0pxrgbkk44Rik4-7umvWjJ-7vOoqnBOEkVFmC4j3EUsJb3tmDk_1ibOV_I)![](https://lh5.googleusercontent.com/YmDZ9Fbk2-uqP7YF--l5BawJzxNEhac1glE3uFIBpQFOTctj4nDkMxXSt81SiPQH3uOBRB1ifEdv_G-JeQgiNtQQdJqKABBrAi-tsuzfXFBY4KY8b9ohmRtiYchwBaX4xotc6LhTpUP2M200Tjc)
+![](assets/img/misc/pecunia1.png)
     
-2.  Copy the new address you create and send it exactly 1 000 000 SIN to this address. BIG D.I.N. 1 000 000 for MID D.I.N. 500 000 for MINI D.I.N. 100 000 for You should send. ![](https://lh4.googleusercontent.com/0048dAfhsXD5FedZi0s3EUTRKlnBjV661xdNOnLULDKdAD5qveLca86kb_Z0ZcV5cJFIjX2HIb1B01U0d1trwVAgwyG08Ul6cQo6dG2zkMrj2hIGLial06odIyzehfW1khepHSJHUprmt7njnIg)Please wait for 2 confirmations!
+2.  Copy the new address you create and send it exactly 1 000 000 SIN to this address. BIG D.I.N. 1 000 000 for MID D.I.N. 500 000 for MINI D.I.N. 100 000 for You should send.
+![](assets/img/misc/pecunia2.png)
     
 3.  Unlock your wallet walletpassphrase "your_password" 300 replace your password with your wallet password
     
