@@ -1,0 +1,37 @@
+- **Introduction**
+- [What is SINOVATE?](/)
+- **SINOVATE Wallet**
+- [Desktop QT Wallet](desktopqtwallet) 
+
+- **InfinityNodes (DIN)**
+- [Understanding InfinityNodes](understandinginfinitynodes)
+- [Desktop 1-Click InfinityNode setUP](inwallet_1click_guide)
+- [InfinityNode Manual VPS setup](din_manual_vps_configuration_setup)
+- [Mobile Wallet InfinitNnode setUP](mobile_wallet_infinitynode_setup)
+- [Pecunia InfinityNode Hosting Guide](pecunianodesetup)
+- [DIN 1-Click setUP Migration GUIDE](din_setup_migration_guide)
+- **Tutorials & Guides**
+- [Bootstrap](bootstrap)
+- [Wallet Upgrade](wallet_upgrade)
+- [Node Update Guide](node_update_guide)
+- [WebTool](sin_webtool_guide)
+- [GPU Mining X25X Algo](X25X-PoW-GPU-Mining)
+- [Video Guides](video_guides)
+- [F.A.Q.](faq)
+- **Whitepapers**
+- [Whitepaper Light](https://sinovate.io/SINOVATE_litepaper.pdf)
+- [X25X PoW Algorithm Whitepaper](https://sinovate.io/x25x.pdf)
+- **Troubleshooting**
+- [DIN 1-Click setUP Tips & Help](din_setup_tips_and_help)
+- [DIN Manual VPS Troubleshooting](din_vps_setup_troubleshoot)
+- [Coin Control](Coincontrolenable)
+- [Transaction too large](transactiontoohigh)
+- **Links**
+- [![Home ](https://icongr.am/feather/home.svg?size=16&color=808080)Sinovate Home](https://www.sinovate.io)
+- [![Explorer ](https://icongr.am/clarity/block.svg?size=16&color=808080)Block Explorer](https://explorer.sinovate.io)
+- [![Blog ](https://icongr.am/entypo/documents.svg?size=16&color=808080)Blog](https://sinovate.io/blog/)
+- [![Github ](https://icongr.am/devicon/github-original.svg?size=16&color=808080)Github](https://github.com/SINOVATEblockchain/SIN-core)
+- [![Edit Docs ](https://icongr.am/feather/edit.svg?size=16&color=808080)Edit Docs](https://github.com/SINOVATEblockchain/SIN-core/tree/master/docs)
+- <a href="https://discord.gg/WnRExsx"><img src="https://discordapp.com/api/guilds/494460434691391509/embed.png" alt="Discord server" /></a> 
+- <a href="https://twitter.com/intent/follow?screen_name=SinovateChain"><img src="https://img.shields.io/twitter/follow/SinovateChain.svg?style=social&logo=twitter" alt="follow on Twitter"></a>
+
