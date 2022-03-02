@@ -70,7 +70,7 @@ For information about Bootstrap, see the guide below.
   
   
 
-Wait for the wallet to sync and create a new wallet.
+Wait for the wallet to sync. And create a new wallet.
 
   
 
@@ -81,7 +81,7 @@ Wait for the wallet to sync and create a new wallet.
 Go to console and enter the following command
 <br>
 ```  
-importwallet my-old.wallet.txt  
+importwallet my-old-wallet.txt  
 ```
 <br>
 
