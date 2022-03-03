@@ -5,6 +5,10 @@
 - The node directory is assumed to be `/home/$NODEUSER/.sin`
 
 ```
+sudo apt update && sudo apt install unzip
+```
+
+```
 wget -q --show-progress --no-check-certificate https://github.com/SINOVATEblockchain/sinovate/releases/latest/download/download_bootstrap.sh -O download_bootstrap.sh
 ```
 ```
