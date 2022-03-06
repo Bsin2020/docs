@@ -20,7 +20,7 @@ Your wallet.dat file can be either in the wallets directory or in the SIN home d
   
 ![directory](assets/img/misc/directory.png)
 
-*Shut down the wallet. Backup wallet.dat and infinitynode.conf file.
+*Shut down the wallet. Backup wallet.dat!
 
 
 Download the latest version of Windows Wallet at [https://github.com/SINOVATEblockchain/sinovate/releases](https://github.com/SINOVATEblockchain/sinovate/releases)
@@ -31,14 +31,14 @@ Download the latest version of Windows Wallet at [https://github.com/SINOVATEblo
 
 <br>
  
- Replace the sin-qt.exe file in the compressed file you downloaded with the sin-qt.exe file you are currently using.
 
 :warning: Important Notice. Please pay attention!! :warning: :
 
 - Close the wallet
 - Back up
-- Delete everything except wallet.dat.
+- Delete everything except Wallet folder and wallet.dat.
 - Copy the files extracted from the [bootstrap.zip](https://service.sinovate.io/mainnet/latest/bootstrap.zip) file to the SIN directory.
+- Replace the sin-qt.exe file with the compressed file you downloaded with the sin-qt.exe file you are currently using.
 - Start the wallet.
  
 <br>
