@@ -14,7 +14,7 @@
 - [Bootstrap](bootstrap)
 - [Wallet Upgrade](wallet_upgrade)
 - [Node Update Guide](node_update_guide)
-- [Dump/Import Wallet Guide](dump_and_importwallet)
+- [Upgrade Old Wallet to v22.0.0](dump_and_importwallet)
 - [WebTool](sin_webtool_guide)
 - [GPU Mining X25X Algo](X25X-PoW-GPU-Mining)
 - [Video Guides](video_guides)
