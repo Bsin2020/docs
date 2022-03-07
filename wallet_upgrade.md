@@ -41,6 +41,8 @@ Download the latest version of Windows Wallet at [https://github.com/SINOVATEblo
 - Replace the sin-qt.exe file with the compressed file you downloaded with the sin-qt.exe file you are currently using.
 - Start the wallet.
  
+
+ :warning: Use this guide if you encounter any problems https://docs.sinovate.io/#/dump_and_importwallet
 <br>
 
 
