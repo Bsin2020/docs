@@ -4,7 +4,8 @@
 
 **
 
-*This guide includes the ``dumpwallet`` and ``importwallet`` steps for migrating from SIN-Core v.1.0.0.2 to v22.0.0*
+# This guide includes the ``dumpwallet`` and ``importwallet`` steps for migrating from SIN-Core v.1.0.0.2 to v22.0.0
+
     <br>
 ![](https://lh3.googleusercontent.com/NyFJBJFLLlx89KTx2cEsgPbw5yFU09055i-mK4DGEZieVGTL88S-ePws4VCgycpcocIEWqA9LOEwuq0h72x8_ea-RPkGL1yQpC0r30CSiMT5JxO5_VhMcr_tnfG---9b8m8CaxOG)
 
