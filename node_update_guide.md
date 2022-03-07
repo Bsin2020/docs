@@ -31,4 +31,4 @@ tar -xzf daemon.tar.gz -C /home/$(whoami)
 ```
 sudo systemctl start sinovate.service
 ```
-
+:warning: Then you must send at least 2 more SINs to the VPS SIN address. :warning:
