@@ -1,12 +1,12 @@
-**
 
 ## Dump and Import Wallet Guide
 
-**
+
 
 # This guide includes the ``dumpwallet`` and ``importwallet`` steps for migrating from SIN-Core v.1.0.0.2 to v22.0.0
 
-    <br>
+<br>
+
 ![](https://lh3.googleusercontent.com/NyFJBJFLLlx89KTx2cEsgPbw5yFU09055i-mK4DGEZieVGTL88S-ePws4VCgycpcocIEWqA9LOEwuq0h72x8_ea-RPkGL1yQpC0r30CSiMT5JxO5_VhMcr_tnfG---9b8m8CaxOG)
 
   <br>
@@ -15,7 +15,11 @@
   <br>
   
 
-:bulb: This guide assumes you have a working and synchronized SIN-Core v1.0.0.2.  
+:bulb: This guide assumes you have a working and synchronized SIN-Core v1.0.0.2.
+
+:bulb: For an old wallet, you should use this bootstrap. 
+
+https://github.com/SINOVATEblockchain/SIN-core/releases/download/v1.0.0.2/bootstrap.7z
  
 If your wallet is encrypted :closed_lock_with_key:, open the console and enter the following command as convenient for you.  
 
