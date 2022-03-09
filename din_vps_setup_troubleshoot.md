@@ -65,3 +65,7 @@
   
 
 2.3 If you did updatemeta with the wrong owner address, you would not have an error, but the node will not start.
+
+3- **If you have problems upgrading from old version to v22.0.0.**
+
+3.1 Please check out our [Node Update](https://docs.sinovate.io/#/node_update_guide) guide. 
