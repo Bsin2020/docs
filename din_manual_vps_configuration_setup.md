@@ -114,7 +114,7 @@ to unlock for 1000 sec.
 
   ![](assets/img/manual_vps/din-setup-guide17.png)
 
-Send 5 coins to the node address (in our example it is SkF1qwTpw3Z87gD1MiTvKS2vctUtiHLPp1), in wallet interface MyWallet -> Send:
+Send **50** coins to the node address (in our example it is SkF1qwTpw3Z87gD1MiTvKS2vctUtiHLPp1), in wallet interface MyWallet -> Send:
 
 
 
