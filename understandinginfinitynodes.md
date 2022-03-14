@@ -1,20 +1,20 @@
 
   
 
-**1.  What is an InfinityNode?**
+## **1.  What is an InfinityNode?**
     
 
 Like other blockchain solutions, the main SINOVATE chain relies on hundreds of nodes spread across the globe, beyond all borders or proper jurisdiction.
 
 In the SINOVATE network, each node hosts a replica of the main chain, allowing the ledger’s authenticity. In addition, infinitynodes help support the network by providing owners with additional custom-made, unique, and advanced functionality that typical network nodes cannot provide. In return, the blockchain delivers a reward to holders of InfinityNodes for each confirmation of transaction blocks alongside the Proof-of-Work and Proof-of-Stake consensus mechanisms. The InfinityNodes can be associated with the Proof-of-Service (PoSe) layer concept, initially created by the DASH project. As a Layer-1 solution, the SIN coin is the currency used in the committed contracts and reward payments delivered to one holder at every block generation.
 
-**2.  Can InfinityNodes be considered as a masternode technology?**
+## **2.  Can InfinityNodes be considered as a masternode technology?**
    
 No, SINOVATE uses a custom codebase written from scratch with unique concepts. There is no configuration file and requires burning the collateral to establish a contract with the Proof-of-Service layer of the network (see (4)). This is the Proof-of-Burn mechanism. The future owner commits the contract with a specific and unique command for 12 months (only sending coins to the unspendable address will lead to losing your SIN coins). This contract can have a different number of SIN coins depending on the selected Tier. Hence, the InfinityNode will receive rewards from generated blocks according to the payment round. It will enable us to retrieve the burnt collateral with additional income. This payment round is fully deterministic (see (5)) and depends on the number of active InfinityNodes in the Tier. It means the frequency of received rewards may vary over time which is very different from the masternodes system where the frequency is mainly decreasing. After 12 months, the InfinityNode expires and the owner should have collected the burnt collateral and additional incomes with all the received block rewards. The collateral is not returned at the end of the contract.
 
   
 
-**3.  What are the different options called Tiers of InfinityNodes?**  
+## **3.  What are the different options called Tiers of InfinityNodes?**  
       
     
 
@@ -31,14 +31,14 @@ As a reminder, the SIN coins used for starting the “InfinityNodes” must be t
 
   
 
-**4.  What is the Proof-of-Burn (PoB) mechanism in SINOVATE?**
+## **4.  What is the Proof-of-Burn (PoB) mechanism in SINOVATE?**
     
 
 The coin destruction mechanism known as Proof-of-Burn (PoB), supports a self-regulating circulating suppy based on the offer and demand of SIN coin market. This regulation is made by transferring transaction fees to an unusable SIN address. They are then burnt, which is one of the main functions of the PoB mechanism. Furthermore, as the ledger is public and open to everyone, the unusable generic address of the project below makes it possible to trace all transactions and actions linked to the PoB mechanism:
 
   
 
-**SinBurnAddress123456789SuqaXbx3AMC**
+## **SinBurnAddress123456789SuqaXbx3AMC**
 
   
 
@@ -50,12 +50,12 @@ The PoB mechanism offers this desired stability because of future use cases of t
 
   
 
-**5.  What does “Deterministic” InfinityNodes mean?**
+## **5.  What does “Deterministic” InfinityNodes mean?**
     
 
 The word “deterministic” means every InfinityNode receives a reward from generated blocks in an order specified by the round payment list (called Statement). Hence, the network guarantees a regular payment for InfinityNodes and removes any current luck in non-deterministic masternode systems. It enables easy tracking and assessment of the return on investment for the owner.
 
-**6.  What are the purpose and the different functions of InfinityNodes in the network?**
+## **6.  What are the purpose and the different functions of InfinityNodes in the network?**
     
 
   
@@ -70,7 +70,7 @@ BIG Tier also contributes to the Layer-1 security as a critical layer for valida
   
   
 
-**7.  What is the LockReward mechanism?**
+## **7.  What is the LockReward mechanism?**
     
 
 Using novel cryptographic systems (such as Schnorr MuSig, a Schnorr-based signature aggregation scheme: [https://en.wikipedia.org/wiki/Schnorr_signature](https://en.wikipedia.org/wiki/Schnorr_signature)), the LockReward mechanism collects signatures from network participants. It uses them as novel proof for security purposes. The participants must be specially selected to meet this new security standard, where SINOVATE InfinityNodes come into play.
@@ -103,7 +103,7 @@ The first significant benefit of LockReward is that a group of BIG InfinityNodes
   
   
 
-**8.  Which payments and rewards does an InfinityNode receive?**
+## **8.  Which payments and rewards does an InfinityNode receive?**
     
 
   
@@ -112,7 +112,7 @@ An InfinityNode is a peer which executes operations for the Proof-of-Services (P
 
   
 
-**9.  What happens when the Infinity Node expires?**
+## **9.  What happens when the Infinity Node expires?**
     
 
   
@@ -124,7 +124,7 @@ The DAO is investigating possible solutions to continue participating in the dat
   
   
 
-**10.  What are the risks for an investor/InfinityNode owner?**
+## **10.  What are the risks for an investor/InfinityNode owner?**
     
 
   
