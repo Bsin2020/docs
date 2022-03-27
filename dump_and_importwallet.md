@@ -41,10 +41,14 @@ This command will disable :unlock: the encryption for the timeout period.
 
 Now we will dump our wallet.dat file into a file named my-old-wallet.txt.
 
-Some operating systems may ask you to enter the full path for the txt file. Please be careful with it.
+Some operating systems may ask you to enter the absolute path for the txt file. Please be careful with it.
 For example for OSx;
 
 ```dumpwallet /Users/Your_UserName/Desktop/my_old_wallet.txt```
+
+For example for Windows;
+
+```dumpwallet C:\\Users\\Your_UserName\\Desktop\\my_old_wallet.txt```
 
 ![](https://lh5.googleusercontent.com/00QQ_EVpuYzwltQhTkmmc-lfjWomoMkeqykPO4FTe_qk2n2PaW_4PkXSSkMkTxkaBc2ofxJM1B7TX28Muc6-3z-sQCeY-FJ7RSNKeL8ljtOrtC5DtI7L4oMKNI9U8fnTHjPD1HXC)
 
@@ -94,6 +98,16 @@ Go to console and enter the following command
 importwallet my-old-wallet.txt  
 ```
 <br>
+
+Some operating systems may ask you to enter the absolute path for the txt file. Please be careful with it.
+For example for OSx;
+
+```importwallet /Users/Your_UserName/Desktop/my_old_wallet.txt```
+
+For example for Windows;
+
+```importwallet C:\\Users\\Your_UserName\\Desktop\\my_old_wallet.txt```
+
 
   
 ![](https://lh6.googleusercontent.com/luxfQZZAE5gsBWKObzEAaYmxp8_2IUdeZccXuxhCxx4UzBAGBF5q0aRgkKhIbX4fxCg5oBwE0D32TWYnw0MfgM9R16pb6cvxo70AKhqEDlRqPmql0zmR1NtEAPAuUUFXt3fy2OVr)  
