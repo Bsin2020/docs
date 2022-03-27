@@ -41,6 +41,11 @@ This command will disable :unlock: the encryption for the timeout period.
 
 Now we will dump our wallet.dat file into a file named my-old-wallet.txt.
 
+Some operating systems may ask you to enter the full path for the txt file. Please be careful with it.
+For example for OSx;
+
+```dumpwallet /Users/Your_UserName/Desktop/my_old_wallet.txt```
+
 ![](https://lh5.googleusercontent.com/00QQ_EVpuYzwltQhTkmmc-lfjWomoMkeqykPO4FTe_qk2n2PaW_4PkXSSkMkTxkaBc2ofxJM1B7TX28Muc6-3z-sQCeY-FJ7RSNKeL8ljtOrtC5DtI7L4oMKNI9U8fnTHjPD1HXC)
 
   
