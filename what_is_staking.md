@@ -1,10 +1,10 @@
  
-**STAKING**
+# **STAKING**
 
 SIN coins participate in the network by validating transaction blocks, increasing the network’s scalability, and making profits with the distribution of rewards. SINOVATE uses this approach alongside the PoW mechanism, which guarantees decentralization, scalability (+2,000 TPS), and security (InfinityNode LockReward and Proof-of-Burn).
 
   
-**The features of SINOVATE Proof-of-Stake**
+# **The features of SINOVATE Proof-of-Stake**
 
 PoS of SINOVATE (PoS4) integrates a novel feature called LockStake, where a transaction must not be spent for a considerable time to be eligible for staking. This safety guard ensures a lower attack surface of an already complex vector. Hence, the staker must wait for around 14,440 blocks (10 days approximately one block per minute) to become a staking validator. The daily block confirmations are about 1,440 blocks every 60 seconds.
 
