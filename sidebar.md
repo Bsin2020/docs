@@ -10,6 +10,10 @@
 - [Mobile Wallet InfinitNnode setUP](mobile_wallet_infinitynode_setup)
 - [Pecunia InfinityNode Hosting Guide](pecunianodesetup)
 - [DIN 1-Click setUP Migration GUIDE](din_setup_migration_guide)
+
+- **Staking**
+- [What is Staking?](what_is_staking)
+
 - **Tutorials & Guides**
 - [Bootstrap](bootstrap)
 - [Wallet Upgrade](wallet_upgrade)
