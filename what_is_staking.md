@@ -1,5 +1,5 @@
  
-# **STAKING**
+# STAKING
 
 SIN coins participate in the network by validating transaction blocks, increasing the network’s scalability, and making profits with the distribution of rewards. SINOVATE uses this approach alongside the PoW mechanism, which guarantees decentralization, scalability (+2,000 TPS), and security (InfinityNode LockReward and Proof-of-Burn).
 
