@@ -1,4 +1,4 @@
-# Desktop Wallet Staking Menu
+# Staking, How?
     
 
 For staking to take place, it is required to:
