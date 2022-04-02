@@ -1,9 +1,9 @@
 
-## Upgrade Old Wallet To v22.0.0 Guide
+## Upgrade Old Wallet To v22.0.x Guide
 
 
 
-## This guide includes the ``dumpwallet`` and ``importwallet`` steps for migrating from SIN-Core v.1.0.0.2 to v22.0.0
+## This guide includes the ``dumpwallet`` and ``importwallet`` steps for migrating from SIN-Core v.1.0.0.2 to v22.0.x
 
 <br>
 
