@@ -102,7 +102,18 @@ Console access has many disadvantages and is mostly used when the system has los
 xRDP is a Remote Desktop Protocol (RDP) service that allows RDP clients to your Linux VPS with GUI. The GNOME is already installed on Ubuntu and you have access to the GUI through the console, but to have access remotely, you must install a service like xRDP.
 
 1.  Install xrdp on Ubuntu 18.04.  
-    sudo apt-get install xrdp -y
+```
+sudo apt-get install xrdp -y
+```
+ ⚠️For your security, change the default RDP 3389 port. We used 3390 in this example. You can change this. ⚠️
+    
+```
+sudo cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.bak
+sudo sed -i 's/3389/3390/g' /etc/xrdp/xrdp.ini
+sudo sed -i 's/max_bpp=32/#max_bpp=32\nmax_bpp=128/g' /etc/xrdp/xrdp.ini
+sudo sed -i 's/xserverbpp=24/#xserverbpp=24\nxserverbpp=128/g' /etc/xrdp/xrdp.ini
+echo xfce4-session > ~/.xsession
+```
     
 2.  Allow the RDP default port on the UFW firewall.  
   ```
