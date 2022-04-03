@@ -161,6 +161,25 @@ To launch the wallet, do the command:
 ```
 ./sin-qt
 ```
+
+Or you can add sin-qt as a shortcut to the main menu.
+
+```
+cd  /usr/share/applications/
+```
+```
+sudo nano sinovate.desktop
+```
+```
+[Desktop Entry]
+Name=SIN-CORE Wallet
+Comment=SINOVATE Linux GUI Wallet 64 Bit
+Exec=/home/newuser/sin-qt
+Icon=/home/newuser/Pictures/sin.png # Add this for icon
+Terminal=false
+Type=Application
+```
+
 To update quickly the wallet, please follow this guide:
 
 https://docs.sinovate.io/#/bootstrap
