@@ -117,7 +117,7 @@ echo xfce4-session > ~/.xsession
     
 2.  Allow the RDP default port on the UFW firewall.  
   ```
-    sudo ufw allow 3389/tcp
+    sudo ufw allow 3390/tcp
 ```
 
 Create a polkit configuration file.  
