@@ -1,5 +1,5 @@
 # Wallet Guides
-# :warning: If you are upgrading from old wallet to v22.0.0 Desktop Wallet you should use [dump and importwallet guide](https://docs.sinovate.io/#/dump_and_importwallet):warning:
+# :warning: If you are upgrading from old wallet to v22.0.2 desktop Wallet you should use [dump and importwallet guide](https://docs.sinovate.io/#/dump_and_importwallet):warning:
 
 # Windows QT Wallet Backup and Upgrade Guide
 
