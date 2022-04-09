@@ -38,7 +38,7 @@ The coin destruction mechanism known as Proof-of-Burn (PoB), supports a self-reg
 
   
 
-## **SinBurnAddress123456789SuqaXbx3AMC**
+**SinBurnAddress123456789SuqaXbx3AMC**
 
   
 
