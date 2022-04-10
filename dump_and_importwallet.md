@@ -14,12 +14,6 @@
 :warning: Don't forget to backup your old wallet.dat file first.:warning:
   <br>
   
-
-:bulb: This guide assumes you have a working and synchronized SIN-Core v1.0.0.2.
-
-:bulb: For an old wallet, you should use this bootstrap. 
-
-https://github.com/SINOVATEblockchain/SIN-core/releases/download/v1.0.0.2/bootstrap.7z
  
 If your wallet is encrypted :closed_lock_with_key:, open the console and enter the following command as convenient for you.  
 
