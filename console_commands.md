@@ -14,16 +14,19 @@
 
 Console command line (see Figure 1).
 
+![](assets/img/console/figure1.png)
 Figure 1. The sin-qt Console
 
 Note the warning message in red in Figure 1 and be careful using the private key commands (dumpprivkey and dumpwallet) with Mainnet wallets.
 
 Console commands for the server wallet sind are given using the Command Line Interface application sin-cli on the system command line prompt (see Figure 2).
 
+![](assets/img/console/figure2.png)
 Figure 2. System command line prompt
 
 You can always get a list of the current console commands using the help command (see Figure 3.)
 
+![](assets/img/console/figure3.png)
 Figure 3. The help command
 
 ## ``Console Commands :``
@@ -61,10 +64,12 @@ Figure 3. The help command
 
 ``See the startup commands on the sin-qt wallet with Help - Command line options:``
 
+![](assets/img/console/figure4.png)
 Figure 4. Startup commands
 
 and on the command line itself with "sind -?":
 
+![](assets/img/console/figure5.png)
 Figure 5. Startup commands from the command line
 
 ## ``Console Commands A - Z``
@@ -112,6 +117,7 @@ addnode 35.200.130.53:20970 add
 addnode 35.192.54.161:20970 add
 ```
 sin-qt returns "null" after each (see Figure 6).
+![](assets/img/console/figure6.png)
 Figure 6. Entering the addnode command
 ### ``analyzepsbt "psbt"``
 ``Analyzes and provides information about the current status of a PSBT and its inputs``
