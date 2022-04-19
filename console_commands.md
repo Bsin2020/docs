@@ -406,4 +406,757 @@ Allows this transaction to be replaced by a transaction with higher fees. If pro
 createpsbt "[{\"txid\":\"myid\",\"vout\":0}]" "[{\"data\":\"00010203\"}]"
 
   ```
-  ### ``Coming soon...``
+  ### ``createrawtransaction [{"txid":"hex","vout":n,"sequence":n},...] [{"address":amount,...},{"data":"hex"},...] ( locktime replaceable )``
+
+``Create a transaction spending the given inputs and creating new outputs.
+Outputs can be addresses or data.
+Returns hex-encoded raw transaction.
+Note that the transaction's inputs are not signed, and
+it is not stored in the wallet or transmitted to the network.``
+``Arguments:``
+```
+1. inputs (json array, required) The inputs
+
+[
+
+{ (json object)
+
+"txid": "hex", (string, required) The transaction id
+
+"vout": n, (numeric, required) The output number
+
+"sequence": n, (numeric, optional, default=depends on the value of the 'replaceable' and 'locktime' arguments) The sequence number
+
+},
+
+...
+
+]
+
+2. outputs (json array, required) The outputs (key-value pairs), where none of the keys are duplicated.
+
+That is, each address can only appear once and there can only be one 'data' object.
+
+For compatibility reasons, a dictionary, which holds the key-value pairs directly, is also
+
+accepted as second parameter.
+
+[
+
+{ (json object)
+
+"address": amount, (numeric or string, required) A key-value pair. The key (string) is the sin address, the value (float or string) is the amount in BTC
+
+...
+
+},
+
+{ (json object)
+
+"data": "hex", (string, required) A key-value pair. The key must be "data", the value is hex-encoded data
+
+},
+
+...
+
+]
+
+3. locktime (numeric, optional, default=0) Raw locktime. Non-0 value also locktime-activates inputs
+
+4. replaceable (boolean, optional, default=false) Marks this transaction as BIP125-replaceable.
+
+Allows this transaction to be replaced by a transaction with higher fees. If provided, it is an error if explicit sequence numbers are incompatible.
+```
+
+``Result:``
+```
+"hex" (string) hex string of the transaction
+```
+  
+
+``Examples:``
+```
+createrawtransaction "[{\"txid\":\"myid\",\"vout\":0}]" "[{\"address\":0.01}]"
+
+createrawtransaction "[{\"txid\":\"myid\",\"vout\":0}]" "[{\"data\":\"00010203\"}]"
+
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "createrawtransaction", "params": ["[{\"txid\":\"myid\",\"vout\":0}]", "[{\"address\":0.01}]"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "createrawtransaction", "params": ["[{\"txid\":\"myid\",\"vout\":0}]", "[{\"data\":\"00010203\"}]"]}' -H 'content-type: text/plain;' [http://127.0.0.1:8332/](http://127.0.0.1:8332/)
+```
+  
+
+### ``createwallet "wallet_name" ( disable_private_keys blank "passphrase" avoid_reuse descriptors load_on_startup external_signer )``
+
+``Creates and loads a new wallet.``
+
+``Arguments:``
+```
+1. wallet_name (string, required) The name for the new wallet. If this is a path, the wallet will be created at the path location.
+
+2. disable_private_keys (boolean, optional, default=false) Disable the possibility of private keys (only watchonlys are possible in this mode).
+
+3. blank (boolean, optional, default=false) Create a blank wallet. A blank wallet has no keys or HD seed. One can be set using sethdseed.
+
+4. passphrase (string, optional) Encrypt the wallet with this passphrase.
+
+5. avoid_reuse (boolean, optional, default=false) Keep track of coin reuse, and treat dirty and clean coins differently with privacy considerations in mind.
+
+6. descriptors (boolean, optional, default=false) Create a native descriptor wallet. The wallet will use descriptors internally to handle address creation
+
+7. load_on_startup (boolean, optional) Save wallet name to persistent settings and load on startup. True to add wallet to startup list, false to remove, null to leave unchanged.
+
+8. external_signer (boolean, optional, default=false) Use an external signer such as a hardware wallet. Requires -signer to be configured. Wallet creation will fail if keys cannot be fetched. Requires disable_private_keys and descriptors set to true.
+```
+  
+
+``Result:``
+```
+{ (json object)
+
+"name" : "str", (string) The wallet name if created successfully. If the wallet was created using a full path, the wallet_name will be the full path.
+
+"warning" : "str" (string) Warning message if wallet was not loaded cleanly.
+
+}
+```
+  
+
+``Examples:``
+```
+createwallet "testwallet"
+
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "createwallet", "params": ["testwallet"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+
+> sin-cli -named createwallet wallet_name=descriptors avoid_reuse=true descriptors=true load_on_startup=true
+
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "createwallet", "params": {"wallet_name":"descriptors","avoid_reuse":true,"descriptors":true,"load_on_startup":true}}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+  
+### ``decodeburnanddatascript "hexstring"``
+
+``Decode a hex-encoded script.``
+
+``Arguments:``
+```
+1. hexstring (string, required) the hex-encoded script
+
+  
+
+Result:
+
+{ (json object)
+
+"sizeCheck" : true|false, (boolean) true/false
+
+"positionOPCheck" : true|false, (boolean) true/false
+
+"pubkeyhash" : "hex", (string, optional) pubkeyhash
+
+"address" : "str", (string, optional) address
+
+"info" : "str" (string, optional) data in tx
+
+}
+```
+  
+
+``Examples:``
+```
+decodeburnanddatascript "hexstring"
+
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "decodeburnanddatascript", "params": ["hexstring"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+  
+
+### ``decodepsbt "psbt"``
+
+``Return a JSON object representing the serialized, base64-encoded partially signed SIN transaction.``
+
+
+``Arguments:``
+```
+1. psbt (string, required) The PSBT base64 string
+```
+  ``Result:``
+```
+{ (json object)
+
+"tx" : { (json object) The decoded network-serialized unsigned transaction.
+
+... The layout is the same as the output of decoderawtransaction.
+
+},
+
+"unknown" : { (json object) The unknown global fields
+
+"key" : "hex", (string) (key-value pair) An unknown key-value pair
+
+...
+
+},
+
+"inputs" : [ (json array)
+
+{ (json object)
+
+"non_witness_utxo" : { (json object, optional) Decoded network transaction for non-witness UTXOs
+
+...
+
+},
+
+"witness_utxo" : { (json object, optional) Transaction output for witness UTXOs
+
+"amount" : n, (numeric) The value in BTC
+
+"scriptPubKey" : { (json object)
+
+"asm" : "str", (string) The asm
+
+"hex" : "hex", (string) The hex
+
+"type" : "str", (string) The type, eg 'pubkeyhash'
+
+"address" : "str" (string) SIN address if there is one
+
+}
+
+},
+
+"partial_signatures" : { (json object, optional)
+
+"pubkey" : "str", (string) The public key and signature that corresponds to it.
+
+...
+
+},
+
+"sighash" : "str", (string, optional) The sighash type to be used
+
+"redeem_script" : { (json object, optional)
+
+"asm" : "str", (string) The asm
+
+"hex" : "hex", (string) The hex
+
+"type" : "str" (string) The type, eg 'pubkeyhash'
+
+},
+
+"witness_script" : { (json object, optional)
+
+"asm" : "str", (string) The asm
+
+"hex" : "hex", (string) The hex
+
+"type" : "str" (string) The type, eg 'pubkeyhash'
+
+},
+
+"bip32_derivs" : [ (json array, optional)
+
+{ (json object, optional) The public key with the derivation path as the value.
+
+"master_fingerprint" : "str", (string) The fingerprint of the master key
+
+"path" : "str" (string) The path
+
+},
+
+...
+
+],
+
+"final_scriptsig" : { (json object, optional)
+
+"asm" : "str", (string) The asm
+
+"hex" : "str" (string) The hex
+
+},
+
+"final_scriptwitness" : [ (json array)
+
+"hex", (string) hex-encoded witness data (if any)
+
+...
+
+],
+
+"unknown" : { (json object) The unknown global fields
+
+"key" : "hex", (string) (key-value pair) An unknown key-value pair
+
+...
+
+}
+
+},
+
+...
+
+],
+
+"outputs" : [ (json array)
+
+{ (json object)
+
+"redeem_script" : { (json object, optional)
+
+"asm" : "str", (string) The asm
+
+"hex" : "hex", (string) The hex
+
+"type" : "str" (string) The type, eg 'pubkeyhash'
+
+},
+
+"witness_script" : { (json object, optional)
+
+"asm" : "str", (string) The asm
+
+"hex" : "hex", (string) The hex
+
+"type" : "str" (string) The type, eg 'pubkeyhash'
+
+},
+
+"bip32_derivs" : [ (json array, optional)
+
+{ (json object)
+
+"pubkey" : "str", (string) The public key this path corresponds to
+
+"master_fingerprint" : "str", (string) The fingerprint of the master key
+
+"path" : "str" (string) The path
+
+},
+
+...
+
+],
+
+"unknown" : { (json object) The unknown global fields
+
+"key" : "hex", (string) (key-value pair) An unknown key-value pair
+
+...
+
+}
+
+},
+
+...
+
+],
+
+"fee" : n (numeric, optional) The transaction fee paid if all UTXOs slots in the PSBT have been filled.
+
+}
+```
+  
+
+``Examples:``
+```
+decodepsbt "psbt"
+```
+  
+  
+
+### ``decoderawtransaction "hexstring" ( iswitness )``
+
+``Gives the decoded data from a raw hex-encoded transaction. Here we decode the results from createrawtransaction above.``
+```
+decoderawtransaction 0200000<snip>f33ad0000000
+
+{
+
+"txid": "c93dace459f5ac38c9d28ded224e47364abdde5e3fa947dc2d9c4422afb8852",
+
+"hash": "c93dace459f5ac38c9d28ded224e47364abdde5e3fa947dc2d9c4422afb8852",
+
+"version": 2,
+
+"size": 119,
+
+"vsize": 119,
+
+"locktime": 0,
+
+"vin": [
+
+{
+
+"txid": "17b3f9ef530695ef2e0368e445a3b59bf12811bdfd42325bb14248e72deb7e2",
+
+"vout": 0,
+
+"scriptSig": {
+
+"asm": "",
+
+"hex": ""
+
+},
+
+"sequence": 4384362583
+
+}
+
+],
+
+"vout": [
+
+{
+
+"value": 1.00000000,
+
+<snip>
+
+}
+
+]
+
+}
+```
+  
+
+### ``decodescript "hexstring"``
+
+``Decode a hex-encoded script, for example, decode the script for a mulitsig address:``
+```
+decodescript 52460396bc49812bad50949fbc0bbd44e95bf32a5695519b3ff267a5d93cba3bd169b2393cd4864da4c2786dd3322fcfcb239c3db185ef33fa14836b8fecf36c68bb84ddac92f2
+
+{
+
+"asm": "2 0396c2483bbc207827fbc06fb32f48bf28450b5fb973032b742aeedd98dadcf3ba 02ba529ef3455bcc4339dbd7269acc2de135ff65a33c706a9beef48c37ab2a95ab 2 OP_CHECKMULTISIG",
+
+"reqSigs": 2,
+
+"type": "multisig",
+
+"addresses": [
+
+"Sgw5Ds4Py6J2oBX3EKP3kyde2UpnWn7eV",
+
+"SK3bx79fzkei5XF7h2q7wB4s6MK99u29x"
+
+],
+
+"p2sh": "mKa7c52cX97eK4vdk35jV442p3j59hk3R"
+
+}
+```
+  
+
+### ``decodetimelockscript "hexstring"``
+
+``Decode a hex-encoded script.``
+
+  ``Arguments:``
+```
+1. hexstring (string, required) the hex-encoded script
+```
+  ``Result:``
+```
+{ (json object)
+
+"sizeCheck" : true|false, (boolean) true/false
+
+"firstOPCheck" : true|false, (boolean) true/false
+
+"timelockSize" : n, (numeric, optional) OP_CODE hex
+
+"timelockValue" : n, (numeric, optional) OP_CODE value
+
+"pubkeyhash" : "hex", (string, optional) pubkeyhash
+
+"address" : "str" (string, optional) address
+
+}
+```
+  
+``Examples:``
+```
+decodetimelockscript "hexstring"
+
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "decodetimelockscript", "params": ["hexstring"]}' -H 'content-type: text/plain;' [http://127.0.0.1:8332/](http://127.0.0.1:8332/)
+```
+  
+
+### ``deriveaddresses "descriptor" ( range )``
+
+``Derives one or more addresses corresponding to an output descriptor.``
+
+``Examples of output descriptors are:``
+```
+pkh(<pubkey>) P2PKH outputs for the given pubkey
+
+wpkh(<pubkey>) Native segwit P2PKH outputs for the given pubkey
+
+sh(multi(<n>,<pubkey>,<pubkey>,...)) P2SH-multisig outputs for the given threshold and pubkeys
+
+raw(<hex script>) Outputs whose scriptPubKey equals the specified hex scripts
+```
+  
+
+``In the above, <pubkey> either refers to a fixed public key in hexadecimal notation, or to an xpub/xprv optionally followed by one``
+
+``or more path elements separated by "/", where "h" represents a hardened child key.``
+
+``For more information on output descriptors, see the documentation in the doc/descriptors.md file.``
+
+
+``Arguments:``
+```
+1. descriptor (string, required) The descriptor.
+
+2. range (numeric or array, optional) If a ranged descriptor is used, this specifies the end or the range (in [begin,end] notation) to derive.
+```
+  ``Result:``
+```
+[ (json array)
+
+"str", (string) the derived addresses
+
+...
+
+]
+```
+  
+``Examples:``
+
+``First three native segwit receive addresses``
+```
+deriveaddresses "wpkh([d34db33f/84h/0h/0h]xpub6DJ2dNUysrn5Vt36jH2KLBT2i1auw1tTSSomg8PhqNiUtx8QX2SvC9nrHu81fT41fvDUnhMjEzQgXnQjKEu3oaqMSzhSrHMxyyoEAmUHQbY/0/*)#cjjspncu" "[0,2]"
+```
+    
+
+### ``disconnectnode "[address]" [nodeid]``
+
+``Disconnects a peer (node) using either the IP address or node number. For example, sin-qt will return "null," sind will return nothing.``
+```
+disconnectnode "35.198.0.76:20970"
+null
+```
+  
+
+### ``dumpprivkey "address"``
+
+``Displays the private key for a given address in WIF (Wallet Import Format). The wallet must be unlocked (and not for "staking only") for this command to work.``
+```
+dumpprivkey "SXfSbN8DaT21Z6L3Pw52UexuP8zW4mY6h"
+V3vaEHms4VpciP85UsufQf3Gfa9p5gatBGm6Z4rD8FxzFLdXE5V
+```
+  
+### ``dumpwallet "filename"``
+
+``Writes all the wallet "private keys" to a file in clear text (unencrypted) format. The wallet must be fully decrypted (not just for staking only) for this command to work. Returns the filename. Dumpwallet will save all the private keys and their addresses; it will not save watch-only addresses (which do not have private keys in the wallet). This file contains all the private keys in the wallet (1,000 or more), be very careful and do not store the dump file online.``
+
+``On PC:``
+```
+dumpwallet "C:\Users\<username>\Desktop\Backups\dump 2018-10-30.txt"
+  {
+
+"filename": "C:\\Users\\<username>\\Desktop\\Backups\\dump 2018-10-30.txt"
+
+}
+
+  ```
+
+``File:``
+```
+Wallet dump created by SIN v22.x.x
+
+* Created on 2022-03-31T01:56:32Z
+
+* Best block at time of backup was 241161 (b11d5169d66d39cbcd848e2ea3f9adfcee1c22af945f100aec9e762d88609e2e),
+
+mined on 2018-10-31T01:55:28Z
+extended private masterkey: <snip>
+```
+  ``On Mac:``
+```
+dumpwallet /Users/<USERNAME>/Desktop/dump_2018-12-15.txt
+
+{
+
+"filename": "/Users/<USERNAME>/Desktop/dump_2018-12-15.txt"
+
+}
+```
+  
+``File:``
+```
+Wallet dump created by SIN core v22.x.x
+
+* Created on 2018-12-16T02:22:59Z
+
+* Best block at time of backup was 148510
+
+(ca8a9457a69882b395bf56671e3661e148d3aca4a7b6c77398804229e7fb58f4),
+
+mined on 2018-05-06T02:45:52Z
+extended private masterkey: <snip>
+```
+  
+
+### ``encryptwallet "passphrase"``
+
+``Encrypts the wallet with "passphrase" for first-time encryption. After encryption, any calls that interact with private keys such as sending or signing will require passphrase entry to enable these functions. See also walletpassphrase, walletlock and walletpassphrasechange. After this command runs, the wallet will shut down.``
+```
+encryptwallet "you should always use a long and strong passphrase."
+``` 
+``(wallet exits)``
+
+### ``echo "message"``
+
+``Hidden command. Simply echo back the input arguments. This command is for testing.``
+
+``The difference between echo and echojson is that echojson has argument conversion enabled in the client-side table in sin-cli and the GUI. There is no server-side difference. Here we echo the parameters used to set up a multisig address.``
+```
+echo "[\"sghwDvb1pyJoqoAD2ESMTevvvjUfNvReDn\",\"sfKr7vXdmroHi61XUUHedXvgV2mDx9Kudb\"]"
+
+[
+
+"[\"sghwDvb1pyJoqoAD2ESMTevvvjUfNvReDn\",\"sfKr7vXdmroHi61XUUHedXvgV2mDx9Kudb\"]"
+
+]
+```
+  
+
+### ``echojson "message"``
+
+``Hidden command. Simply echo back the input arguments. This command is for testing.``
+
+``The difference between echo and echojson is that echojson has argument conversion enabled in the client-side table in sin-cli and the GUI. There is no server-side difference. Here we echo the parameters used to set up a multisig address.``
+```
+echojson
+
+"[\"SghwDvb1pyJoqoAD2ESMTevvvjUfNvReDn\",\"SfKr7vXdmroHi61XUUHedXvgV2mDx9Kudb\"]"
+[
+
+[
+
+"SghwDvb1pyJoqoAD2ESMTevvvjUfNvReDn",
+
+"SfKr7vXdmroHi61XUUHedXvgV2mDx9Kudb"
+
+]
+
+]
+```
+  
+
+### ``echoipc "arg"``
+
+  
+
+``Echo back the input argument, passing it through a spawned process in a multiprocess build.``
+
+``This command is for testing.``
+ 
+
+``Arguments:``
+```
+1. arg (string, required) The string to echo
+```
+  
+``Result:``
+```
+"str" (string) The echoed string.
+```
+  ``Examples:``
+```
+echo "Hello world"
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "echo", "params": ["Hello world"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+   
+
+### ``estimaterawfee conf_target (threshold)``
+
+``Hidden command. WARNING: This command is unstable and may disappear or change, and the results are tightly coupled to the calling parameters.``
+
+``It gives fee estimates for short, medium, and long-term confirmations and provides mempool statistics for transactions with those fees. In addition, it estimates the approximate fee per kilobyte needed for a transaction to begin confirmation within conf_target blocks.``
+```
+estimaterawfee 6
+{
+"short": {
+"feerate": 0.01000002,
+"decay": 0.962,
+"scale": 1,
+"pass": {
+"startrange": 490954,
+"endrange": 1e+099,
+"withintarget": 14.31,
+"totalconfirmed": 14.31,
+"inmempool": 0,
+"leftmempool": 0
+},
+"fail": {
+"startrange": 0,
+"endrange": 490954,
+"withintarget": 3.57,
+"totalconfirmed": 3.57,
+"inmempool": 0,
+"leftmempool": 0
+}
+},
+"medium": {
+"feerate": 0.00419464,
+"decay": 0.9952,
+"scale": 2,
+"pass": {
+"startrange": 403909,
+"endrange": 490954,
+"withintarget": 28.94,
+"totalconfirmed": 28.94,
+"inmempool": 0,
+"leftmempool": 0
+},
+"fail": {
+"startrange": 0,
+"endrange": 403909,
+"withintarget": 2.45,
+"totalconfirmed": 2.45,
+"inmempool": 0,
+"leftmempool": 0
+}
+},
+"long": {
+"feerate": 0.00420764,
+"decay": 0.99931,
+"scale": 24,
+"pass": {
+"startrange": 403909,
+"endrange": 626596,
+"withintarget": 190,
+"totalconfirmed": 190,
+"inmempool": 0,
+"leftmempool": 0
+},
+"fail": {
+"startrange": 0,
+"endrange": 403909,
+"withintarget": 12.93,
+"totalconfirmed": 12.93,
+"inmempool": 0,
+"leftmempool": 0
+}
+}
+}
+```
+
+### ``estimatesmartfee conf_target ("estimate_mode")``
+
+``Estimates the approximate fee per kilobyte needed for a transaction to begin confirmation within conf_target blocks.``
+```
+estimatesmartfee 10
+
+{
+"feerate": 0.00420597,
+"blocks": 10
+}
+``` 
