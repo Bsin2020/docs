@@ -12,19 +12,19 @@
 
   
 
-Console command line (see Figure 1).
+``Console command line (see Figure 1).``
 
 ![](assets/img/console/figure1.png)
 Figure 1. The sin-qt Console
 
-Note the warning message in red in Figure 1 and be careful using the private key commands (dumpprivkey and dumpwallet) with Mainnet wallets.
+``Note the warning message in red in Figure 1 and be careful using the private key commands (dumpprivkey and dumpwallet) with Mainnet wallets.``
 
-Console commands for the server wallet sind are given using the Command Line Interface application sin-cli on the system command line prompt (see Figure 2).
+``Console commands for the server wallet sind are given using the Command Line Interface application sin-cli on the system command line prompt (see Figure 2).``
 
 ![](assets/img/console/figure2.png)
 Figure 2. System command line prompt
 
-You can always get a list of the current console commands using the help command (see Figure 3.)
+``You can always get a list of the current console commands using the help command (see Figure 3.)``
 
 ![](assets/img/console/figure3.png)
 Figure 3. The help command
@@ -744,3 +744,42 @@ estimatesmartfee 10
 "blocks": 10
 }
 ``` 
+### ``finalizepsbt "psbt" ( extract )``
+``Finalize the inputs of a PSBT. If the transaction is fully signed, it will produce a
+network serialized transaction which can be broadcast with sendrawtransaction. Otherwise a PSBT will be created which has the final_scriptSig and final_scriptWitness fields filled for inputs that are complete.
+Implements the Finalizer and Extractor roles.``
+``Arguments:``
+```
+1. psbt (string, required) A base64 string of a PSBT
+2. extract (boolean, optional, default=true) If true and the transaction is complete,
+extract and return the complete transaction in normal network serialization instead of the PSBT.
+```
+``Result:``
+```
+{ (json object)
+"psbt" : "str", (string) The base64-encoded partially signed transaction if not extracted
+"hex" : "hex", (string) The hex-encoded network transaction if extracted
+"complete" : true|false (boolean) If the transaction has a complete set of signatures
+}
+```
+``Examples:``
+```
+finalizepsbt "psbt"
+``` 
+### ``fromhexaddress "hexaddress"``
+``Converts a raw hex address to a base 58 pubkeyhash address. Returns the base58 pubkeyhash address.``
+```
+fromhexaddress 9467c4cbd6c4bb736cf4724de25a298bc529bfa3
+SXvN7L3D2NkdPgt20rYrGkSPCggwkKbqa
+```
+``See gethexaddress to convert a base58 pubkeyhash to a hex address.``
+### ``fundrawtransaction "hexstring" ( options iswitness )``
+``Select and add inputs to a transaction until it has enough "in" value to meet its "out" value. Collects one or more unspent transactions as inputs and computes and specifies the change amount. Note that signed inputs may need to be resigned after completion since in/outputs have been added. The inputs added will not be signed; use signrawtransaction for that.``
+```
+fundrawtransaction "02000000000140620b00000000001875c9289dc9ffac451edb8229dd6e95221cd3b5c23af2698ec00000000"
+{
+"hex": "020000000150<snip 100 bytes>c3fb7a7636798bd00000000",
+"changepos": 1,
+"fee": 0.00090400
+}
+```
