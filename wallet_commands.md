@@ -783,3 +783,188 @@ fundrawtransaction "02000000000140620b00000000001875c9289dc9ffac451edb8229dd6e95
 "fee": 0.00090400
 }
 ```
+### ``generateblock "output" ["rawtx/txid",...]``
+
+``Mine a block with a set of ordered transactions immediately to a specified address or descriptor (before the RPC call returns)``
+```
+Arguments:
+1. output (string, required) The address or descriptor to send the newly generated sin to.
+2. transactions (json array, required) An array of hex strings which are either txids or raw transactions.
+Txids must reference transactions currently in the mempool.
+All transactions must be valid and in valid order, otherwise the block will be rejected.
+[
+"rawtx/txid", (string)
+...
+]
+```
+``Result:``
+```
+{ (json object)
+"hash" : "hex" (string) hash of generated block
+}
+```
+``Examples:``
+``Generate a block to myaddress, with txs rawtx and mempool_txid``
+```
+generateblock "myaddress" '["rawtx", "mempool_txid"]'
+```
+### ``generate nblocks ( maxtries )``
+``Mine up to nblocks blocks immediately to an address in the wallet. They are used with the regression test "regtest" private test blockchain. Can "use" generate 1 to publish waiting transactions in the next block or generate 600 to initialize a new regtest blockchain.``
+```
+docker exec myapp scli generate 600
+[
+"5476f8f1c5feb8dd0eaecb113715337a418ae2538f478bb2e5454a801e2aec15",
+"465b21528a217250ed300d0636e7838f8eb2539afec2a87e7052e2f901e31c03",
+<snip 596 block hashes>
+"5716637b80c70d3b0f6cb338fc772ac952c535fa19be086ee2e9c2e97d5ef396",
+"59cde5be7929118bfc3239a93226eb35b7e0093fe9b6b7007b126365ab04901a"
+]
+```
+### ``generatetoaddress nblocks address (maxtries)``
+``Mine up to nblocks immediately to a specified address. Used with the regression test "regtest" private test blockchain. Here we generate 10 genesis blocks on regtest with 20,000 Test SIN each, plus an initial block, and listaddressgroupings shows the result:``
+```
+PS C:\Users\Test> docker exec myapp qcli generatetoaddress 10 "qNe5aDdubCGRaTp7vDYL4BASjzVH7c7Yc"
+[
+"7994c09b3c5a4f31976144a429695140ee4e0747de36a5eae4aefb169a8f558",
+"79cd57805f061d964428dff08b03a91a3a7245bc6d6ea01f3bb735bac62decf",
+"38cfab367ece8f34d4f48838ca9c43fc87873919dbe5113302e316890304adc",
+"41d8f6276e7544d0992e95c216d42be391a3cdf72cd8ba128f7c8b879d7a1b8",
+"3d270dfae9927870f342c6056adfdb3c6b121b6d38fc1a60e965deb33207035",
+"5fb82e9978f83afc7c30bbdb6d195f5a26e8beace00a57e7581b1b4376f1351",
+"65bce2a9f180246245944e235fa0c86fba2502e279b846f7e14e3265d620031",
+"7d676d46c2c4008051cb4660a74ff0899ac647d8c1afedeabbe6a7fe935b7be",
+"35482c05e5b5b173cd5ae3e1665d9b33811a4358249d566fded891b9d772ac5",
+"06d5849f0b3c91ad215e364d183b39c4e156ea4024cb5337cadc47fb2a54cca"
+]
+
+PS C:\Users\Test> docker exec myapp qcli listaddressgroupings
+[
+[
+[
+"qNe5aDdubCGRaTp7vDYL4BASjzVH7c7Yc",
+2200000.00000000
+]
+]
+]
+```  
+### ``generatetodescriptor num_blocks "descriptor" ( maxtries )``
+
+``Mine blocks immediately to a specified descriptor (before the RPC call returns)``
+``Arguments:``
+```
+1. num_blocks (numeric, required) How many blocks are generated immediately.
+2. descriptor (string, required) The descriptor to send the newly generated bitcoin to.
+3. maxtries (numeric, optional, default=1000000) How many iterations to try.
+```
+``Result:``
+```
+[ (json array) hashes of blocks generated
+"hex", (string) blockhash
+...
+]
+```
+``Examples:``
+``Generate 11 blocks to mydesc``
+```
+generatetodescriptor 11 "mydesc"
+``` 
+### ``getaddednodeinfo ( "node" )``
+``Returns information about nodes that have been manually added using the addnode command.``
+```
+getaddednodeinfo
+[
+{
+"addednode": "35.200.159.68:20970",
+"connected": true,
+"addresses": [
+{
+"address": "35.200.159.68:20970",
+"connected": "outbound"
+}
+]
+},
+{
+"addednode": "35.231.140.221:20970",
+"connected": true,
+"addresses": [
+{
+"address": "35.231.140.221:20970",
+"connected": "outbound"
+}
+]
+}
+]
+```  
+### ``getaddressesbylabel "label"``
+``Returns the list of addresses assigned the specified label.``
+``Arguments:``
+```
+1. label (string, required) The label.
+```  
+``Result:``
+```
+{ (json object) json object with addresses as keys
+"address" : { (json object) json object with information about address
+"purpose" : "str" (string) Purpose of address ("send" for sending address, "receive" for receiving address)
+},
+...
+}  
+```
+``Examples:``
+```
+getaddressesbylabel "tabby"
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getaddressesbylabel", "params": ["tabby"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``getaddressinfo "address"``
+``Return information about the given sin address.
+Some of the information will only be present if the address is in the active wallet.``
+``Arguments:``
+```
+1. address (string, required) The sin address for which to get information.
+```
+``Result:``
+```
+{ (json object)
+"address" : "str", (string) The sin address validated.
+"scriptPubKey" : "hex", (string) The hex-encoded scriptPubKey generated by the address.
+"ismine" : true|false, (boolean) If the address is yours.
+"iswatchonly" : true|false, (boolean) If the address is watchonly.
+"solvable" : true|false, (boolean) If we know how to spend coins sent to this address, ignoring the possible lack of private keys.
+"desc" : "str", (string, optional) A descriptor for spending coins sent to this address (only when solvable).
+"parent_desc" : "str", (string, optional) The descriptor used to derive this address if this is a descriptor wallet
+"isscript" : true|false, (boolean) If the key is a script.
+"ischange" : true|false, (boolean) If the address was used for change output.
+"iswitness" : true|false, (boolean) If the address is a witness address.
+"witness_version" : n, (numeric, optional) The version number of the witness program.
+"witness_program" : "hex", (string, optional) The hex value of the witness program.
+"script" : "str", (string, optional) The output script type. Only if isscript is true and the redeemscript is known. Possible
+types: nonstandard, pubkey, pubkeyhash, scripthash, multisig, nulldata, witness_v0_keyhash,
+witness_v0_scripthash, witness_unknown.
+"hex" : "hex", (string, optional) The redeemscript for the p2sh address.
+"pubkeys" : [ (json array, optional) Array of pubkeys associated with the known redeemscript (only if script is multisig).
+"str", (string)
+...
+],
+"sigsrequired" : n, (numeric, optional) The number of signatures required to spend multisig output (only if script is multisig).
+"pubkey" : "hex", (string, optional) The hex value of the raw public key for single-key addresses (possibly embedded in P2SH or P2WSH).
+"embedded" : { (json object, optional) Information about the address embedded in P2SH or P2WSH, if relevant and known.
+... Includes all getaddressinfo output fields for the embedded address, excluding metadata (timestamp, hdkeypath, hdseedid)
+and relation to the wallet (ismine, iswatchonly).
+},
+"iscompressed" : true|false, (boolean, optional) If the pubkey is compressed.
+"timestamp" : xxx, (numeric, optional) The creation time of the key, if available, expressed in UNIX epoch time.
+"hdkeypath" : "str", (string, optional) The HD keypath, if the key is HD and available.
+"hdseedid" : "hex", (string, optional) The Hash160 of the HD seed.
+"hdmasterfingerprint" : "hex", (string, optional) The fingerprint of the master key.
+"labels" : [ (json array) Array of labels associated with the address. Currently limited to one label but returned
+as an array to keep the API stable if multiple labels are enabled in the future.
+"str", (string) Label name (defaults to "").
+...
+]
+}
+```
+``Examples:``
+```
+getaddressinfo "bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl"
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getaddressinfo", "params": ["bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
