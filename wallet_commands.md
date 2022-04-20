@@ -1089,3 +1089,171 @@ getblockchaininfo
 ```
 ![](assets/img/console/figure7.png)
 Figure 7. The getblockchaininfo command
+### ``getblockcount``
+``Returns the number of blocks in the main (longest with most difficulty) blockchain.``
+```
+getblockcount
+244848
+```
+### ``getblockfilter "blockhash" ( "filtertype" )``
+``Retrieve a BIP 157 content filter for a particular block.``
+``Arguments:``
+```
+1. blockhash (string, required) The hash of the block
+2. filtertype (string, optional, default="basic") The type name of the filter
+``` 
+``Result:``
+```
+{ (json object)
+"filter" : "hex", (string) the hex-encoded filter data
+"header" : "hex" (string) the hex-encoded filter header
+} 
+```
+``Examples:``
+```
+> sin-cli getblockfilter "00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09" "basic"
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getblockfilter", "params": ["00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09", "basic"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+(code -1)
+```
+### ``getblockhash height``
+``Returns the hash of the main blockchain for the given block height (not an orphan block).``
+```
+getblockhash 244848
+8c0a43d58e96bd081209243eb9406c98ab3771c900cc05d793a62c48f3b1c03f
+```
+### ``getblockheader "hash" ( verbose )``
+``Returns hex or decoded data for the header of the given block hash.``
+```
+getblockheader 8c0a43d58e96bd081209243eb9406c98ab3771c900cc05d793a62c48f3b1c03f
+{
+"hash": "8c0a43d58e96bd081209243eb9406c98ab3771c900cc05d793a62c48f3b1c03f",
+"confirmations": 1,
+"height": 244848,
+"version": 536870912,
+"versionHex": "20000000",
+"merkleroot": "55e9df47918882e9da67fca364102785f95f630277251e0f02c5a999a5ad7222",
+"time": 1539478576,
+"mediantime": 1539478048,
+"nonce": 0,
+"bits": "1a057777",
+"difficulty": 3068960.095125648,
+"chainwork": "0000000000000000000000000000000000000000000000ae38f10db922d370e0",
+"hashStateRoot": "8c72ed6a22f205a31965acc8deb4e5a83aa1b3e9c2eb72b41fb966c244bbf7ae",
+"hashUTXORoot": "a4a9138f1c02a7a8f2948cf255be5c85a774f0c58e55e754eeed83e41e44b0e3",
+"previousblockhash": "a18adc4fb204fe1818c30e3003fa8c8bf1833692d6df7dbb66d1569d27b18f8e",
+"flags": "proof-of-stake",
+"proofhash": "00001121392ae309cf450c96f461cc4dcbaab48a07da28b3c391774a5051ea13",
+"modifier": "d48db9884b7fd19852db420ad8faee6a51ca122574c041155965ac7de4cfe10c"
+}
+```  
+### ``getblockstats hash_or_height ( stats )``
+``Compute per block statistics for a given window. All amounts are in satoshis.
+It won't work for some heights with pruning.``
+``Arguments:``
+```
+1. hash_or_height (string or numeric, required) The block hash or height of the target block
+2. stats (json array, optional, default=all values) Values to plot (see result below)
+[
+"height", (string) Selected statistic
+"time", (string) Selected statistic
+...
+]
+``` 
+``Result:``
+```
+{ (json object)
+"avgfee" : n, (numeric) Average fee in the block
+"avgfeerate" : n, (numeric) Average feerate (in satoshis per virtual byte)
+"avgtxsize" : n, (numeric) Average transaction size
+"blockhash" : "hex", (string) The block hash (to check for potential reorgs)
+"feerate_percentiles" : [ (json array) Feerates at the 10th, 25th, 50th, 75th, and 90th percentile weight unit (in satoshis per virtual byte)
+n, (numeric) The 10th percentile feerate
+n, (numeric) The 25th percentile feerate
+n, (numeric) The 50th percentile feerate
+n, (numeric) The 75th percentile feerate
+n (numeric) The 90th percentile feerate
+],
+"height" : n, (numeric) The height of the block
+"ins" : n, (numeric) The number of inputs (excluding coinbase/coinstake)
+"maxfee" : n, (numeric) Maximum fee in the block
+"maxfeerate" : n, (numeric) Maximum feerate (in satoshis per virtual byte)
+"maxtxsize" : n, (numeric) Maximum transaction size
+"medianfee" : n, (numeric) Truncated median fee in the block
+"mediantime" : n, (numeric) The block median time past
+"mediantxsize" : n, (numeric) Truncated median transaction size
+"minfee" : n, (numeric) Minimum fee in the block
+"minfeerate" : n, (numeric) Minimum feerate (in satoshis per virtual byte)
+"mintxsize" : n, (numeric) Minimum transaction size
+"outs" : n, (numeric) The number of outputs
+"subsidy" : n, (numeric) The block subsidy
+"swtotal_size" : n, (numeric) Total size of all segwit transactions
+"swtotal_weight" : n, (numeric) Total weight of all segwit transactions
+"swtxs" : n, (numeric) The number of segwit transactions
+"time" : n, (numeric) The block time
+"total_out" : n, (numeric) Total amount in all outputs (excluding coinbase/coinstake and thus reward [ie subsidy + totalfee])
+"total_size" : n, (numeric) Total size of all non-coinbase/coinstake transactions
+"total_weight" : n, (numeric) Total weight of all non-coinbase/coinstake transactions
+"totalfee" : n, (numeric) The fee total
+"txs" : n, (numeric) The number of transactions (including coinbase or coinstake)
+"utxo_increase" : n, (numeric) The increase/decrease in the number of unspent outputs
+"utxo_size_inc" : n (numeric) The increase/decrease in size for the utxo index (not discounting op_return and similar)
+}
+``` 
+``Examples:``
+```
+> getblockstats '"00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09"' '["minfeerate","avgfeerate"]'
+> getblockstats 1000 '["minfeerate","avgfeerate"]'
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getblockstats", "params": ["00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09", ["minfeerate","avgfeerate"]]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getblockstats", "params": [1000, ["minfeerate","avgfeerate"]]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+(code -1)
+```
+### ``getblocktemplate ( TemplateRequest )``
+``Returns data needed to construct a block and has several TemplateRequst parameters. The default (no TemplateReqest) gives:``
+```
+getblocktemplate
+{
+"capabilities": [
+"proposal"
+],
+"version": 536870912,
+"rules": [
+"csv",
+"segwit"
+],
+"vbavailable": {
+},
+"vbrequired": 0,
+"previousblockhash": "584350297b043c72e04afc9a5b5e61d5067b1c478554927dffb3101ccf681925",
+"transactions": [
+{
+"data": "0200000000020000000000000000000084d71700000000015100000000",
+"txid": "65b1a6eb24a3e0833a986eb88f969784811e2143ffce51d630873c1a49a2b596",
+"hash": "65b1a6eb24a3e0833a986eb88f969784811e2143ffce51d630873c1a49a2b596",
+"depends": [
+],
+"fee": -9223335579943919278,
+"sigops": -8646875390281014959,
+"weight": 116
+}
+],
+"coinbaseaux": {
+"flags": ""
+},
+"coinbasevalue": 0,
+"longpollid": "584350297b043c72e04afc9a5b5e61d5067b1c478554927dffb3101ccf681925654",
+"target": "000000000000052f650000000000000000000000000000000000000000000000",
+"mintime": 1542420161,
+"mutable": [
+"time",
+"transactions",
+"prevblock"
+],
+"noncerange": "00000000ffffffff",
+"sigoplimit": 80000,
+"sizelimit": 8000000,
+"weightlimit": 8000000,
+"curtime": 1542420909,
+"bits": "1a052f65",
+"height": 265308
+}
+``` 
