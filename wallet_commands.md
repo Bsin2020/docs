@@ -968,3 +968,124 @@ as an array to keep the API stable if multiple labels are enabled in the future.
 getaddressinfo "bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl"
 > curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getaddressinfo", "params": ["bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
 ```
+### ``getbalance ( "account" minconf include_watchonly )``
+``Get the balance in SIN for a wallet.``
+```
+getbalance
+1.53160855
+```
+
+### ``getbalances``
+```
+getbalances
+{
+  "mine": {
+    "trusted": 132153.38899639,
+    "untrusted_pending": 0.00000000,
+    "immature": 10241.00000000
+  }
+}
+```
+
+### ``getbestblockhash``
+``Returns the block hash of the most recent block.``
+```
+getbestblockhash
+a18adc4fb204fe1818c30e3003fa8c8bf1833692d6df7dbb66d1569d27b18f8e
+```
+### ``getblock "blockhash" ( verbosity )``
+``Returns information about a block.``
+```
+getblock a18adc4fb204fe1818c30e3003fa8c8bf1833692d6df7dbb66d1569d27b18f8e
+{
+"hash": "a18adc4fb204fe1818c30e3003fa8c8bf1833692d6df7dbb66d1569d27b18f8e",
+"confirmations": 1,
+"strippedsize": 1642,
+"size": 1678,
+"weight": 6604,
+"height": 244847,
+"version": 536870912,
+"versionHex": "20000000",
+"merkleroot": "8b5bc1b8201c483b3d2a8ea528429c73755cd4d026f4ea9ec000a8b9ff4d6913",
+"hashStateRoot": "8c72ed6a22f205a31965acc8deb4e5a83aa1b3e9c2eb72b41fb966c244bbf7ae",
+"hashUTXORoot": "a4a9138f1c02a7a8f2948cf255be5c85a774f0c58e55e754eeed83e41e44b0e3",
+"tx": [
+"be6f9a76ea5e495102504bcd4e0975006f9287421535eb830812bf225fd85a81",
+"ef1153d23cbf664ddf37e93ad3995c77faba5f9425c9a8edf07173d10d68cc7d",
+"28368d7c9afe354ee47322a21943191f41adef227b4cd28f808672a5fd6502ca",
+"287ba39ef4b2f08dcf94bca8390749440fa3ef955c7270dc13ceff63d5a547a0",
+"d9454d185072e44b7eedfd7d99d547af715e7966b774cc58c4378cd21404b6c1"
+],
+"time": 1539478304,
+"mediantime": 1539478016,
+"nonce": 0,
+"bits": "1a06ff51",
+"difficulty": 2397623.192092059,
+"chainwork": "0000000000000000000000000000000000000000000000ae38c2396a362a5cad",
+"previousblockhash": "4844ea8b549bda9a1d95050d68846f5943f07fbb39709cdd0c386efea193582d",
+"flags": "proof-of-stake",
+"proofhash": "00018df67d4d91255e3ccc6256ec894267aedddb0b17addc27984d33bbda0163",
+"modifier": "a7d1d4fd5670a282ae5c8f231d3473eaa21ae89fe344f8101847fc11da8e6262",
+"signature": "3044022019ef654d26e49f7bfa8cd2793fb4db7ab9017f82ec480f723230633a68757fb0022006d9137a72b61faf249587dcc323c1b097bfd1c923fba6be543d4d5227d4fc15"
+}  
+```
+### ``getblockchaininfo``
+``Returns information about the blockchain. Here "blocks" equals "headers," so this wallet is synced to the latest blocks. "moneysupply" gives the total SIN created (genesis blocks + all block rewards). "size_on_disk" gives the local storage size for blocks.``
+```
+getblockchaininfo
+{
+  "chain": "main",
+  "blocks": 928661,
+  "headers": 928661,
+  "bestblockhash": "09b387cde5ad53bd6880b38bd5d9976e15c82dadaaa09ac5dc959194850246d0",
+  "difficulty_pow": 2.804483238839001,
+  "difficulty_pos": 6039.477232267155,
+  "mediantime": 1650461505,
+  "verificationprogress": 0.9999996473282005,
+  "initialblockdownload": false,
+  "chainwork": "000000000000000000000000000000000000000000000000354cc2e907688998",
+  "size_on_disk": 3047560401,
+  "pruned": false,
+  "softforks": {
+    "bip34": {
+      "type": "buried",
+      "active": false,
+      "height": 2000000000
+    },
+    "bip66": {
+      "type": "buried",
+      "active": true,
+      "height": 1
+    },
+    "bip65": {
+      "type": "buried",
+      "active": true,
+      "height": 1
+    },
+    "csv": {
+      "type": "buried",
+      "active": false,
+      "height": 2000000000
+    },
+    "segwit": {
+      "type": "buried",
+      "active": false,
+      "height": 2000000000
+    },
+    "taproot": {
+      "type": "bip9",
+      "bip9": {
+        "status": "failed",
+        "start_time": 1619222400,
+        "timeout": 1628640000,
+        "since": 737856,
+        "min_activation_height": 709632
+      },
+      "active": false
+    }
+  },
+  "warnings": ""
+}
+```
+![](assets/img/console/figure7.png)
+Figure 7. The getblockchaininfo command
