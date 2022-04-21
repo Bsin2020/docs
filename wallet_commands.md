@@ -1425,3 +1425,129 @@ getmempoolentry "0cc99a30bc2064041ea4263835b4ed594ff500c56d6b14e4970aeee548e7138
 ]
 }
 ```
+### ``getmempoolinfo``
+
+turns details on the active state of the memory pool. Here a single transaction is waiting in the memory pool:``
+```
+getmempoolinfo
+{
+"size": 1,
+"bytes": 223,
+"usage": 1072,
+"maxmempool": 300000000,
+"mempoolminfee": 0.00400000,
+"minrelaytxfee": 0.00400000
+}
+```
+### ``getmininginfo``
+
+``Gives mining information including network weight ("netstakeweight" of 12.27 million shown below) and wallet weight ("stakeweight" of 107.6).``
+```
+getmininginfo
+{
+"blocks": 453656,
+"currentblockweight": 4000,
+"currentblocktx": 0,
+"difficulty": {
+"proof-of-work": 1.62587890625e-005,
+"proof-of-stake": 5785501.473223674,
+"search-interval": 34847
+},
+"blockvalue": 400000000,
+"netmhashps": 0,
+"netstakeweight": 1226715419614939,
+"errors": "",
+"networkhashps": 80603867856378.4,
+"pooledtx": 4,
+"stakeweight": {
+"minimum": 10759890919,
+"maximum": 0,
+"combined": 10759890919
+},
+"chain": "main",
+"warnings": ""
+}
+```
+### ``getnettotals``
+
+``Gives the network traffic statistics since the wallet launched.``
+```
+getnettotals
+{
+"totalbytesrecv": 923333,
+"totalbytessent": 279356,
+"timemillis": 1539478945470,
+"uploadtarget": {
+"timeframe": 86400,
+"target": 0,
+"target_reached": false,
+"serve_historical_blocks": true,
+"bytes_left_in_cycle": 0,
+"time_left_in_cycle": 0
+}
+}
+```  
+### ``getnetworkhashps ( nblocks height )``
+
+``DEPRECATED. Returns a network hash value related to block mining difficulty, which is not relevant to SIN Proof of Stake, for which the network hashes per second is the total number of nodes divided by 16 seconds.``
+```
+getnetworkhashps
+78300177154693.26
+```
+### ``getnetworkinfo``
+
+``Gives the parameters for IPv4, IPv6 and Tor (Onion) network connections. Use getpeerinfo to check computer clock "timeoffset" to other peers in the network, not this value from getnetworkinfo.``
+```
+{
+"version": 220003,
+"subversion": "/Satoshi:22.0.3/",
+"protocolversion": 250003,
+"localservices": "0000000000000409",
+"localservicesnames": [
+"NETWORK",
+"WITNESS",
+"NETWORK_LIMITED"
+],
+"localrelay": true,
+"timeoffset": -3,
+"networkactive": true,
+"connections": 10,
+"connections_in": 0,
+"connections_out": 10,
+"networks": [
+{
+"name": "ipv4",
+"limited": false,
+"reachable": true,
+"proxy": "",
+"proxy_randomize_credentials": false
+},
+{
+"name": "ipv6",
+"limited": false,
+"reachable": true,
+"proxy": "",
+"proxy_randomize_credentials": false
+},
+{
+"name": "onion",
+"limited": true,
+"reachable": false,
+"proxy": "",
+"proxy_randomize_credentials": false
+},
+{
+"name": "i2p",
+"limited": true,
+"reachable": false,
+"proxy": "",
+"proxy_randomize_credentials": false
+}
+],
+"relayfee": 0.02000000,
+"incrementalfee": 0.00001000,
+"localaddresses": [
+],
+"warnings": ""
+}
+```
