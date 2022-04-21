@@ -1890,3 +1890,551 @@ curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "meth
 
 > curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getstakinginfo", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
  ```
+### ``gettransaction  "txid"  (  include_watchonly  verbose  )``
+``Get detailed information about in-wallet transaction <txid>``
+
+``Argument #1 - txid``
+**Type:**  ``string, required``
+``The transaction id``
+
+``Argument #2 - include_watchonly``
+**Type:**  ``boolean, optional, default=true for watch-only wallets, otherwise false``
+``Whether to include watch-only addresses in balance calculation and details[]``
+
+``Argument #3 - verbose``
+**Type:**  ``boolean, optional, default=false``
+``Whether to include a  decoded  field containing the decoded transaction (equivalent to RPC decoderawtransaction)``
+``Result``
+```
+{                                          (json object)
+  "amount" : n,                            (numeric) The amount in BTC
+  "fee" : n,                               (numeric) The amount of the fee in BTC. This is negative and only available for the
+                                           'send' category of transactions.
+  "confirmations" : n,                     (numeric) The number of confirmations for the transaction. Negative confirmations means the
+                                           transaction conflicted that many blocks ago.
+  "generated" : true|false,                (boolean) Only present if transaction only input is a coinbase one.
+  "trusted" : true|false,                  (boolean) Only present if we consider transaction to be trusted and so safe to spend from.
+  "blockhash" : "hex",                     (string) The block hash containing the transaction.
+  "blockheight" : n,                       (numeric) The block height containing the transaction.
+  "blockindex" : n,                        (numeric) The index of the transaction in the block that includes it.
+  "blocktime" : xxx,                       (numeric) The block time expressed in UNIX epoch time.
+  "txid" : "hex",                          (string) The transaction id.
+  "walletconflicts" : [                    (json array) Conflicting transaction ids.
+    "hex",                                 (string) The transaction id.
+    ...
+  ],
+  "time" : xxx,                            (numeric) The transaction time expressed in UNIX epoch time.
+  "timereceived" : xxx,                    (numeric) The time received expressed in UNIX epoch time.
+  "comment" : "str",                       (string) If a comment is associated with the transaction, only present if not empty.
+  "bip125-replaceable" : "str",            (string) ("yes|no|unknown") Whether this transaction could be replaced due to BIP125 (replace-by-fee);
+                                           may be unknown for unconfirmed transactions not in the mempool
+  "details" : [                            (json array)
+    {                                      (json object)
+      "involvesWatchonly" : true|false,    (boolean) Only returns true if imported addresses were involved in transaction.
+      "address" : "str",                   (string) The bitcoin address involved in the transaction.
+      "category" : "str",                  (string) The transaction category.
+                                           "send"                  Transactions sent.
+                                           "receive"               Non-coinbase transactions received.
+                                           "generate"              Coinbase transactions received with more than 100 confirmations.
+                                           "immature"              Coinbase transactions received with 100 or fewer confirmations.
+                                           "orphan"                Orphaned coinbase transactions received.
+      "amount" : n,                        (numeric) The amount in BTC
+      "label" : "str",                     (string) A comment for the address/transaction, if any
+      "vout" : n,                          (numeric) the vout value
+      "fee" : n,                           (numeric) The amount of the fee in BTC. This is negative and only available for the
+                                           'send' category of transactions.
+      "abandoned" : true|false             (boolean) 'true' if the transaction has been abandoned (inputs are respendable). Only available for the
+                                           'send' category of transactions.
+    },
+    ...
+  ],
+  "hex" : "hex",                           (string) Raw data for transaction
+  "decoded" : {                            (json object) Optional, the decoded transaction (only present when `verbose` is passed)
+    ...                                    Equivalent to the RPC decoderawtransaction method, or the RPC getrawtransaction method when `verbose` is passed.
+  }
+}
+```
+``Examples``
+```
+> gettransaction "1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d"
+
+> gettransaction "1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d" true
+
+> gettransaction "1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d" false true
+
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "gettransaction", "params": ["1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``gettxout "txid" n ( include_mempool )``
+
+``Return details about an unspent transaction output. Has more detail than listunspent. Will return "null" if the transaction has been spent.``
+```
+gettxout 9ebd45e58980ef1278d1ba300b1504aaf57ae0239a3cf899bf3d37866dda175 1
+
+{
+"bestblock": "b20dc592f540bf19549a18187d6e22ba456ea84fc328aac46cea65d37bde4770b",
+"confirmations": 13,
+"value": 0.03235539,
+"scriptPubKey": {
+"asm": "OP_DUP OP_HASH160 5bf232263fc9b17134baa773cdb9b3b64d5cea34 OP_EQUALVERIFY OP_CHECKSIG",
+"hex": "76b0135ff586419299ba1fd413ac72cab9bba67d4bfd2f88ca",
+"reqSigs": 1,
+"type": "pubkeyhash",
+"addresses": [
+" SU4dx5wZ4yW8852gP2dVj8t39d7Kq5wb2"
+]
+},
+"coinbase": false,
+"coinstake": false
+}
+```
+### ``gettxoutproof ["txid",...] ( blockhash )``
+
+``Returns a hex-encoded proof that a transaction ID was included in a block, if there are unspent outputs in that transaction. See verifytxoutproof for the reciprocal.``
+```
+gettxoutproof [\"b52cb4ac7ae175bbddf25274acc3944e38cd7ba96277a5c60e223d0f93c442b\"]
+000000201cb576b9<snip 307 bytes>e36ab6c678b8311b
+```  
+
+### ``gettxoutsetinfo ( "hash_type" hash_or_height use_index )``
+
+``Returns statistics about the whole blockchain unspent UTXOs may take some time to return. "total_amount" gives the current total supply (genesis blocks + total block rewards)``
+```
+gettxoutsetinfo
+
+{
+"height": 264144,
+"bestblock": "00fa97450ff3af39f33377e7042eaedf94a4755b2f56a95138aaefe5198de67d",
+"transactions": 1155194,
+"txouts": 2205063,
+"bogosize": 201311789,
+"hash_serialized_2": "d5273addced7f3226ca9039f1b749035fe8d65db1e2d5bd9e8a9c02697215251",
+"disk_size": 168408370,
+"total_amount": 101036576.00000000
+} 
+```
+### ``getunconfirmedbalance``
+
+``Get the unconfirmed balance for the wallet, which is the amount in transactions received by the wallet that haven't yet been published in blocks. Here the wallet has received 7.0 SIN that hasn't been confirmed in a block:``
+```
+getunconfirmedbalance
+
+7.00000000
+```
+### ``getwalletinfo``
+
+``Returns information about the wallet:``
+
+-   "walletname" - the name of the wallet.dat file currently loaded
+  
+-   "walletversion" - not the software client version, use getnetworkinfo to check this
+    
+-   "balance" - balance in SIN
+    
+-   "stake" - any balance currently committed to a stake
+    
+-   "unconfirmed_balance" - any balance that hasn't been published in the next blocks
+    
+-   "immature_balance" - any coinbase (Proof of Work) balance that does not have 500 confirmations, seen only for regtest.
+    
+-   "txcount" - the total number of transactions in the wallet
+    
+-   "keypoololdest" - the Unix epoch timestamp in seconds for the oldest key in the key pool
+    
+-   "keypoolsize" - how many new keys are pre-generated
+    
+-   "keypoolsize_hd_internal" - how many new keys are pre-generated for internal use (used for change addresses)
+    
+-   "unlocked_until" - the Unix epoch time in seconds that the wallet is unlocked, or 0 if the wallet is locked, this field is omitted for unencrypted wallets.
+    
+-   "paytxfee" - the transaction fee in SIN per 1,000 bytes
+    
+-   "hdmasterkeyid" - a Hash 160 of the hierarchical deterministic (HD) master public key, this field is omitted if HD is not enabled
+    
+```
+getwalletinfo
+
+{
+"walletname": "wallet.dat",
+"walletversion": 130000,
+"balance": 1.53160855,
+"stake": 0.00000000,
+"unconfirmed_balance": 0.00000000,
+"immature_balance": 0.00000000,
+"txcount": 94,
+"keypoololdest": 1507072726,
+"keypoolsize": 952,
+"unlocked_until": 0,
+"paytxfee": 0.00000000,
+"hdmasterkeyid": "c1c081490c4dc42b3e3431683052df36bc583fbe5"
+}
+```
+### ``getzmqnotifications``
+
+``Returns information about the active ZeroMQ notifications.``
+
+Result:
+```
+[
+  {                        (json object)
+    "type": "pubhashtx",   (string) Type of notification
+    "address": "..."       (string) Address of the publisher
+  },
+  ...
+]
+```
+``Examples:``
+```
+> getzmqnotifications 
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getzmqnotifications", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+
+### ``help ( "command" )``
+
+``Gives help and examples for a specific command or lists all the commands (without a parameter). The examples are formatted to copy and paste them for providing the command (replacing the parameters as appropriate).``
+```
+help
+
+== Blockchain ==
+
+getaccountinfo "address"
+
+getbestblockhash
+
+getblock "blockhash" ( verbosity )
+
+getblockchaininfo
+
+getblockcount
+...
+```
+### ``importaddress "address" ( "label" rescan p2sh )``
+
+``Adds a 34-character SIN address or 66 hex character public key address that can be watched as if it were in your wallet but cannot be used to spend. After entering this command, the wallet will rescan and should be backed up after adding addresses. sin-qt returns "null" and displays the "Watch-only" balance, sind returns nothing.``
+```
+importaddress SaL29jcCZ39pWcA334dA4BN3peVhnc42D
+
+null
+```
+### ``importdescriptors  "requests"``
+``Import descriptors. This will trigger a rescan of the blockchain based on the earliest timestamp of all descriptors being imported. Requires a new wallet backup.``
+
+``Note: This call can take over an hour to complete if using an early timestamp; during that time, other rpc calls may report that the imported keys, addresses or scripts exist but related transactions are still missing``
+``Argument #1 - requests``
+**Type:**  ``json array, required``
+``Data to be imported``
+```
+[
+  {                                    (json object)
+    "desc": "str",                     (string, required) Descriptor to import.
+    "active": bool,                    (boolean, optional, default=false) Set this descriptor to be the active descriptor for the corresponding output type/externality
+    "range": n or [n,n],               (numeric or array) If a ranged descriptor is used, this specifies the end or the range (in the form [begin,end]) to import
+    "next_index": n,                   (numeric) If a ranged descriptor is set to active, this specifies the next index to generate addresses from
+    "timestamp": timestamp | "now",    (integer / string, required) Time from which to start rescanning the blockchain for this descriptor, in UNIX epoch time
+                                       Use the string "now" to substitute the current synced blockchain time.
+                                       "now" can be specified to bypass scanning, for outputs which are known to never have been used, and
+                                       0 can be specified to scan the entire blockchain. Blocks up to 2 hours before the earliest timestamp
+                                       of all descriptors being imported will be scanned.
+    "internal": bool,                  (boolean, optional, default=false) Whether matching outputs should be treated as not incoming payments (e.g. change)
+    "label": "str",                    (string, optional, default='') Label to assign to the address, only allowed with internal=false
+  },
+  ...
+]
+```
+``Result``
+```
+[                              (json array) Response is an array with the same size as the input that has the execution result
+  {                            (json object)
+    "success" : true|false,    (boolean)
+    "warnings" : [             (json array, optional)
+      "str",                   (string)
+      ...
+    ],
+    "error" : {                (json object, optional)
+      ...                      JSONRPC error
+    }
+  },
+  ...
+]
+```
+`` Examples``
+```
+> importdescriptors '[{ "desc": "<my descriptor>", "timestamp":1455191478, "internal": true }, { "desc": "<my desccriptor 2>", "label": "example 2", "timestamp": 1455191480 }]'
+
+> importdescriptors '[{ "desc": "<my descriptor>", "timestamp":1455191478, "active": true, "range": [0,100], "label": "<my bech32 wallet>" }]'
+```
+### ``importmulti "requests" ( "options" )``
+
+``Import multiple addresses/scripts (with private or public keys, redeem script (P2SH)), rescanning the blockchain for all the new addresses in a single pass. Optional time stamps can control how far back the scanning begins for each address. Requires a new wallet backup after the addition of the addresses.``
+
+``Here we import two watch only addresses and scan the blockchain from 00:00:00 hours GMT on June 1, 2018 (timestamp 1527811200). After entering the command, the wallet will take several minutes to rescan the blockchain for the new addresses:``
+```
+importmulti '[{ "scriptPubKey": { "address": "SX4kcv3ZWZpax2tb44tpiv7q3wEB8Sek5" }, "timestamp":1527811200 }, { "scriptPubKey": { "address": "SN3BkewbR37fQs226ZA2qkh83mKS529B" }, "timestamp": 1527811200 }]'
+importmulti(Ö)
+
+[
+{
+"success": true
+},
+{
+"success": true
+}
+]
+```  
+### ``importprivkey "sinprivkey" ( "label" ) ( rescan )``
+
+``Adds a WIF private key to your wallet, for example, as returned by dumpprivkey or from another SIN wallet. The wallet must be unlocked and requires a new wallet backup afterward. The wallet will rescan for a few minutes to add any balance from the new address and return "null" if successful.``
+```
+importprivkey VThA5YBGQggmpjSsBFLT1NXR18Fk16YBNd1kCVoERjbQ4d4TRMFf
+
+null
+```
+
+### importprunedfunds "rawtransaction" "txoutproof"
+
+``Imports funds without rescan. Corresponding address or script must previously be included in wallet. Aimed towards pruned wallets. The end-user is responsible to import additional transactions that subsequently spend the imported outputs or rescan after the point in the blockchain the transaction is included``
+
+``Argument #1 - rawtransaction``
+**Type:**  ``string, required``
+``A raw transaction in hex funding an already-existing address in wallet``
+
+``Argument #2 - txoutproof``
+**Type:**  ``string, required``
+
+``The hex output from gettxoutproof that contains the transaction``
+``Result``
+```
+null    (json null)
+```
+### ``importpubkey "pubkey" ( "label" rescan )``
+
+``Adds a public key that can be watched as if it were in your wallet but cannot be used to spend. The public key is 66 characters hex, and can be obtained using the validateaddress command. After entering this command, the wallet will rescan for a few minutes, sin-qt returns "null" and sind returns nothing. The wallet should be backed up after importing a public key.``
+```
+importpubkey 0381dc63bc14d32743a7741dc6a2993b8384dc3aa848332194bc851ff2a371b827
+
+null
+```
+### ``importwallet "filename"``
+
+``Imports keys from a wallet dump file (see dumpwallet). Requires a new wallet backup after this command. Use the full path to the dump file. sin-qt will show a status of "Importing" for a while, then "Scanning" as it rescans the blockchain. This command may take five minutes or more to return, and the wallet may appear to freeze during this time.``
+
+``On a PC with the dump file in a folder "Backups" on the Desktop:``
+```
+importwallet "C:\\Users\\<username>\\Desktop\\Backups\\dump 2019-01-14.txt"
+
+null
+```
+
+### ``infinitynode "strCommand" ( "strFilter" "strOption" )``
+
+``Arguments:``
+```
+1. strCommand (string, required) The command
+2. strFilter (string) The filter of command
+3. strOption (string) The option of command
+```
+``Result:``
+```
+null (json null)
+```
+  ``Result:``
+```
+n (numeric)
+```
+``Result:``
+```
+"str" (string)
+```
+  ``Result:``
+```
+true|false (boolean)
+```
+ ``Result (keypair, checkkey command):``
+```
+{ (json object)
+"PrivateKey" : "hex", (string) The PrivateKey
+"PublicKey" : "hex", (string) The PublicKey
+"DecodePublicKey" : "hex", (string) DecodePublicKey
+"Address" : "str", (string) The Address
+"isCompressed" : true|false (boolean) isCompressed (true/false)
+}
+```  
+``Result (mypeerinfo):``
+```
+{ (json object)
+"MyPeerInfo" : "str" (string) The candidate of reward for BIG node
+}
+```
+``Result (build-stm):``
+```
+{ (json object)
+"Height" : "str", (string) The candidate of reward for BIG node
+"Result" : "str" (string) The candidate of reward for MID node
+}
+```
+``Result (show-candidate command):``
+```
+{ (json object)
+"CandidateBIG" : "str", (string) The candidate of reward for BIG node
+"CandidateMID" : "str", (string) The candidate of reward for MID node
+"CandidateLIL" : "str" (string) The candidate of reward for LIL node
+}
+```  
+``Examples:``
+
+``Create a new Private/Public key``
+```
+infinitynode keypair
+```
+  ``Check Private key``
+```
+infinitynode checkkey PRIVATEKEY
+```
+  ``Infinitynode: Get current block height``
+```
+infinitynode getrawblockcount
+```
+  ``Infinitynode: show peer info``
+```
+infinitynode mypeerinfo
+```  
+``Show current statement of Infinitynode``
+```
+infinitynode show-stm
+```
+``Show current statement of Infinitynode at Height``
+```
+infinitynode show-stm-at
+```
+``Show the candidates for Height``
+```
+infinitynode show-candidate height
+```
+``Show informations about all infinitynodes of network.``
+```
+infinitynode show-infos
+```
+``Show metadata of all infinitynodes of network.``
+```
+infinitynode show-nonmatured
+```
+``Show metadata of all infinitynodes in non matured map, waiting to be listed in final list.``
+```
+infinitynode show-metadata
+```
+  ``Show lockreward of network.``
+```
+infinitynode show-lockreward
+```
+### ``infinitynodeburnfund "nodeowneraddress" amount "backupaddress"``
+
+``Burn funds to create Infinitynode.``
+``Returns JSON info or Null.``
+
+``Arguments:``
+```
+1. nodeowneraddress (string, required) Address of owner (will receive the reward).
+2. amount (numeric or string, required) The amount in BTC to create Node (Example: 100000).
+3. backupaddress (string, required) backup of owner address
+```
+``Result:``
+```
+{ (json object)
+"BURNADDRESS" : "str", (string) The BURNADDRESS of sinovate network
+"BURNPUBLICKEY" : "hex", (string) The public key of owner
+"BURNSCRIPT" : "hex", (string) The script of burn
+"BURNTX" : "hex", (string) The transaction id
+"OWNERADDRESS" : "str", (string) The address of owner from which coins are burned and will receive the reward.
+"BACKUPADDRESS" : "str" (string) The BACKUPADDRESS of owner (use in next feature)
+}
+```  
+``Examples:``
+``Burn 1 Milion SIN coins to create BIG Infinitynode``
+```
+infinitynodeburnfund NodeOwnerAddress 1000000 SINBackupAddress
+```
+### ``infinitynodeburnfund_external ["txid",vout,sequence,...] "nodeowneraddress" amount "backupaddress"``
+
+``Prepare a burn transaction with the given inputs.``
+``Returns JSON info or Null.``
+
+``Arguments:``
+```
+1. inputs (json array, required) Specify inputs, a json array of json objects
+[
+"txid", (string, required) The transaction id
+vout, (numeric, required) The output number
+sequence, (numeric, required) The sequence number
+...
+]
+2. nodeowneraddress (string, required) Address of owner (will receive the reward).
+3. amount (numeric or string, required) The amount in BTC to create Node (Example: 100000).
+4. backupaddress (string, required) backup of owner address
+```  
+``Result:``
+```
+{ (json object)
+"rawMetaTx" : "str", (string) raw transaction
+"BURNADDRESS" : "str", (string) The BURNADDRESS of sinovate network
+"BURNPUBLICKEY" : "hex", (string) The public key of owner
+"BURNSCRIPT" : "hex", (string) The script of burn
+"BACKUPADDRESS" : "str" (string) The BACKUPADDRESS of owner (use in next feature)
+}
+```
+``Examples:``
+``Burn 1 Milion SIN coins to create BIG Infinitynode``
+```
+infinitynodeburnfund_external "[{\"txid\":\"myid\",\"vout\":0}]" NodeOwnerAddress 1000000 SINBackupAddress
+```
+### ``infinitynodeupdatemeta "nodeowneraddress" "publickey" "nodeip" "nodeid"``
+
+``Burn funds to update metadata of DIN.``
+``Returns JSON info or Null.``
+
+``Arguments:``
+```
+1. nodeowneraddress (string, required) Address of owner which burnt funds (will receive the reward).
+2. publickey (string, required) Address of node (will receive the small reward)
+3. nodeip (string, required) Ip of node
+4. nodeid (string, required) First 16 characters of BurnTx (to create node)
+```
+``Result:``
+```
+{ (json object)
+"METADATA" : "str" (string) The metadata of DIN which will be sent to network
+}
+```  
+``Examples:``
+``Burn 25 SIN coins to update metadata of DIN``
+```
+infinitynodeupdatemeta nodeowneraddress publickey xxx.xxx.xxx.xxx ABCDABCDABCDABCD
+```
+### ``infinitynodeupdatemeta_external ["txid",vout,sequence,...] "nodeowneraddress" "publickey" "nodeip" "nodeid"``
+
+``Prepare a metadata update transaction with the given inputs.``  
+``Returns JSON info or Null.``
+
+``Arguments:``
+```
+1. inputs (json array, required) Specify inputs, a json array of json objects
+[
+"txid", (string, required) The transaction id
+vout, (numeric, required) The output number
+sequence, (numeric, required) The sequence number
+...
+]
+2. nodeowneraddress (string, required) Address of owner which burnt funds (will receive the reward).
+3. publickey (string, required) Address of node (will receive the small reward)
+4. nodeip (string, required) Ip of node
+5. nodeid (string, required) First 16 characters of BurnTx (to create node) 
+```
+``Result:``
+```
+{ (json object)
+"Update message" : "str" (string) (UpdateInfo) Update message
+}
+```  
+``Examples:``
+``Burn 25 SIN coins to update metadata of DIN``
+```
+infinitynodeburnfund_external "[{\"txid\":\"myid\",\"vout\":0}]" nodeowneraddress publickey nodeip nodeid
+```
