@@ -1551,3 +1551,342 @@ getnetworkhashps
 "warnings": ""
 }
 ```
+### ``getnewaddress  (  "label"  "address_type"  )``
+``Returns a new SIN address for receiving payments.
+
+``If ‘label’ is specified, it is added to the address book so payments received with the address will be associated with ‘label’.``
+
+``Argument #1 - label``
+**Type:**  ``string, optional, default=””``
+
+``The label name for the address to be linked to. It can also be set to the empty string “” to represent the default label. The label does not need to exist, it will be created if there is no label by the given name.``
+
+``Argument #2 - address_type``
+**Type:**  ``string, optional, default=set by -addresstype``
+``The address type to use. Options are “legacy”, “p2sh-segwit”, and “bech32”.``
+
+``Result``
+```
+Name : srt
+Type: string
+Description : The new SIN address
+```
+``Examples``
+```
+ getnewaddress
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getnewaddress", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``getnodeaddresses ( count "network" )``
+``Return known addresses which can potentially be used to find new nodes in the network``
+```
+getnodeaddresses
+
+[
+  {
+    "time": 1650490648,
+    "services": 1033,
+    "address": "2003:e3:672b:aa97:af16:804e:4e64:67f8",
+    "port": 20970,
+    "network": "ipv6"
+  }
+]
+```
+
+### ``getpeerinfo``
+
+``It gives information about the wallet peer connections. "timeoffset" values of mostly zero means the computer clock is set correctly for network time.``
+```
+getpeerinfo
+
+[
+{
+"id": 1,
+"addr": "35.198.108.56:20970",
+"addrlocal": "168.252.32.120:63648",
+"addrbind": "172.21.42.106:63648",
+"services": "000000000000040d",
+"relaytxes": true,
+"lastsend": 1539479080,
+"lastrecv": 1539479084,
+"bytessent": 28109,
+"bytesrecv": 90334,
+"conntime": 1539467479,
+"timeoffset": 0,
+"pingtime": 0.375712,
+"minping": 0.286454,
+"version": 70016,
+"subver": "/Satoshi:0.16.1/",
+"inbound": false,
+"addnode": false,
+"startingheight": 244769,
+"banscore": 0,
+"synced_headers": 244853,
+"synced_blocks": 244853,
+"inflight": [
+],
+"whitelisted": false,
+"bytessent_per_msg": {
+"addr": 165,
+"feefilter": 32,
+"getaddr": 24,
+"getblocktxn": 58,
+"getdata": 2681,
+"getheaders": 989,
+"headers": 6660,
+"inv": 10986,
+"ping": 3104,
+"pong": 3104,
+"sendcmpct": 132,
+"sendheaders": 24,
+"verack": 24,
+"version": 126
+},
+"bytesrecv_per_msg": {
+"addr": 30192,
+"blocktxn": 540,
+"cmpctblock": 1780,
+"feefilter": 32,
+"getheaders": 989,
+"headers": 22474,
+"inv": 9137,
+"ping": 3104,
+"pong": 3104,
+"sendcmpct": 66,
+"sendheaders": 24,
+"tx": 18742,
+"verack": 24,
+"version": 126
+}
+},
+...
+```
+### ``getrawchangeaddress ( "address_type" )``
+
+``Returns a new address for receiving change with raw transactions, used for composing raw transactions. The address type may be "legacy", "p2sh-segwit" or "bech32".``
+```
+getrawchangeaddress "p2sh-segwit"
+SBncZ4Z8a71UrgsS5QqJfxkDbun5wHy6d
+```
+### ``getrawmempool ( verbose mempool_sequence )``
+
+``Returns all transaction ids in memory pool as a json array of string transaction ids.``
+
+``Hint: use getmempoolentry to fetch a specific transaction from the mempool.``
+
+``Argument #1 - verbose``
+**Type:**  ``boolean, optional, default=false``
+``True for a json object, false for array of transaction ids``
+
+``Argument #2 - mempool_sequence``
+**Type:**  ``boolean, optional, default=false``
+``If verbose=false, returns a json object with transaction list and mempool sequence number attached.``
+
+``Result (for verbose = false)``
+```
+[           (json array)
+  "hex",    (string) The transaction id
+  ...
+]
+```
+``Result (for verbose = true)``
+```
+{                                         (json object)
+  "transactionid" : {                     (json object)
+    "vsize" : n,                          (numeric) virtual transaction size as defined in BIP 141. This is different from actual serialized size for witness transactions as witness data is discounted.
+    "weight" : n,                         (numeric) transaction weight as defined in BIP 141.
+    "fee" : n,                            (numeric) transaction fee in SIN (DEPRECATED)
+    "modifiedfee" : n,                    (numeric) transaction fee with fee deltas used for mining priority (DEPRECATED)
+    "time" : xxx,                         (numeric) local time transaction entered pool in seconds since 1 Jan 1970 GMT
+    "height" : n,                         (numeric) block height when transaction entered pool
+    "descendantcount" : n,                (numeric) number of in-mempool descendant transactions (including this one)
+    "descendantsize" : n,                 (numeric) virtual transaction size of in-mempool descendants (including this one)
+    "descendantfees" : n,                 (numeric) modified fees (see above) of in-mempool descendants (including this one) (DEPRECATED)
+    "ancestorcount" : n,                  (numeric) number of in-mempool ancestor transactions (including this one)
+    "ancestorsize" : n,                   (numeric) virtual transaction size of in-mempool ancestors (including this one)
+    "ancestorfees" : n,                   (numeric) modified fees (see above) of in-mempool ancestors (including this one) (DEPRECATED)
+    "wtxid" : "hex",                      (string) hash of serialized transaction, including witness data
+    "fees" : {                            (json object)
+      "base" : n,                         (numeric) transaction fee in SIN
+      "modified" : n,                     (numeric) transaction fee with fee deltas used for mining priority in SIN
+      "ancestor" : n,                     (numeric) modified fees (see above) of in-mempool ancestors (including this one) in SIN
+      "descendant" : n                    (numeric) modified fees (see above) of in-mempool descendants (including this one) in SIN
+    },
+    "depends" : [                         (json array) unconfirmed transactions used as inputs for this transaction
+      "hex",                              (string) parent transaction id
+      ...
+    ],
+    "spentby" : [                         (json array) unconfirmed transactions spending outputs from this transaction
+      "hex",                              (string) child transaction id
+      ...
+    ],
+    "bip125-replaceable" : true|false,    (boolean) Whether this transaction could be replaced due to BIP125 (replace-by-fee)
+    "unbroadcast" : true|false            (boolean) Whether this transaction is currently unbroadcast (initial broadcast not yet acknowledged by any peers)
+  },
+  ...
+}
+```
+``Result (for verbose = false and mempool_sequence = true)``
+```
+{                            (json object)
+  "txids" : [                (json array)
+    "hex",                   (string) The transaction id
+    ...
+  ],
+  "mempool_sequence" : n     (numeric) The mempool sequence value.
+}
+```
+``Examples``
+```
+getrawmempool true
+
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getrawmempool", "params": [true]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``getrawtransaction "txid" ( verbose "blockhash" )``
+
+``Get the data from a transaction, either as raw hex data or formatted (use "true"). Here formatted data is shown.``
+```
+getrawtransaction cbd113e947d5c1b3fccae149d0d16c82e3bfe05c4f2c204c8bc65ae0697bbd64 true
+{
+"txid": "cbd113e947d5c1b3fccae149d0d16c82e3bfe05c4f2c204c8bc65ae0697bbd64",
+"hash": "cbd113e947d5c1b3fccae149d0d16c82e3bfe05c4f2c204c8bc65ae0697bbd64",
+"version": 1,
+"size": 225,
+"vsize": 225,
+"locktime": 0,
+"vin": [
+{
+"txid": "585c69575402000d74bb3ab75d2f6d3f63c78b4d9ef49f604f93d58a9c9a17fa",
+"vout": 1,
+"scriptSig": {
+"asm": "304402201df556eb5aa6bd97756d6fc3262cf2c38ab8e00b57bd988e1ef172621e2d2e480220130e3aea45fad2f26d4eab57426273a4159b71139b7c9ea68ee9ed83776e15ae[ALL|ANYONECANPAY] 03845440d93fcaafc1a55d079217efcdd137de3ba0df39e747619d829a972cc150",
+"hex": "47304402201df556eb5aa6bd97756d6fc3262cf2c38ab8e00b57bd988e1ef172621e2d2e480220130e3aea45fad2f26d4eab57426273a4159b71139b7c9ea68ee9ed83776e15ae812103845440d93fcaafc1a55d079217efcdd137de3ba0df39e747619d829a972cc150"
+},
+"sequence": 4294967295
+}
+],
+"vout": [
+{
+"value": 300.68541000,
+"n": 0,
+"scriptPubKey": {
+"asm": "OP_DUP OP_HASH160 97e59bd55c357c0701c7e930c62df8f43332c805 OP_EQUALVERIFY OP_CHECKSIG",
+"hex": "76a91497e59bd55c357c0701c7e930c62df8f43332c80588ac",
+"reqSigs": 1,
+"type": "pubkeyhash",
+"addresses": [
+"SaT9CkyyhU6ZnFL7KRi5h6p4XyghKRkifT"
+]
+}
+},
+{
+"value": 11769.78668720,
+"n": 1,
+"scriptPubKey": {
+"asm": "OP_DUP OP_HASH160 e8e41858c0726783e88cdd2d0119aa872e4954a1 OP_EQUALVERIFY OP_CHECKSIG",
+"hex": "76a914e8e41858c0726783e88cdd2d0119aa872e4954a188ac",
+"reqSigs": 1,
+"type": "pubkeyhash",
+"addresses": [
+"ShqQ88SyVMN2sZ2KC8Wsa6hbTXHVMHFf2D"
+]
+}
+}
+],
+"hex": "0100000001fa179a9c8ad5934f609ff49e4d8bc7633f6d2f5db73abb740d00025457695c58010000006a47304402201df556eb5aa6bd97756d6fc3262cf2c38ab8e00b57bd988e1ef172621e2d2e480220130e3aea45fad2f26d4eab57426273a4159b71139b7c9ea68ee9ed83776e15ae812103845440d93fcaafc1a55d079217efcdd137de3ba0df39e747619d829a972cc150ffffffff0248863900070000001976a91497e59bd55c357c0701c7e930c62df8f43332c80588acb03c6509120100001976a914e8e41858c0726783e88cdd2d0119aa872e4954a188ac00000000",
+"blockhash": "f41bddaa8a0730cf3fca06deb6dec19bc4e7b925ba1c460833578894ca0cd6a4",
+"confirmations": 17,
+"time": 1542415856,
+"blocktime": 1542415856
+}
+```
+``The transaction above has one "vin" UTXO input which provides the previous transaction to be spent and two outputs "vout". The first output "vout" sends 300.685401 to a receiving address, the second sends 11769.78668720 SIN to a change address. The difference in value between the inputs and outputs is the transaction fee.``
+### ``getreceivedbyaddress "address" ( minconf )``
+
+``Returns the total amount received by an address, including transactions that are spent or unspent.``
+```
+getreceivedbyaddress SfWtnPq9M4a7Fmeeh6dyu0s4KR59F9xn
+10.05630000
+```
+### ``getreceivedbylabel  "label"  (  minconf  )``
+``Returns the total amount received by addresses with <label> in transactions with at least [minconf] confirmations.``
+
+``Argument #1 - label``
+**Type:**  string, required
+``The selected label, may be the default label using “”.``
+
+``Argument #2 - minconf``
+**Type:**  numeric, optional, default=1
+``Only include transactions confirmed at least this many times.``
+``Result``
+```
+Name: n
+Type: numeric
+Description: The total amount in SIN received for this label.
+```
+``Examples``
+```
+Amount received by the default label with at least 1 confirmation:
+getreceivedbylabel ""
+
+Amount received at the tabby label including unconfirmed amounts with zero confirmations:
+bitcoin-cli getreceivedbylabel "tabby" 0
+
+The amount with at least 6 confirmations:
+bitcoin-cli getreceivedbylabel "tabby" 6
+
+As a JSON-RPC call:
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getreceivedbylabel", "params": ["tabby", 6]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``getrpcinfo``
+``Returns details of the RPC server``
+``Result``
+```
+{                          (json object)
+  "active_commands" : [    (json array) All active commands
+    {                      (json object) Information about an active command
+      "method" : "str",    (string) The name of the RPC command
+      "duration" : n       (numeric) The running time in microseconds
+    },
+    ...
+  ],
+  "logpath" : "str"        (string) The complete file path to the debug log
+}
+```
+``Examples``
+```
+getrpcinfo
+
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getrpcinfo", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``getstakinginfo``
+
+``Returns a json object containing staking-related information.``
+``Result:``
+```
+{ (json object)
+"blocks" : n, (numeric) The current block
+"currentblockweight" : n, (numeric, optional) The block weight of the last assembled block (only present if a block was ever assembled)
+"currentblocktx" : n, (numeric, optional) The number of block transactions of the last assembled block (only present if a block was ever assembled)
+"difficulty" : n, (numeric) The current difficulty
+"pooledtx" : n, (numeric) The size of the mempool
+"chain" : "str", (string) current network name (main, test, regtest)
+"warnings" : "str", (string) any network and blockchain warnings
+"staking" : "str", (string) If staking is active or not
+"staking_available" : n, (numeric) The amount of SIN which is currently available to stake
+"connections" : "str", (string) If there are any connections to the network
+"unlockedwallet" : "str", (string) if the wallet used for staking is unlocked
+"blocks_since_last_try" : n, (numeric) The number of blocks in the current best chain since we last tried staking
+"hash_last_try" : "str", (string) The hash of the block we last tried staking on top of
+"time_since_last_try" : n, (numeric) The UNIX timestamp of when we last tried staking
+"available_at_last_try" : n, (numeric) The amount of SIN we had available the last time we tried staking
+"number_attempts_last_try" : n, (numeric) The number of attempts we did the last time we tried staking
+"wallet" : "str", (string) Wallet being used for staking
+"staking_nethash" : n (numeric) Global stake weight
+}
+```
+``Examples:``
+```
+>  getstakinginfo
+
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getstakinginfo", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+ ```
