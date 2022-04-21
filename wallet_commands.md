@@ -1257,3 +1257,171 @@ getblocktemplate
 "height": 265308
 }
 ``` 
+### ``getchaintips``
+
+``Return information about all known tips in the block tree, including the main chain and orphaned branches. Will display chain tips since the wallet launched because only the main chain will be synced from other peers when this wallet was launched. The status "active" is the mainchain, "valid-fork" are orphan blocks, and "valid headers" are not on the blockchain.``
+```
+getchaintips
+[
+{
+"height": 244849,
+"hash": "87458fe59d6f0e7957030d1a30029dad1ef94782d747db46e5e83effa45caa4c",
+"branchlen": 0,
+"status": "active"
+},
+{
+"height": 244315,
+"hash": "7689474e181547e41c4ffc0afbbcb037b2a680bca52f93d186fe58a849cecc0f",
+"branchlen": 1,
+"status": "valid-fork"
+},
+{
+"height": 242324,
+"hash": "7da31893bf1e531b67711d7e831dd799b753503109e04ea0d96ff028acbee313",
+"branchlen": 1,
+"status": "valid-headers"
+},
+{
+"height": 240795,
+"hash": "b5ddb716d5d0a50e38e948c30d51a03e8982584a0c896a216ddf5d46c0630101",
+"branchlen": 1,
+"status": "valid-fork"
+},
+```
+### ``getchaintxstats ( nblocks blockhash )``
+
+``Compute statistics about the total number and rate of transactions in the chain, where the default "window" is the last one month.``
+
+-   "time" gives the Unix timestamp for the last block in the window
+  -   "txcount" shows the total transactions from the launch of the blockchain    
+-   "window_block_count" gives the number of blocks in the window (675 TX/day * 30 days)
+- "window_interval" gives the window length in seconds    
+-   "txrate" provides the average transactions per second (TPS) in the window
+```
+getchaintxstats
+{
+"time": 1540774144,
+"txcount": 2361329,
+"window_block_count": 20250,
+"window_tx_count": 135311,
+"window_interval": 2928224,
+"txrate": 0.046209238091075
+}
+```
+### ``getconnectioncount``
+
+``Get the peer connection count for the wallet, typically 8 for outgoing only peer connections, or up to 125 for outgoing + incoming connections.``
+```
+getconnectioncount
+
+8
+```  
+### ``getdescriptorinfo "descriptor"``
+``Analyses a descriptor.``
+``Arguments:``
+```
+1. descriptor (string, required) The descriptor.
+```
+``Result:``
+```
+{ (json object)
+"descriptor" : "str", (string) The descriptor in canonical form, without private keys
+"checksum" : "str", (string) The checksum for the input descriptor
+"isrange" : true|false, (boolean) Whether the descriptor is ranged
+"issolvable" : true|false, (boolean) Whether the descriptor is solvable
+"hasprivatekeys" : true|false (boolean) Whether the input descriptor contained at least one private key
+}
+```
+``Examples:``
+```
+> getdescriptorinfo "wpkh([d34db33f/84h/0h/0h]0279be667ef9dcbbac55a06295Ce870b07029Bfcdb2dce28d959f2815b16f81798)"
+```
+### ``getdifficulty``
+
+``Proof-of-stake difficulty gives the Proof of Stake consensus target from the most recent block (proof-of-work is not used after the genesis blocks).``
+```
+getdifficulty
+{
+"proof-of-work": 1.52587890625e-005,
+"proof-of-stake": 1671018.148846696
+}
+```
+### ``getindexinfo  (  "index_name"  )``
+``Returns the status of one or all available indices currently running in the node.``
+``Result:``
+```
+{                               (json object)
+  "name" : {                    (json object) The name of the index
+    "synced" : true|false,      (boolean) Whether the index is synced or not
+    "best_block_height" : n     (numeric) The block height to which the index is synced
+  }
+}
+```
+``Examples:``
+```
+getindexinfo
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getindexinfo", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+getindexinfo txindex
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getindexinfo", "params": [txindex]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```  
+### ``getmemoryinfo ("mode")``
+``Gives information about memory usage.``
+```
+getmemoryinfo
+{
+"locked": {
+"used": 32,
+"free": 262112,
+"total": 262144,
+"locked": 0,
+"chunks_used": 1,
+"chunks_free": 2
+}
+}
+```  
+### ``getmempoolancestors txid (verbose)``
+
+``If the given transaction is in the mempool, it returns all its in-mempool ancestors.``
+```
+getmempoolancestors 31d44105e8c71234f2c1ef3c3104c2a5d34fd47134207bb2a293dc37361debb7
+[
+"fa8354c63c87b631c70ca6edaac60055fcd2e9759a89161af4fc09532085ca10",
+"9d28428b5867c0257c30262bb23569e7ef819ff00bb7563e8c90cee53b0ae83b",
+"95bf14c60e6ec50a2a0c04e70bdc5be0f6b2bc984194b8afaf648181233d3c49",
+"c7e93a793a9e63152bc95f060af14f7741bf1fe7f4d52284815798fe5518de56"
+]
+```
+### ``getmempooldescendants txid (verbose)``
+
+``If the given transaction is in the mempool, it returns all its in-mempool descendants.``
+```
+getmempooldescendants 95bf14c60e6ec50a2a0c04e70bdc5be0f6b2bc984194b8afaf648181233d3c49
+[
+"fa8354c63c87b631c70ca6edaac60055fcd2e9759a89161af4fc09532085ca10",
+"9d28428b5867c0257c30262bb23569e7ef819ff00bb7563e8c90cee53b0ae83b",
+"c7e93a793a9e63152bc95f060af14f7741bf1fe7f4d52284815798fe5518de56",
+"31d44105e8c71234f2c1ef3c3104c2a5d34fd47134207bb2a293dc37361debb7"
+]
+```
+### ``getmempoolentry txid``
+
+``Get mempool data for a given transaction in the mempool.``
+```
+getmempoolentry "0cc99a30bc2064041ea4263835b4ed594ff500c56d6b14e4970aeee548e71389"
+{
+"size": 373,
+"fee": 0.00149600,
+"modifiedfee": 0.00149600,
+"time": 1539823932,
+"height": 221206,
+"descendantcount": 1,
+"descendantsize": 373,
+"descendantfees": 149600,
+"ancestorcount": 1,
+"ancestorsize": 373,
+"ancestorfees": 149600,
+"wtxid": "0cc99a30bc2064041ea4263835b4ed594ff500c56d6b14e4970aeee548e71389",
+"depends": [
+]
+}
+```
