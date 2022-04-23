@@ -2832,11 +2832,13 @@ listwallets
 ``Note that all wallet command-line options used when starting bitcoind will be applied to the new wallet (eg -rescan, etc).``
 
 ``Argument #1 - filename``
+
 **Type:**  ``string, required``
 ```
 The wallet directory or .dat file.
 ```
 ``Argument #2 - load_on_startup``
+
 **Type:**  ``boolean, optional, default=null``
 ```
 Save wallet name to persistent settings and load on startup. True to add wallet to startup list, false to remove, null to leave unchanged.
@@ -2882,6 +2884,7 @@ The valid  logging  categories are: net, tor, mempool, http, bench, zmq, walletd
 >     
 ```
 ``Argument #1 - include``
+
 **Type:**  ``json array, optional``
 
 ``The categories to add to debug  logging``
@@ -2892,6 +2895,7 @@ The valid  logging  categories are: net, tor, mempool, http, bench, zmq, walletd
 ]
 ```
 ``Argument #2 - exclude``
+
 **Type:**  ``json array, optional``
 
 ``The categories to remove from debug  logging``
@@ -2913,4 +2917,187 @@ The valid  logging  categories are: net, tor, mempool, http, bench, zmq, walletd
 logging "[\"all\"]" "[\"http\"]"
 
 curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "logging", "params": [["all"], ["libevent"]]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``ping``
+
+``Requests that a ping be sent to other peers, to measure ping time. Results are provided in getpeerinfo, "pingtime" and "pingwait" fields are decimal seconds (does not provide a direct result like using "ping" from a system command prompt). The ping command is handled in queue with all other commands, so it measures processing backlog, not just network ping.``
+```
+ping
+
+null
+```
+
+### ``preciousblock "blockhash"``
+
+``Prioritizes a block with an earlier time for blocks at the same height. Used in hard fork situations. See also invalidateblock. sin-qt returns "null" if successful, sind returns nothing if successful.``
+```
+preciousblock 854d57da75ba7550aebe83c1cdf539ac685d735684b7c40cfd639582abf43b
+
+null
+```
+### ``prioritisetransaction "txid" ( dummy ) fee_delta``
+
+``Accepts the transaction into mined blocks at a higher (or lower) priority``
+
+``Argument #1 -  txid``
+**Type:**  ``string, required``
+
+``The transaction id.``
+
+``Argument #2 -  dummy``
+**Type:**  ``numeric, optional``
+
+``API-Compatibility for previous API. Must be zero or null.``
+
+``DEPRECATED. For forward compatibility use named arguments and omit this parameter.``
+``Argument #3 -  fee_delta``
+**Type:**  ``numeric, required``
+
+``The fee value (in satoshis) to add (or subtract, if negative).``
+
+``Note, that this value is not a fee rate. It is a value to modify absolute fee of the TX. The fee is not actually paid, only the algorithm for selecting transactions into a block considers the transaction as it would have paid a higher (or lower) fee.``
+
+``Result``
+```
+Name : true|false
+Type : boolean
+Description : Returns true
+```
+
+``Examples``
+```
+prioritisetransaction "txid" 0.0 10000
+
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "prioritisetransaction", "params": ["txid", 0.0, 10000]}' -H 'content-type: text/plain;' http://127.0.0.1:8332
+```
+
+### `` pruneblockchain height``
+
+``Prune the blockchain up to a given block. Pruning removes spent transactions to reduce the storage size for the blockchain. Returns the last block pruned. The wallet must be launched in prune mode with disk working space reserved, at least 550 MB, here with 2 GB of working space:``
+```
+sin-qt.exe -prune=2000
+```
+``Then you can give the command``
+```
+pruneblockchain 125000
+
+125000
+```
+``Don't prune the blockchain if your wallet accepts incoming connections (over 8 peers) because your wallet needs to be able to send all the blocks to bootstrap new peers coming online.``
+
+### ``psbtbumpfee  "txid"  (  options  )``
+
+``Bumps the fee of an opt-in-RBF transaction T, replacing it with a new transaction B.``
+
+``Returns a PSBT instead of creating and signing a new transaction.``
+
+``An opt-in RBF transaction with the given  txid  must be in the wallet.``
+
+``The command will pay the additional fee by reducing change outputs or adding inputs when necessary.``
+
+``It may add a new change output if one does not already exist.``
+
+``All inputs in the original transaction will be included in the replacement transaction.``
+
+``The command will fail if the wallet or mempool contains a transaction that spends one of T’s outputs.``
+
+``By default, the new fee will be calculated automatically using the estimatesmartfee RPC.``
+
+``The user can specify a confirmation target for estimatesmartfee.``
+
+``Alternatively, the user can specify a fee rate in sat/vB for the new transaction.``
+
+``At a minimum, the new fee rate must be high enough to pay an additional new relay fee (incrementalfee returned by getnetworkinfo) to enter the node’s mempool.``
+
+* `` WARNING: before version 0.21, fee_rate was in BTC/kvB. As of 0.21, fee_rate is in sat/vB. `` 
+
+``Argument #1 -  txid``
+**Type:**  ``string, required``
+
+``The  txid  to be bumped``
+
+``Argument #2 -  options``
+**Type:**  ``json object, optional``
+```
+{
+  "conf_target": n,          (numeric, optional, default=wallet -txconfirmtarget) Confirmation target in blocks
+
+  "fee_rate": amount,        (numeric or string, optional, default=not set, fall back to wallet fee estimation)
+                             Specify a fee rate in sat/vB instead of relying on the built-in fee estimator.
+                             Must be at least 1.000 sat/vB higher than the current transaction fee rate.
+                             WARNING: before version 0.21, fee_rate was in BTC/kvB. As of 0.21, fee_rate is in sat/vB.
+
+  "replaceable": bool,       (boolean, optional, default=true) Whether the new transaction should still be
+                             marked bip-125 replaceable. If true, the sequence numbers in the transaction will
+                             be left unchanged from the original. If false, any input sequence numbers in the
+                             original transaction that were less than 0xfffffffe will be increased to 0xfffffffe
+                             so the new transaction will not be explicitly bip-125 replaceable (though it may
+                             still be replaceable in practice, for example if it has unconfirmed ancestors which
+                             are replaceable).
+
+  "estimate_mode": "str",    (string, optional, default=unset) The fee estimate mode, must be one of (case insensitive):
+                             "unset"
+                             "economical"
+                             "conservative"
+}
+```
+``Result``
+```
+{                    (json object)
+  "psbt" : "str",    (string) The base64-encoded unsigned PSBT of the new transaction.
+  "origfee" : n,     (numeric) The fee of the replaced transaction.
+  "fee" : n,         (numeric) The fee of the new transaction.
+  "errors" : [       (json array) Errors encountered during processing (may be empty).
+    "str",           (string)
+    ...
+  ]
+}
+```
+``Examples``
+``Bump the fee, get the new transaction’spsbt:``
+```
+psbtbumpfee <txid>
+```
+
+### ``reconsiderblock "blockhash"``
+
+``Hidden command. Removes invalidity status of a block and its descendants, used for code testing or in manual blockchain reorganization. This command can reverse the effects of invalidateblock. Returns "null" if successful:``
+```
+reconsiderblock 263f7ab042135cb0e5479afd8385a237f8eb44b86135d29b34eb0fa82cc815f
+
+null
+```
+ 
+### ``removeprunedfunds "txid"``
+
+``Deletes the specified transaction from the wallet. Meant for use with pruned wallets and as a companion to importprunedfunds. This will affect wallet balances. sin-cli returns "null".``
+
+```
+removeprunedfunds "535e2bf90fda10c8c8186c4c73ac2861cb19312507b9e4552e78a6148030f19f"
+
+null
+```
+
+### ``rescanblockchain ("start_height") ("stop_height")``
+
+``Rescan the local blockchain for wallet transactions. An optional start height and stop height can be used, or by default scan the entire blockchain. This command will scan the blockchain for transactions of your wallet, and can be used if the wallet balance doesn't appear to be correct after a wallet restore or adding private keys. Returns the start and top height scanned.``
+```
+rescanblockchain 100000 200000
+
+{
+
+"start_height": 100000,
+
+"stop_height": 200000
+
+}
+```
+  
+### ``savemempool``
+
+``Writes the memory pool to disk in the mempool.dat file. sin-qt returns "null," sind has no response.``
+```
+savemempool
+
+null
 ```
