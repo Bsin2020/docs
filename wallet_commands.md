@@ -2438,3 +2438,479 @@ sequence, (numeric, required) The sequence number
 ```
 infinitynodeburnfund_external "[{\"txid\":\"myid\",\"vout\":0}]" nodeowneraddress publickey nodeip nodeid
 ```
+### ``joinpsbts ["psbt",...]``
+  ``Joins multiple distinct PSBTs with different inputs and outputs into one PSBT with inputs and outputs from all of the PSBTs``
+``No input in any of the PSBTs can be in more than one of the PSBTs.``
+
+``Arguments:``
+```
+1. txs (json array, required) The base64 strings of partially signed transactions
+[
+"psbt", (string, required) A base64 string of a PSBT
+...
+]
+``` 
+
+``Result:``
+```
+"str" (string) The base64-encoded partially signed transaction
+```
+  ``Examples:``
+```
+>  joinpsbts "psbt"
+```
+### ``keypoolrefill ( newsize )``
+
+``Refills the key pool with new private keys, with a default size of 100. The normal size of the keypool is 1,000 and the wallet opportunistically fills the keypool as addresses are used, so this command should use a 1,100 size, etc., to be meaningful. The wallet must be unlocked. sin-qt returns "null", sind returns nothing.``
+```
+keypoolrefill 1100
+null
+```
+### ``listaddressgroupings``
+
+``Lists the receiving addresses for the wallet, and their balance. Some addresses may show a zero balance.``
+```
+listaddressgroupings
+[
+[
+[
+"SWfzQsi4rFA6u3zCguC9t3wYjd6Sm693g7",
+0.00000000
+],
+[
+"SNf6fad5wLyeMT5e3hYy4qWnxcbV6GenWK",
+0.00000000
+],
+[
+"SUytYGp47McSy8N6GzycV2Wt92d8JqHWCy",
+0.03160855,
+"MyAccount 1"
+],
+]
+]
+```  
+### ``listbanned``
+
+``List all peer IP addresses that have been banned.``
+```
+listbanned
+[
+{
+"address": "79.137.70.15/32",
+"banned_until": 1554322856,
+"ban_created": 1522786856,
+"ban_reason": "manually added"
+}
+]
+```  
+### ``listdescriptors``
+
+``List descriptors imported into a descriptor-enabled wallet.``
+
+``Result:``
+```
+{ (json object)
+"wallet_name" : "str", (string) Name of wallet this operation was performed on
+"descriptors" : [ (json array) Array of descriptor objects
+{ (json object)
+"desc" : "str", (string) Descriptor string representation
+"timestamp" : n, (numeric) The creation time of the descriptor
+"active" : true|false, (boolean) Activeness flag
+"internal" : true|false, (boolean, optional) Whether this is an internal or external descriptor; defined only for active descriptors
+"range" : [ (json array, optional) Defined only for ranged descriptors
+n, (numeric) Range start inclusive
+n (numeric) Range end inclusive
+],
+"next" : n (numeric, optional) The next index to generate addresses from; defined only for ranged descriptors
+},
+
+...
+]
+}
+```
+``Examples:``
+```
+> listdescriptors
+
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "listdescriptors", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``listlabels  (  "purpose"  )``
+
+``Returns the list of all labels, or labels that are assigned to addresses with a specific purpose.``
+
+``Argument #1 - purpose``
+**Type:**  ``string, optional``
+
+``Address purpose to list labels for (‘send’,’receive’). An empty string is the same as not providing this argument.``
+
+``Result``
+```
+[           (json array)
+  "str",    (string) Label name
+  ...
+]
+```
+``Examples``
+```
+List all labels:
+> listlabels
+
+List labels that have receiving addresses:
+> listlabels receive
+
+List labels that have sending addresses:
+> listlabels send
+
+As a JSON-RPC call:
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "listlabels", "params": [receive]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``listlockunspent``
+
+``Returns a list of temporarily locked (unspendable) outputs. See also the lockunspent and unlock commands. If the wallet is restarted all the locks are cleared.``
+```
+listlockunspent
+
+[
+{
+"txid": "9fc384b55230ca1899dd1acf081033ebf57ae0335abf692c4f8a6336befc2f6",
+"vout": 1
+}
+]
+```  
+### ``listreceivedbyaddress ( minconf include_empty include_watchonly)``
+
+``List balances by receiving address.``
+```
+listreceivedbyaddress
+
+[
+{
+"address": "Sry5Ygp57Rcsy7N5gzYc32W49Ad9J2HjC5",
+"account": "First,
+"amount": 12.29616322,
+"confirmations": 12946,
+"label": "First",
+"txids": [
+"6478fc4d0ef0081e902f5f90A2483c82195ff18b7c38dcb9f2a388hdba94ae08",
+"5346419fac6dc35cag8aVc3172caeef59bD4cb50c8V773dc2c5e362F6bA20505",
+"6d8481be243fard24e69de6e49Z8442259b65fa9wed404be2fDb7w7free60565",
+"72w0016116v5b4fb5527110C73519fk868u22977f670M04b46641w11bpe331B8",
+"d303S6b3dAdc32479e5928eatdw6e45d5p64Q4686d23a4j7b4bB4ed1b9f81LeP"
+]
+},
+{
+"address": "SH38kkF694yqy8a9enxQd3m3ekb87Kf7",
+"account": "",
+"amount": 0.60927503,
+"confirmations": 55329,
+"label": "",
+"txids": [
+"a93f5fa60bd753914fb72bf5bce8042cb66272c09495afcb7638397bd40abff94"
+]
+},
+]
+```
+### ``listreceivedbyaddress  (  minconf  include_empty  include_watchonly  "address_filter"  )``
+
+``List balances by receiving address.``
+
+``Argument #1 - minconf``
+**Type:**  ``numeric, optional, default=1``
+
+``The minimum number of confirmations before payments are included.
+
+``Argument #2 - include_empty``
+**Type:**  ``boolean, optional, default=false``
+
+``Whether to include addresses that haven’t received any payments.``
+
+``Argument #3 - include_watchonly``
+**Type:**  ``boolean, optional, default=true for watch-only wallets, otherwise false``
+
+``Whether to include watch-only addresses (see ‘importaddress’)``
+
+``Argument #4 - address_filter``
+**Type:**  string, optional
+
+``If present, only return information on this address.``
+
+``Result``
+```
+[                                        (json array)
+  {                                      (json object)
+    "involvesWatchonly" : true|false,    (boolean) Only returns true if imported addresses were involved in transaction
+    "address" : "str",                   (string) The receiving address
+    "amount" : n,                        (numeric) The total amount in BTC received by the address
+    "confirmations" : n,                 (numeric) The number of confirmations of the most recent transaction included
+    "label" : "str",                     (string) The label of the receiving address. The default label is ""
+    "txids" : [                          (json array)
+      "hex",                             (string) The ids of transactions received with the address
+      ...
+    ]
+  },
+  ...
+]
+```
+``Examples``
+```
+>  listreceivedbyaddress
+> bitcoin-cli listreceivedbyaddress 6 true
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "listreceivedbyaddress", "params": [6, true, true]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "listreceivedbyaddress", "params": [6, true, true, "bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``listsinceblock ( "blockhash" target_confirmations include_watchonly include_removed )``
+
+``List all the transactions for your wallet since the given blockhash, or a list all the transactions since block 1 if blockhash is not given. The transactions below show a send and a receive transaction.``
+```
+listsinceblock 9957c2abcb56dead1cc7390acd50f52703fcd010aa5fd4a7c3ed7facb38cd287
+
+{
+"transactions": [
+{
+"account": "",
+"address": "SX4c59CWVszq48kre57tmi4sjd2e59SrX5",
+"category": "send",
+"amount": -5.23000000,
+"label": "",
+"vout": 1,
+"fee": -0.00090400,
+"confirmations": 4,
+"blockhash": "4a1582348a59781cabfdd23551057a75faee481035c5dae395a5b522acff8db",
+"blockindex": 2,
+"blocktime": 1547693528,
+"txid": "c3da0be5b78ev626e6b8fb63ff366sa872d545a8c132267829c185f432acd938",
+"walletconflicts": [
+],
+"time": 1547693438,
+"timereceived": 1547693438,
+"bip125-replaceable": "no",
+"abandoned": false
+},
+{
+"account": "",
+"address": "Sv5xGkDw89dpBAxn67k3ySawUtqna3fA3",
+"category": "receive",
+"amount": 4.50000000,
+"label": "",
+"vout": 0,
+"confirmations": 2,
+"blockhash": "8a5f521afb1437831aeffc4e5418521e9b37b029889a1ccdea249e23df6c35a",
+"blockindex": 2,
+"blocktime": 1547693720,
+"txid": "3a2df47bc22fea2e3aae416fe932cbe28c833e97b44f6dc03d903268a8bb2c2",
+"walletconflicts": [
+],
+"time": 1547693638,
+"timereceived": 1547693638,
+"bip125-replaceable": "no"
+}
+],
+"removed": [
+],
+"lastblock": "835ca632a5bba30a0c836dfa497a43e5316acdf8b8437e42bcfa7e3554a61af"
+}
+```  
+### ``listtransactions ( "label" count skip include_watchonly )``
+
+``Returns up to 'count' most recent transactions for your wallet (default = 10), with various options. ``
+```
+listtransactions
+
+[
+{
+"account": "",
+"address": "Sd5tX39X2bjL9mvF2q5jkuD3Kre2ky79P",
+"category": "receive",
+"amount": 8.50000000,
+"label": "",
+"vout": 1,
+"confirmations": 3532,
+"blockhash": "0bc940fbfc7f66af8c4e11f9d3325a5ec42c69a2ecbd1d870338baeccf3e95d",
+"blockindex": 2,
+"blocktime": 1575639472,
+"txid": "95cf7a43c6ea87348fe1f8b365fcbed5579ea4422b16cbad0377ef6ee2f99af",
+"walletconflicts": [
+],
+"time": 1575639440,
+"timereceived": 1575639472,
+"bip125-replaceable": "no"
+},
+{
+"account": "",
+"address": "SxW4S91mx3HM3qMB446ovoeT3VC341nr9",
+"category": "send",
+"amount": -1.58540000,
+"label": "",
+"vout": 0,
+"fee": -0.02003200,
+"confirmations": 1680,
+"blockhash": "6c6cbeaa5b480a39ad92d484bd3bcae4aa334b923b614f4b897ed736ad9e21f",
+"blockindex": 2,
+"blocktime": 1542934848,
+"txid": "55dc28cbff0ff7a94e5cb51a928703911baac60892bc6dea575bbdb9b3302673",
+"walletconflicts": [
+],
+"time": 1542934828,
+"timereceived": 1542934828,
+"bip125-replaceable": "no",
+"abandoned": false
+},
+<snip 8 more transactions>
+]
+```
+
+### ``listunspent ( minconf maxconf ["addresses",...] [include_unsafe] [query_options])``
+
+``Returns array of unspent transaction outputs, which can be sorted by number of confirmations or for a specific address.``
+```
+listunspent
+
+[
+{
+"txid": "d36ba8beb38c7118b3bc6e8c90d54b58d7d53ef603c49039df2abb5d160ea",
+"vout": 1,
+"address": "SU5nyP844LKcmpk244jmd06CEep828h",
+"account": "",
+"scriptPubKey": "76a914bd3b1563bedea856a7ca5df8aac54a0ab56f2985ad",
+"amount": 1.10000000,
+"confirmations": 2632,
+"spendable": true,
+"solvable": true,
+"safe": true
+},
+{
+"txid": "2c55ecdb59be333ad04df5a97ca2f536ed16351de344db94a326f65f7560c54",
+"vout": 10,
+"address": "Sx9N8Lz26NduP4e39gpJ33EYd22Ms9vsp",
+"account": "",
+"scriptPubKey": "76a914986c8cbd67dbb55dcaf261be37a528c6868fee0723s",
+"amount": 2.40000000,
+"confirmations": 15843,
+"spendable": true,
+"solvable": true,
+"safe": true
+},
+<snip>
+]
+```
+### ``listwalletdir``
+
+``Returns a list of wallets in the wallet directory.``
+
+``Result``
+```
+{                        (json object)
+  "wallets" : [          (json array)
+    {                    (json object)
+      "name" : "str"     (string) The wallet name
+    },
+    ...
+  ]
+}
+```
+``Examples``
+```
+listwalletdir
+
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "listwalletdir", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+
+### ``listwallets``
+
+``It gives the currently loaded wallet.dat file, usually "wallet.dat" unless you can load a different file with "Restore Wallet".``
+```
+listwallets
+
+[
+"wallet1132019.dat"
+]
+```  
+### ``loadwallet  "filename"  (  load_on_startup  )``
+
+``Loads a wallet from a wallet file or directory.``
+``Note that all wallet command-line options used when starting bitcoind will be applied to the new wallet (eg -rescan, etc).``
+
+``Argument #1 - filename``
+**Type:**  ``string, required``
+```
+The wallet directory or .dat file.
+```
+``Argument #2 - load_on_startup``
+**Type:**  ``boolean, optional, default=null``
+```
+Save wallet name to persistent settings and load on startup. True to add wallet to startup list, false to remove, null to leave unchanged.
+```
+``Result``
+```
+{                       (json object)
+  "name" : "str",       (string) The wallet name if loaded successfully.
+  "warning" : "str"     (string) Warning message if wallet was not loaded cleanly.
+}
+```
+``Examples``
+```
+loadwallet "test.dat"
+
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "loadwallet", "params": ["test.dat"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``lockunspent unlock ([{"txid":"txid","vout":n},...])``
+
+``Updates list of temporarily unspendable outputs. Temporarily lock (unlock=false as shown below) or unlock (unlock=true) the specified transaction outputs. If no transactions are specified when unlocking, all currently locked transactions are unlocked.``
+
+``Automatic coin selection will not choose a locked transaction output when spending SIN.``
+
+``Locks are stored in memory only. Therefore, wallets launch with zero locked outputs, and the locked output list is always cleared (by virtue of process exit) when a wallet stops or fails. Also, see the listunspent call.``
+```
+lockunspent false "[{\"txid\":\"9fc384b55230ca1899dd1acf081033ebf57ae0335abf692c4f8a6336befc2f6\",\"vout\":1}]"
+true
+```
+  
+
+### ``logging  (  ["include_category",...]  ["exclude_category",...]  )``
+
+``Gets and sets the  logging  configuration.
+When called without an argument, returns the list of categories with status that are currently being debug logged or not.
+When called with arguments, adds or removes categories from debug  logging  and return the lists above.
+The arguments are evaluated in order “include”, “exclude”.
+If an item is both included and excluded, it will thus end up being excluded.
+The valid  logging  categories are: net, tor, mempool, http, bench, zmq, walletdb, rpc, estimatefee, addrman, selectcoins, reindex, cmpctblock, rand, prune, proxy, mempoolrej, libevent, coindb, qt, leveldb, validation In addition, the following are available as category names with special meanings:``
+```
+> -   “all”, “1” : represent all  logging  categories.
+>     
+> -   “none”, “0” : even if other  logging  categories are specified, ignore all of them.
+>     
+```
+``Argument #1 - include``
+**Type:**  ``json array, optional``
+
+``The categories to add to debug  logging``
+```
+[
+  "include_category",    (string) the valid logging category
+  ...
+]
+```
+``Argument #2 - exclude``
+**Type:**  ``json array, optional``
+
+``The categories to remove from debug  logging``
+```
+[
+  "exclude_category",    (string) the valid logging category
+  ...
+]
+```
+``Result``
+```
+{                             (json object) keys are the logging categories, and values indicates its status
+  "category" : true|false,    (boolean) if being debug logged or not. false:inactive, true:active
+  ...
+}
+```
+``Examples``
+````
+logging "[\"all\"]" "[\"http\"]"
+
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "logging", "params": [["all"], ["libevent"]]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
