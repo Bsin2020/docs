@@ -2913,7 +2913,7 @@ The valid  logging  categories are: net, tor, mempool, http, bench, zmq, walletd
 }
 ```
 ``Examples``
-````
+```
 logging "[\"all\"]" "[\"http\"]"
 
 curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "logging", "params": [["all"], ["libevent"]]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
@@ -2940,17 +2940,20 @@ null
 ``Accepts the transaction into mined blocks at a higher (or lower) priority``
 
 ``Argument #1 -  txid``
+
 **Type:**  ``string, required``
 
 ``The transaction id.``
 
 ``Argument #2 -  dummy``
+
 **Type:**  ``numeric, optional``
 
 ``API-Compatibility for previous API. Must be zero or null.``
 
 ``DEPRECATED. For forward compatibility use named arguments and omit this parameter.``
 ``Argument #3 -  fee_delta``
+
 **Type:**  ``numeric, required``
 
 ``The fee value (in satoshis) to add (or subtract, if negative).``
@@ -3012,11 +3015,13 @@ pruneblockchain 125000
 * `` WARNING: before version 0.21, fee_rate was in BTC/kvB. As of 0.21, fee_rate is in sat/vB. `` 
 
 ``Argument #1 -  txid``
+
 **Type:**  ``string, required``
 
 ``The  txid  to be bumped``
 
 ``Argument #2 -  options``
+
 **Type:**  ``json object, optional``
 ```
 {
