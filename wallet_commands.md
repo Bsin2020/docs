@@ -3679,3 +3679,340 @@ true
 
 getwalletinfo would show "paytxfee": 0.01000000,
 ```
+### ``setwalletflag  "flag"  (  value  )``
+
+``Change the state of the given wallet  flag  for a wallet.``
+
+``Argument #1 -  flag``
+
+**Type:**  ``string, required``
+
+``The name of the  flag  to change. Current available flags: avoid_reuse``
+
+``Argument #2 -  value``
+
+**Type:**  ``boolean, optional, default=true``
+
+``The new state.``
+
+``Result``
+```
+{                               (json object)
+  "flag_name" : "str",          (string) The name of the flag that was modified
+  "flag_state" : true|false,    (boolean) The new state of the flag
+  "warnings" : "str"            (string) Any warnings associated with the change
+}
+```
+``Examples``
+```
+setwalletflag avoid_reuse
+```
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "setwalletflag", "params": ["avoid_reuse"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+
+### ``signmessage "address" "message"``
+
+``Sign a message using the private key of an address, the wallet must be unlocked. Returns a base 64 signature hash.``
+```
+signmessage "Sg3WDvb1Ey2oqAW2EpM5evdv3Ufnvre3n" "message"
+
+IJTWLjS9oma8M+EsXVnESR12jONwjMky4YimE0cQnvtAcQyim3lJPS58Q6IADifR3I10LyMctNAe+2Kc274AqLu=
+```
+``Use verifymessage to verify a message.``
+
+### ``signmessagewithprivkey "privkey" "message"``
+
+``Sign a message with the private key of an address, the wallet must be unlocked. Returns a base 64 signature hash.``
+```
+signmessagewithprivkey "cSxP62VDq527SWRddkX5D49mNekwNz9nexaikk55RG5X2AXEFvq" "hello world"
+```
+```
+signmessagewithprivkey(Ö)
+
+H3SBMeQUvo82A63wegSNT582Puziba54sCGt6notPb3xHm3WwM2OuIwV4E9Ya38TMCqe2aV7rmuFrc9A2Qb+t3A=
+```
+  ``Use verifymessage to verify a message.``
+
+### ``signrawtransaction "hexstring" ( [{"txid":"id","vout":n,"scriptPubKey":"hex","redeemScript":"hex"},...] ["privatekey1",...] sighashtype )``
+
+``Signs a raw transaction in preparation for sending to the network. The wallet must be unlocked. See createrawtransaction and sendrawtransaction.``
+```
+signrawtransaction 020000001d637cf207c6418fb6220cfcb2b141ba5d230f0ba0a43c68b358aff9a8a6000000000fffffff0509e5f50480000001983a952d5fb15a70832ffdc3cadd3dc7749a49bf053ed6defacd09ef6060000000187aa814bd4ae4167bebbf56bb7c51c5eabf35d50a5c6e7f33ad0000000
+
+{
+
+"hex": "020000003d6b5df207d94bafb4520adca3871fdaf397afd20f60f0a39c6fc353ae18000000006b5734040229999abc42d6d1e095b07b4538cb8a1b4ea2c42852feffcfb36dc8494b5238f24402100514aab22c8be9458056bb14f755adae12adf15721eb0b6cd314230237c26707210dd486ffc6e7ea92f2b30e428c1f3726e3dfc09418bb815f64bd32d7d5836f89fffffff0301e1d505420000002976b414d4fcc597395462ec3fdab4d6b49bc9af53fed3d87add09fe60400000001986a824dcead1313bfdde586b8bc3cd2ace54d4fa4b6f6887ad0000000",
+
+"complete": true
+
+}
+```
+### ``stop``
+
+``Shuts down and exits the wallet. No return value - the wallet exits.``
+```
+stop
+```
+  
+### ``submitblock "hexdata" ( "dummy" )``
+
+``Attempts to submit new block to network. See [https://en.bitcoin.it/wiki/BIP_0022](https://en.bitcoin.it/wiki/BIP_0022) for full specification. Use getblocktemplate to construct a block along with the block header and transactions.``
+
+``Arguments``
+```
+1.  "hexdata" (string, required) the hex-encoded block data to submit
+2.  "dummy" (optional) dummy value, for compatibility with BIP22. This value is ignored.
+  ```
+    
+``Example ``
+```
+submitblock "mydata"
+```
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "submitblock", "params": ["mydata"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``submitheader  "hexdata"``
+
+``Decode the given  hexdata  as a header and submit it as a candidate chain tip if valid.``
+
+``Throws when the header is invalid.``
+
+``Argument #1 -  hexdata``
+
+**Type:**  ``string, required``
+
+``the hex-encoded block header data``
+
+``Result``
+```
+Name : null
+Type : json null
+Description : None
+```
+``Examples``
+```
+submitheader "aabbcc"
+```
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "submitheader", "params": ["aabbcc"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+
+### ``testmempoolaccept  ["rawtx",...]  (  maxfeerate  )``
+
+``Returns result of mempool acceptance tests indicating if raw transaction (serialized, hex-encoded) would be accepted by mempool.``
+
+``This checks if the transaction violates the consensus or policy rules.``
+
+``See sendrawtransaction call.``
+
+``Argument #1 -  rawtxs``
+
+**Type:**  ``json array, required``
+
+``An array of hex strings of raw transactions.``
+
+``Length must be one for now.``
+```
+[
+  "rawtx",    (string)
+  ...
+]
+```
+``Argument #2 -  maxfeerate``adline")
+
+**Type:**  ``numeric or string, optional, default=0.10``
+
+``Reject transactions whose fee rate is higher than the specified value, expressed in SIN/kB``
+
+``Result``
+```
+[                               (json array) The result of the mempool acceptance test for each raw transaction in the input array.
+                                Length is exactly one for now.
+  {                             (json object)
+    "txid" : "hex",             (string) The transaction hash in hex
+    "allowed" : true|false,     (boolean) If the mempool allows this tx to be inserted
+    "vsize" : n,                (numeric) Virtual transaction size as defined in BIP 141. This is different from actual serialized size for witness transactions as witness data is discounted (only present when 'allowed' is true)
+    "fees" : {                  (json object) Transaction fees (only present if 'allowed' is true)
+      "base" : n                (numeric) transaction fee in SIN
+    },
+    "reject-reason" : "str"     (string) Rejection string (only present when 'allowed' is false)
+  },
+  ...
+]
+```
+`` Examples``
+
+``Create a transaction:``
+```
+createrawtransaction "[{\"txid\" : \"mytxid\",\"vout\":0}]" "{\"myaddress\":0.01}"
+```
+``Sign the transaction, and get back the hex:``
+```
+signrawtransactionwithwallet "myhex"
+```
+``Test acceptance of the transaction (signed hex):``
+```
+testmempoolaccept '["signedhex"]'
+```
+``As a JSON-RPC call:``
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "testmempoolaccept", "params": [["signedhex"]]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+  ```
+
+### ``unloadwallet  (  "wallet_name"  load_on_startup  )``
+
+``Unloads the wallet referenced by the request endpoint otherwise unloads the wallet specified in the argument.``
+
+``Specifying the wallet name on a wallet endpoint is invalid.``
+
+``Argument #1 -  wallet_name``
+
+**Type:**  ``string, optional, default=the wallet name from the RPC endpoint``
+
+``The name of the wallet to unload. Must be provided in the RPC endpoint or this parameter (but not both).``
+
+``Argument #2 -  load_on_startup``
+
+**Type:**  ``boolean, optional, default=null``
+
+``Save wallet name to persistent settings and load on startup. True to add wallet to startup list, false to remove, null to leave unchanged.``
+
+``Result``
+```
+{                       (json object)
+  "warning" : "str"     (string) Warning message if wallet was not unloaded cleanly.
+}
+```
+``Examples``
+```
+unloadwallet wallet_name
+```
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "unloadwallet", "params": [wallet_name]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``upgradewallet  (  version  )``
+
+``Upgrade the wallet. Upgrades to the latest  version  if no version number is specified.``
+
+``New keys may be generated and a new wallet backup will need to be made.``
+
+``Argument #1 -  version``
+
+**Type:**  ``numeric, optional, default=169900``
+
+``The  version  number to upgrade to. Default is the latest wallet version.``
+
+``Result``
+```
+{                            (json object)
+  "wallet_name" : "str",     (string) Name of wallet this operation was performed on
+  "previous_version" : n,    (numeric) Version of wallet before this operation
+  "current_version" : n,     (numeric) Version of wallet after this operation
+  "result" : "str",          (string, optional) Description of result, if no error
+  "error" : "str"            (string, optional) Error message (if there is one)
+}
+```
+``Examples``
+```
+upgradewallet 169900
+```
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "upgradewallet", "params": [169900]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``uptime``
+
+``Gives the wallet uptime (since starting) in seconds.``
+```
+uptime
+
+12592
+```
+### ``utxoupdatepsbt  "psbt"  (  ["",{"desc":"str","range":n  or  [n,n]},...]  )``
+
+``Updates all segwit inputs and outputs in a PSBT with data from output descriptors, the UTXO set or the mempool.``
+
+``Argument #1 - psbt``
+
+**Type:**  ``string, required``
+
+``A base64 string of a PSBT``
+
+``Argument #2 - descriptors``
+
+**Type:**  ``json array, optional``
+
+``An array of either strings or objects``
+```
+[
+  "",                       (string) An output descriptor
+  {                         (json object) An object with an output descriptor and extra information
+    "desc": "str",          (string, required) An output descriptor
+    "range": n or [n,n],    (numeric or array, optional, default=1000) Up to what index HD chains should be explored (either end or [begin,end])
+  },
+  ...
+]
+```
+``Result``
+```
+Name : str
+Type : string
+Description : The base64-encoded partially signed transaction with inputs updated
+```
+
+``Examples``
+```
+utxoupdatepsbt "psbt"
+```
+
+### ``validateaddress "address"``
+
+``Return detailed information about an address, here the multisig address from addmultisigaddress:``
+```
+validateaddress SKa7c52cX97eK4vdk35jV442p3j59hk3R
+
+{
+
+"isvalid": true,
+
+"address": "SKa7c52cX97eK4vdk35jV442p3j59hk3R",
+
+"scriptPubKey": "a813bcd644a82f494ae0ef442a5253c0ebde7b20b2f29",
+
+"ismine": true,
+"iswatchonly": false,
+"isscript": true,
+"iswitness": false,
+"script": "multisig",
+"hex": "52460396bc49812bad50949fbc0bbd44e95bf32a5695519b3ff267a5d93cba3bd169b2393cd4864da4c2786dd3322fcfcb239c3db185ef33fa14836b8fecf36c68bb84ddac92f2",
+"sigsrequired": 2,
+"pubkeys": [
+"03a64c40c2d385306afcc08fd56b35bfe38626df29b3ef6a935bbf8523afb1fa5",
+"03bf3874f4c496cb472ccb2c9b3fce6f2a6bc09ff1b826cba33f2ac83ab2495fe"
+],
+"addresses": [
+" Sgw5Ds4Py6J2oBX3EKP3kyde2UpnWn7eV",
+" SK3bx79fzkei5XF7h2q7wB4s6MK99u29x"
+],
+"account": ""
+}
+```
+
+### ``verifychain ( checklevel nblocks )``
+
+``Verifies the blockchain database for a default 6 blocks, returns true or false.``
+```
+verifychain
+
+true
+```
+  
+### ``verifymessage "address" "signature" "message"``
+
+``Verify a signed message. Returns true or false.``
+```
+verifymessage "Sg3WDvb1Ey2oqAW2EpM5evdv3Ufnvre3n" "IJTWLjS9oma8M+EsXVnESR12jONwjMky4YimE0cQnvtAcQyim3lJPS58Q6IADifR3I10LyMctNAe+2Kc274AqLu=" "hello world"
+
+true
+```  
+``See signmessage for creating a message signature.``
