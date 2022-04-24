@@ -3558,3 +3558,124 @@ listbanned
 }
 ]
 ```  
+### ``sethdseed  (  newkeypool  "seed"  )``
+
+``Set or generate a new HD wallet  seed. Non-HD wallets will not be upgraded to being a HD wallet. Wallets that are already HD will have a new HD seed set so that new keys added to the keypool will be derived from this new seed.``
+
+``Note that you will need to MAKE A NEW BACKUP of your wallet after setting the HD wallet  seed.``
+
+``Requires wallet passphrase to be set with walletpassphrase call if wallet is encrypted.``
+
+``Argument #1 -  newkeypool``
+
+**Type:**  ``boolean, optional, default=true``
+
+``Whether to flush old unused addresses, including change addresses, from the keypool and regenerate it.``
+
+``If true, the next address from getnewaddress and change address from getrawchangeaddress will be from this new  seed. If false, addresses (including change addresses if the wallet already had HD Chain Split enabled) from the existing keypool will be used until it has been depleted.``
+
+``Argument #2 -  seed``
+
+**Type:**  ``string, optional, default=random  seed``
+
+``The WIF private key to use as the new HD  seed.``
+
+``The  seed  value can be retrieved using the dumpwallet command. It is the private key marked hdseed=1``
+
+``Result``
+```
+null    (json null)
+```
+``Examples``
+```
+sethdseed
+```
+```
+sethdseed false
+```
+```
+sethdseed true "wifkey"
+```
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "sethdseed", "params": [true, "wifkey"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``setlabel  "address"  "label"``
+
+``Sets the  label  associated with the given  address.``
+
+``Argument #1 -  address``
+
+**Type:**  ``string, required``
+
+``The bitcoin  address  to be associated with a  label.``
+
+``Argument #2 -  label``
+
+**Type:**  ``string, required``
+
+``The  label  to assign to the  address.``
+
+``Result``
+```
+null    (json null)
+```
+``Examples``
+```
+setlabel "Sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl" "tabby"
+```
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "setlabel", "params": ["Sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl", "tabby"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```  
+
+### ``setnetworkactive state true|false``
+
+``Use to enable/disable peer network connections. Returns the network connection status. To disable the network connections:``
+```
+setnetworkactive false
+
+false
+```
+### ``setstakingstatus status ( "wallet" )``
+
+``Sets staking status to either true or false. If no wallet is specified, staking is enabled for the wallet which executed the RPC call.``
+
+``If a wallet is specified, staking is enabled for that wallet and that wallet only. Automatically disables staking for the other wallet(s).``
+
+``Arguments:``
+```
+1. status (boolean, required) The status for staking, either true or false.
+2. wallet (string, optional) The name of the wallet to enable staking for.
+```
+
+``Result:``
+```
+{ (json object)
+
+"wallet" : "str", (string) Wallet chosen
+
+"status" : true|false (boolean) Applied status
+
+}
+```
+  
+``Examples:``
+```
+> setstakingstatus true
+```
+```
+> setstakingstatus true "mywallet"
+```
+```
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "setstakingstatus", "params": [true]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+
+### ``settxfee amount``
+
+``Set the transaction fee per kilobyte of the transaction message. Overwrites the paytxfee parameter seen in getwalletinfo. The default minimum fee per 1,000 bytes is 0.004 SIN. Returns true if successful.``
+```
+settxfee 0.01
+
+true
+
+getwalletinfo would show "paytxfee": 0.01000000,
+```
