@@ -3106,3 +3106,292 @@ savemempool
 
 null
 ```
+### ``scantxoutset "action" ( [scanobjects,...] )``
+
+``EXPERIMENTAL warning: this call may be removed or changed in future releases.``
+
+``Scans the unspent transaction  output set for entries that match certain output descriptors.``
+
+``Examples of output descriptors are:``
+```
+> addr(<address>) Outputs whose scriptPubKey corresponds to the specified address (does not include P2PK) raw(<hex script>) Outputs whose scriptPubKey equals the specified hex scripts combo(<pubkey>) P2PK, P2PKH, P2WPKH, and P2SH-P2WPKH outputs for the given pubkey pkh(<pubkey>) P2PKH outputs for the given pubkey sh(multi(<n>,<pubkey>,<pubkey>,…)) P2SH-multisig outputs for the given threshold and pubkeys
+```
+``In the above, <pubkey> either refers to a fixed public key in hexadecimal notation, or to an xpub/xprv optionally followed by one or more path elements separated by “/”, and optionally ending in “/*” (unhardened), or “/*’” or “/*h” (hardened) to specify all unhardened or hardened child keys.``
+
+``In the latter case, a range needs to be specified by below if different from 1000.``
+
+``For more information on output descriptors, see the documentation in the doc/descriptors.md file.``
+
+``Argument #1 -  action``
+**Type:**  ``string, required``
+
+``The  action  to execute``
+
+``“start” for starting a scan “abort” for aborting the current scan (returns true when abort was successful) “status” for progress report (in %) of the current scan``
+
+``Argument #2 -  scanobjects``
+**Type:**  ``json array``
+
+``Array of scan objects. Required for “start”  action``
+
+``Every scan object is either a string descriptor or an object:``
+```
+[
+  "descriptor",             (string) An output descriptor
+  {                         (json object) An object with output descriptor and metadata
+    "desc": "str",          (string, required) An output descriptor
+    "range": n or [n,n],    (numeric or array, optional, default=1000) The range of HD chain indexes to explore (either end or [begin,end])
+  },
+  ...
+]
+```
+``Result``
+```
+{                                (json object)
+  "success" : true|false,        (boolean) Whether the scan was completed
+  "txouts" : n,                  (numeric) The number of unspent transaction outputs scanned
+  "height" : n,                  (numeric) The current block height (index)
+  "bestblock" : "hex",           (string) The hash of the block at the tip of the chain
+  "unspents" : [                 (json array)
+    {                            (json object)
+      "txid" : "hex",            (string) The transaction id
+      "vout" : n,                (numeric) The vout value
+      "scriptPubKey" : "hex",    (string) The script key
+      "desc" : "str",            (string) A specialized descriptor for the matched scriptPubKey
+      "amount" : n,              (numeric) The total amount in SIN of the unspent output
+      "height" : n               (numeric) Height of the unspent transaction output
+    },
+    ...
+  ],
+  "total_amount" : n             (numeric) The total amount of all found unspent outputs in SIN
+}
+```
+### ``scantxouttimelock``
+
+``Scans the unspent transaction output type TimeLock before block 170000 - with interest.``
+
+``Result:``
+```
+{ (json object)
+
+"nb_tx" : n, (numeric) the hex-encoded filter data
+
+"amount" : n, (numeric) The total amount in BTC of the unspent output type timelock
+
+"txid" : "hex", (string) The transaction id
+
+"vout" : n (numeric) The vout value
+
+}
+```
+``Examples:``
+```
+scantxouttimelock
+
+{
+
+"nb_tx": 3089,
+
+"amount": 48564633.55478079,
+
+"txid(Example)": "467f7fcb15045bf1196fd7d0734cdf30fdab2e232f1f73dfa0531d82bfc61b00",
+
+"vout(Example)": 0
+
+}
+```  
+### ``send  [{"address":amount},{"data":"hex"},...]  (  conf_target  "estimate_mode"  fee_rate  options  )``
+
+``EXPERIMENTAL warning: this call may be changed in future releases.``
+
+``Send  a transaction.``
+
+``Argument #1 - outputs``
+**Type:**  ``json array, required``
+
+``The outputs (key-value pairs), where none of the keys are duplicated.``
+
+``That is, each  address  can only appear once and there can only be one ‘data’ object. For convenience, a dictionary, which holds the key-value pairs directly, is also accepted.``
+```
+[
+  {                                 (json object)
+    "address": amount,              (numeric or string, required) A key-value pair. The key (string) is the bitcoin address, the value (float or string) is the amount in SIN
+  },
+  {                                 (json object)
+    "data": "hex",                  (string, required) A key-value pair. The key must be "data", the value is hex-encoded data
+  },
+  ...
+]
+```
+``Argument #2 -  conf_target``
+**Type:**  ``numeric, optional, default=wallet -txconfirmtarget``
+
+``Confirmation target in blocks``
+
+``Argument #3 -  estimate_mode``
+**Type:**  ``string, optional, default=unset``
+
+``The fee estimate mode, must be one of (case insensitive):``
+``“unset” “economical” “conservative”``
+
+``Argument #4 -  fee_rate``
+**Type:**  ``numeric or string, optional, default=not set, fall back to wallet fee estimation``
+
+``Specify a fee rate in sat/vB.``
+
+``Argument #5 -  options``
+**Type:**  ``json object, optional``
+
+* ``“locktime”: n, (numeric, optional, default=0) Raw locktime. Non-0 value also locktime-activates inputs `` 
+
+``“lock_unspents”: bool, (boolean, optional, default=false) Lock selected unspent outputs “psbt”: bool, (boolean, optional, default=automatic) Always return a PSBT, implies add_to_wallet=false. “subtract_fee_from_outputs”: [ (json array, optional, default=empty array) Outputs to subtract the fee from, specified as integer indices. The fee will be equally deducted from the  amount  of each specified output. Those recipients will receive less bitcoins than you enter in their corresponding  amount  field. If no outputs are specified here, the  sender pays the fee. vout_index, (numeric) The zero-based output index, before a change output is added. … ], “replaceable”: bool, (boolean, optional, default=wallet default) Marks this transaction as BIP125 replaceable. Allows this transaction to be replaced by a transaction with higher fees }``
+```
+{
+  "add_inputs": bool,               (boolean, optional, default=false) If inputs are specified, automatically include more if they are not enough.
+  "add_to_wallet": bool,            (boolean, optional, default=true) When false, returns a serialized transaction which will not be added to the wallet or broadcast
+  "change_address": "hex",          (string, optional, default=pool address) The bitcoin address to receive the change
+  "change_position": n,             (numeric, optional, default=random) The index of the change output
+  "change_type": "str",             (string, optional, default=set by -changetype) The output type to use. Only valid if change_address is not specified. Options are "legacy", "p2sh-segwit", and "bech32".
+  "conf_target": n,                 (numeric, optional, default=wallet -txconfirmtarget) Confirmation target in blocks
+  "estimate_mode": "str",           (string, optional, default=unset) The fee estimate mode, must be one of (case insensitive):
+                                    "unset"
+                                    "economical"
+                                    "conservative"
+  "fee_rate": amount,               (numeric or string, optional, default=not set, fall back to wallet fee estimation) Specify a fee rate in sat/vB.
+  "include_watching": bool,         (boolean, optional, default=true for watch-only wallets, otherwise false) Also select inputs which are watch only.
+                                    Only solvable inputs can be used. Watch-only destinations are solvable if the public key and/or output script was imported,
+                                    e.g. with 'importpubkey' or 'importmulti' with the 'pubkeys' or 'desc' field.
+  "inputs": [                       (json array, optional, default=empty array) Specify inputs instead of adding them automatically. A JSON array of JSON objects
+    "txid",                         (string, required) The transaction id
+    vout,                           (numeric, required) The output number
+    sequence,                       (numeric, required) The sequence number
+    ...
+  ],
+```
+``Result``
+```
+{                             (json object)
+  "complete" : true|false,    (boolean) If the transaction has a complete set of signatures
+  "txid" : "hex",             (string) The transaction id for the send. Only 1 transaction is created regardless of the number of addresses.
+  "hex" : "hex",              (string) If add_to_wallet is false, the hex-encoded raw transaction with signature(s)
+  "psbt" : "str"              (string) If more signatures are needed, or if add_to_wallet is false, the base64-encoded (partially) signed transaction
+}
+```
+``Examples``
+
+``Send  0.1 BTC with a confirmation target of 6 blocks in economical fee estimate mode:``
+```
+send '{"bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl": 0.1}' 6 economical
+```
+``Send  0.2 SIN with a fee rate of 1.1 sat/vB using positional arguments:``
+```
+ send '{"bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl": 0.2}' null "unset" 1.1
+```
+``Send  0.2 SIN with a fee rate of 1 sat/vB using the  options  argument:``
+```
+send '{"bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl": 0.2}' null "unset" null '{"fee_rate": 1}'
+```
+``Send  0.3 SIN with a fee rate of 25 sat/vB using named arguments:``
+```
+-named send outputs='{"bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl": 0.3}' fee_rate=25
+```
+``Create a transaction that should confirm the next block, with a specific input, and return result without adding to wallet or broadcasting to the network:``
+```
+send '{"bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl": 0.1}' 1 economical '{"add_to_wallet": false, "inputs": [{"txid":"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0", "vout":1}]}'
+```
+### ``sendmany  ""  {"address":amount}  (  minconf  "comment"  ["address",...]  replaceable  conf_target  "estimate_mode"  fee_rate  verbose  )``
+
+``Send multiple times.  Amounts are double-precision floating point numbers.``
+
+``Requires wallet passphrase to be set with walletpassphrase call if wallet is encrypted.``
+
+``Argument #1 - dummy``
+**Type:**  ``string, required``
+
+``Must be set to “” for backwards compatibility.``
+
+``Argument #2 -  amounts``
+**Type:**  ``json object, required``
+
+``The  addresses and  amounts``
+```
+{
+  "address": amount,    (numeric or string, required) The bitcoin address is the key, the numeric amount (can be string) in BTC is the value
+}
+```
+``Argument #3 -  minconf``
+**Type:**  ``numeric, optional``
+
+``Ignored dummy value``
+
+``Argument #4 -  comment``
+**Type:**  ``string, optional``
+
+``A  comment``
+
+``Argument #5 - subtractfeefrom``
+**Type:**  ``json array, optional``
+
+``The  addresses.``
+
+``The fee will be equally deducted from the  amount  of each selected  address. Those recipients will receive less bitcoins than you enter in their corresponding amount field. If no  addresses are specified here, the sender pays the fee.``
+```
+[
+  "address",            (string) Subtract fee from this address
+  ...
+]
+```
+``Argument #6 -  replaceable``
+**Type:**  ``boolean, optional, default=wallet default``
+
+``Allow this transaction to be replaced by a transaction with higher fees via BIP 125``
+
+``Argument #7 -  conf_target``
+**Type:**  ``numeric, optional, default=wallet -txconfirmtarget``
+
+``Confirmation target in blocks``
+
+``Argument #8 -  estimate_mode``
+**Type:**  ``string, optional, default=unset``
+
+``The fee estimate mode, must be one of (case insensitive):``
+``“unset” “economical” “conservative”``
+
+``Argument #9 -  fee_rate``
+**Type:**  ``numeric or string, optional, default=not set, fall back to wallet fee estimation``
+
+``Specify a fee rate in sat/vB.``
+
+``Result (if  verbose  is not set or set to false)``
+```
+Name : hex
+Type : string
+Description : The transaction id for the send. Only 1 transaction is created regardless of
+```
+
+``Result (if  verbose  is set to true)``
+```
+{                          (json object)
+  "txid" : "hex",          (string) The transaction id for the send. Only 1 transaction is created regardless of
+                           the number of addresses.
+  "fee reason" : "str"     (string) The transaction fee reason.
+}
+```
+``Examples``alink to this headline")
+
+``Send two  amounts to two different  addresses::``
+```
+sendmany "" "{\"Sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl\":0.01,\"Sc1q02ad21edsxd23d32dfgqqsz4vv4nmtfzuklhy3\":0.02}"
+```
+``Send two  amounts to two different  addresses setting the confirmation and  comment::``
+```
+sendmany "" "{\"Sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl\":0.01,\"Sc1q02ad21edsxd23d32dfgqqsz4vv4nmtfzuklhy3\":0.02}" 6 "testing"
+```
+``Send two  amounts to two different  addresses, subtract fee from amount::``
+```
+sendmany "" "{\"Sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl\":0.01,\"Sc1q02ad21edsxd23d32dfgqqsz4vv4nmtfzuklhy3\":0.02}" 1 "" "[\"Sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl\",\"Sc1q02ad21edsxd23d32dfgqqsz4vv4nmtfzuklhy3\"]"
+```
+``As a JSON-RPC call:``
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "sendmany", "params": ["", {"Sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl":0.01,"Sc1q02ad21edsxd23d32dfgqqsz4vv4nmtfzuklhy3":0.02}, 6, "testing"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
