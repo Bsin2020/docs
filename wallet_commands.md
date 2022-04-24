@@ -4016,3 +4016,271 @@ verifymessage "Sg3WDvb1Ey2oqAW2EpM5evdv3Ufnvre3n" "IJTWLjS9oma8M+EsXVnESR12jONwj
 true
 ```  
 ``See signmessage for creating a message signature.``
+### ``verifymessage  "address"  "signature"  "message"``
+
+``Verify a signed  message``
+
+``Argument #1 -  address``
+
+**Type:**  ``string, required``
+
+``The sinovate  address  to use for the  signature.``
+
+``Argument #2 -  signature``
+
+**Type:**  ``string, required``
+
+``The  signature  provided by the signer in base 64 encoding (see signmessage).``
+
+``Argument #3 -  message``
+
+**Type:**  ``string, required``
+
+``The  message  that was signed.``
+
+``Result``
+```
+Name : true|false
+Type : boolean
+Description : If the  signature  is verified or not.
+```
+
+`` Examples;;
+
+``Unlock the wallet for 30 seconds:``
+```
+walletpassphrase "mypassphrase" 30
+```
+``Create the  signature:``
+```
+signmessage "1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX" "my message"
+```
+``Verify the  signature:``
+```
+verifymessage "1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX" "signature" "my message"
+```
+``As a JSON-RPC call:``
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "verifymessage", "params": ["1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX", "signature", "my message"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``verifytxoutproof "proof"``
+
+``Verifies that a proof points to a transaction in a block, returning the transaction if found or giving an empty tring or error not found in the best chain. The "proof" is the hex string from gettxoutproof.``
+```
+verifytxoutproof 00000020a8/<snip/>d38abf491d
+
+[
+
+"cb0ef481c7be99a23686abfca6c671acc21b9aa35bc34bcc29b22effbacc610b"
+
+]
+```
+### ``walletcreatefundedpsbt  (  [{"txid":"hex","vout":n,"sequence":n},...]  )  [{"address":amount},{"data":"hex"},...]  (  locktime  options  bip32derivs  )``
+
+``Creates and funds a transaction in the Partially Signed Transaction format.``
+
+``Implements the Creator and Updater roles.``
+
+``Argument #1 - inputs``
+
+**Type:**  ``json array, optional``
+
+``Leave empty to add inputs automatically. See add_inputs option.``
+```
+[
+  {                              (json object)
+    "txid": "hex",               (string, required) The transaction id
+    "vout": n,                   (numeric, required) The output number
+    "sequence": n,               (numeric, optional, default=depends on the value of the 'locktime' and 'options.replaceable' arguments) The sequence number
+  },
+  ...
+]
+```
+``Argument #2 - outputs``
+
+**Type:**  ``json array, required``
+
+``The outputs (key-value pairs), where none of the keys are duplicated.``
+
+``That is, each address can only appear once and there can only be one ‘data’ object. For compatibility reasons, a dictionary, which holds the key-value pairs directly, is also accepted as second parameter.``
+```
+[
+  {                              (json object)
+    "address": amount,           (numeric or string, required) A key-value pair. The key (string) is the bitcoin address, the value (float or string) is the amount in BTC
+  },
+  {                              (json object)
+    "data": "hex",               (string, required) A key-value pair. The key must be "data", the value is hex-encoded data
+  },
+  ...
+]
+```
+``Argument #3 - locktime``
+
+**Type:**  ``numeric, optional, default=0``
+
+``Raw locktime. Non-0 value also locktime-activates inputs``
+
+``Argument #4 - options``
+
+**Type:**  ``json object, optional``
+
+``“replaceable”: bool, (boolean, optional, default=wallet default) Marks this transaction as BIP125 replaceable.``
+
+``Allows this transaction to be replaced by a transaction with higher fees “conf_target”: n, (numeric, optional, default=wallet -txconfirmtarget) Confirmation target in blocks “estimate_mode”: “str”, (string, optional, default=unset) The fee estimate mode, must be one of (case insensitive): “unset” “economical” “conservative” }``
+```
+{
+  "add_inputs": bool,            (boolean, optional, default=false) If inputs are specified, automatically include more if they are not enough.
+  "changeAddress": "hex",        (string, optional, default=pool address) The bitcoin address to receive the change
+  "changePosition": n,           (numeric, optional, default=random) The index of the change output
+  "change_type": "str",          (string, optional, default=set by -changetype) The output type to use. Only valid if changeAddress is not specified. Options are "legacy", "p2sh-segwit", and "bech32".
+  "includeWatching": bool,       (boolean, optional, default=true for watch-only wallets, otherwise false) Also select inputs which are watch only
+  "lockUnspents": bool,          (boolean, optional, default=false) Lock selected unspent outputs
+  "fee_rate": amount,            (numeric or string, optional, default=not set, fall back to wallet fee estimation) Specify a fee rate in sat/vB.
+  "feeRate": amount,             (numeric or string, optional, default=not set, fall back to wallet fee estimation) Specify a fee rate in BTC/kvB.
+  "subtractFeeFromOutputs": [    (json array, optional, default=empty array) The outputs to subtract the fee from.
+                                 The fee will be equally deducted from the amount of each specified output.
+                                 Those recipients will receive less bitcoins than you enter in their corresponding amount field.
+                                 If no outputs are specified here, the sender pays the fee.
+    vout_index,                  (numeric) The zero-based output index, before a change output is added.
+    ...
+  ],
+```
+``Argument #5 - bip32derivs``
+
+**Type:**  ``boolean, optional, default=true``
+
+``Include BIP 32 derivation paths for public keys if we know them``
+
+``Result``
+```
+{                     (json object)
+  "psbt" : "str",     (string) The resulting raw transaction (base64-encoded string)
+  "fee" : n,          (numeric) Fee in BTC the resulting transaction pays
+  "changepos" : n     (numeric) The position of the added change output, or -1
+}
+```
+``Examples``
+
+``Create a transaction with no inputs:``
+```
+walletcreatefundedpsbt "[{\"txid\":\"myid\",\"vout\":0}]" "[{\"data\":\"00010203\"}]"
+```
+
+### ``walletlock``
+
+``Removes the wallet encryption key from memory, locking the wallet.``
+
+``After calling this method, you will need to call walletpassphrase again before being able to call any methods which require the wallet to be unlocked.``
+
+``Result``
+```
+null    (json null)
+```
+``Examples``
+
+``Set the passphrase for 2 minutes to perform a transaction:``
+```
+walletpassphrase "my pass phrase" 120
+```
+``Perform a send (requires passphrase set):``
+```
+sendtoaddress "bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl" 1.0
+```
+``Clear the passphrase since we are done before 2 minutes is up:``
+```
+walletlock
+```
+``As a JSON-RPC call:``
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "walletlock", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``walletpassphrase  "passphrase"  timeout``
+
+``Stores the wallet decryption key in memory for ‘timeout’ seconds.``
+
+``This is needed prior to performing transactions related to private keys such as sending bitcoins Note:``
+
+``Issuing the  walletpassphrase  command while the wallet is already unlocked will set a new unlock time that overrides the old one.``
+
+``Argument #1 -  passphrase``
+
+**Type:**  ``string, required``
+
+``The wallet  passphrase``
+
+``Argument #2 -  timeout``
+
+**Type:**  ``numeric, required``
+
+``The time to keep the decryption key in seconds; capped at 100000000 (~3 years).``
+
+``Result``
+```
+null    (json null)
+```
+``Examples``
+
+``Unlock the wallet for 60 seconds:``
+```
+walletpassphrase "my pass phrase" 60
+```
+``Lock the wallet again (before 60 seconds):``
+```
+walletlock
+```
+``As a JSON-RPC call:``
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "walletpassphrase", "params": ["my pass phrase", 60]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+
+### ``walletpassphrasechange "oldpassphrase" "newpassphrase"``
+
+``Changes the wallet passphrase from "oldpassphrase" to "newpassphrase", sin-qt returns "null", sind returns nothing.``
+
+``walletpassphrasechange "you should always use a long and strong passphrase" "please use a strong and long passphrase."``
+```
+null
+```
+### ``walletprocesspsbt  "psbt"  (  sign  "sighashtype"  bip32derivs  )``
+
+``Update a  PSBT  with input information from our wallet and then  sign  inputs that we can sign for.``
+
+``Requires wallet passphrase to be set with walletpassphrase call if wallet is encrypted.``
+
+``Argument #1 -  psbt``
+
+**Type:**  ``string, required``
+
+``The transaction base64 string``
+
+``Argument #2 -  sign``
+
+**Type:**  ``boolean, optional, default=true``
+
+``Also  sign  the transaction when updating``
+
+``Argument #3 -  sighashtype``
+
+**Type:**  ``string, optional, default=ALL``
+
+``The  signature hash type to  sign  with if not specified by the  PSBT. Must be one of``
+
+``“ALL” “NONE” “SINGLE” “ALL|ANYONECANPAY” “NONE|ANYONECANPAY” “SINGLE|ANYONECANPAY”``
+
+``Argument #4 -  bip32derivs``
+
+**Type:**  ``boolean, optional, default=true``
+
+``Include BIP 32 derivation paths for public keys if we know them``
+
+``Result``
+```
+{                             (json object)
+  "psbt" : "str",             (string) The base64-encoded partially signed transaction
+  "complete" : true|false     (boolean) If the transaction has a complete set of signatures
+}
+```
+``Examples``
+```
+walletprocesspsbt "psbt"
+```
