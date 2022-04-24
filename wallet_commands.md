@@ -1557,11 +1557,13 @@ getnetworkhashps
 ``If ‘label’ is specified, it is added to the address book so payments received with the address will be associated with ‘label’.``
 
 ``Argument #1 - label``
+
 **Type:**  ``string, optional, default=””``
 
 ``The label name for the address to be linked to. It can also be set to the empty string “” to represent the default label. The label does not need to exist, it will be created if there is no label by the given name.``
 
 ``Argument #2 - address_type``
+
 **Type:**  ``string, optional, default=set by -addresstype``
 ``The address type to use. Options are “legacy”, “p2sh-segwit”, and “bech32”.``
 
@@ -1660,6 +1662,35 @@ getpeerinfo
 },
 ...
 ```
+### ``getposstats delta``
+  
+``Returns proof-of-stake related historical stats.``
+
+``Arguments:``
+```
+1. delta (numeric, required) Span of blocks (since tip) to pull stats from.
+```  
+
+``Result:``
+```
+{ (json object)
+
+"blocks" : n, (numeric) The amount of PoS blocks in the selected span
+
+"distribution" : n, (numeric) The percentage of PoS blocks in the chosen span
+
+"avg_input" : n (numeric) The average value of inputs in the chosen span
+
+}
+```
+``Examples:``
+```
+> getposstats 100
+```
+```
+> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getposstats", "params": [100]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+
 ### ``getrawchangeaddress ( "address_type" )``
 
 ``Returns a new address for receiving change with raw transactions, used for composing raw transactions. The address type may be "legacy", "p2sh-segwit" or "bech32".``
@@ -1674,10 +1705,12 @@ SBncZ4Z8a71UrgsS5QqJfxkDbun5wHy6d
 ``Hint: use getmempoolentry to fetch a specific transaction from the mempool.``
 
 ``Argument #1 - verbose``
+
 **Type:**  ``boolean, optional, default=false``
 ``True for a json object, false for array of transaction ids``
 
 ``Argument #2 - mempool_sequence``
+
 **Type:**  ``boolean, optional, default=false``
 ``If verbose=false, returns a json object with transaction list and mempool sequence number attached.``
 
@@ -1811,10 +1844,12 @@ getreceivedbyaddress SfWtnPq9M4a7Fmeeh6dyu0s4KR59F9xn
 ``Returns the total amount received by addresses with <label> in transactions with at least [minconf] confirmations.``
 
 ``Argument #1 - label``
+
 **Type:**  string, required
 ``The selected label, may be the default label using “”.``
 
 ``Argument #2 - minconf``
+
 **Type:**  numeric, optional, default=1
 ``Only include transactions confirmed at least this many times.``
 ``Result``
@@ -1894,15 +1929,18 @@ curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "meth
 ``Get detailed information about in-wallet transaction <txid>``
 
 ``Argument #1 - txid``
+
 **Type:**  ``string, required``
 ``The transaction id``
 
 ``Argument #2 - include_watchonly``
+
 **Type:**  ``boolean, optional, default=true for watch-only wallets, otherwise false``
 ``Whether to include watch-only addresses in balance calculation and details[]``
 
 ``Argument #3 - verbose``
 **Type:**  ``boolean, optional, default=false``
+
 ``Whether to include a  decoded  field containing the decoded transaction (equivalent to RPC decoderawtransaction)``
 ``Result``
 ```
@@ -2120,6 +2158,7 @@ null
 
 ``Note: This call can take over an hour to complete if using an early timestamp; during that time, other rpc calls may report that the imported keys, addresses or scripts exist but related transactions are still missing``
 ``Argument #1 - requests``
+
 **Type:**  ``json array, required``
 ``Data to be imported``
 ```
@@ -2194,10 +2233,12 @@ null
 ``Imports funds without rescan. Corresponding address or script must previously be included in wallet. Aimed towards pruned wallets. The end-user is responsible to import additional transactions that subsequently spend the imported outputs or rescan after the point in the blockchain the transaction is included``
 
 ``Argument #1 - rawtransaction``
+
 **Type:**  ``string, required``
 ``A raw transaction in hex funding an already-existing address in wallet``
 
 ``Argument #2 - txoutproof``
+
 **Type:**  ``string, required``
 
 ``The hex output from gettxoutproof that contains the transaction``
@@ -2539,6 +2580,7 @@ n (numeric) Range end inclusive
 ``Returns the list of all labels, or labels that are assigned to addresses with a specific purpose.``
 
 ``Argument #1 - purpose``
+
 **Type:**  ``string, optional``
 
 ``Address purpose to list labels for (‘send’,’receive’). An empty string is the same as not providing this argument.``
@@ -2615,11 +2657,13 @@ listreceivedbyaddress
 ``List balances by receiving address.``
 
 ``Argument #1 - minconf``
+
 **Type:**  ``numeric, optional, default=1``
 
 ``The minimum number of confirmations before payments are included.
 
 ``Argument #2 - include_empty``
+
 **Type:**  ``boolean, optional, default=false``
 
 ``Whether to include addresses that haven’t received any payments.``
@@ -2630,6 +2674,7 @@ listreceivedbyaddress
 ``Whether to include watch-only addresses (see ‘importaddress’)``
 
 ``Argument #4 - address_filter``
+
 **Type:**  string, optional
 
 ``If present, only return information on this address.``
@@ -3123,6 +3168,7 @@ null
 ``For more information on output descriptors, see the documentation in the doc/descriptors.md file.``
 
 ``Argument #1 -  action``
+
 **Type:**  ``string, required``
 
 ``The  action  to execute``
@@ -3130,6 +3176,7 @@ null
 ``“start” for starting a scan “abort” for aborting the current scan (returns true when abort was successful) “status” for progress report (in %) of the current scan``
 
 ``Argument #2 -  scanobjects``
+
 **Type:**  ``json array``
 
 ``Array of scan objects. Required for “start”  action``
@@ -3207,6 +3254,7 @@ scantxouttimelock
 ``Send  a transaction.``
 
 ``Argument #1 - outputs``
+
 **Type:**  ``json array, required``
 
 ``The outputs (key-value pairs), where none of the keys are duplicated.``
@@ -3224,22 +3272,26 @@ scantxouttimelock
 ]
 ```
 ``Argument #2 -  conf_target``
+
 **Type:**  ``numeric, optional, default=wallet -txconfirmtarget``
 
 ``Confirmation target in blocks``
 
 ``Argument #3 -  estimate_mode``
+
 **Type:**  ``string, optional, default=unset``
 
 ``The fee estimate mode, must be one of (case insensitive):``
 ``“unset” “economical” “conservative”``
 
 ``Argument #4 -  fee_rate``
+
 **Type:**  ``numeric or string, optional, default=not set, fall back to wallet fee estimation``
 
 ``Specify a fee rate in sat/vB.``
 
 ``Argument #5 -  options``
+
 **Type:**  ``json object, optional``
 
 * ``“locktime”: n, (numeric, optional, default=0) Raw locktime. Non-0 value also locktime-activates inputs `` 
@@ -3306,11 +3358,13 @@ send '{"bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl": 0.1}' 1 economical '{"add_t
 ``Requires wallet passphrase to be set with walletpassphrase call if wallet is encrypted.``
 
 ``Argument #1 - dummy``
+
 **Type:**  ``string, required``
 
 ``Must be set to “” for backwards compatibility.``
 
 ``Argument #2 -  amounts``
+
 **Type:**  ``json object, required``
 
 ``The  addresses and  amounts``
@@ -3320,16 +3374,19 @@ send '{"bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl": 0.1}' 1 economical '{"add_t
 }
 ```
 ``Argument #3 -  minconf``
+
 **Type:**  ``numeric, optional``
 
 ``Ignored dummy value``
 
 ``Argument #4 -  comment``
+
 **Type:**  ``string, optional``
 
 ``A  comment``
 
 ``Argument #5 - subtractfeefrom``
+
 **Type:**  ``json array, optional``
 
 ``The  addresses.``
@@ -3342,22 +3399,26 @@ send '{"bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl": 0.1}' 1 economical '{"add_t
 ]
 ```
 ``Argument #6 -  replaceable``
+
 **Type:**  ``boolean, optional, default=wallet default``
 
 ``Allow this transaction to be replaced by a transaction with higher fees via BIP 125``
 
 ``Argument #7 -  conf_target``
+
 **Type:**  ``numeric, optional, default=wallet -txconfirmtarget``
 
 ``Confirmation target in blocks``
 
 ``Argument #8 -  estimate_mode``
+
 **Type:**  ``string, optional, default=unset``
 
 ``The fee estimate mode, must be one of (case insensitive):``
 ``“unset” “economical” “conservative”``
 
 ``Argument #9 -  fee_rate``
+
 **Type:**  ``numeric or string, optional, default=not set, fall back to wallet fee estimation``
 
 ``Specify a fee rate in sat/vB.``
@@ -3404,11 +3465,13 @@ curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "meth
 ``Also see createrawtransaction and signrawtransactionwithkey calls.``
 
 ``Argument #1 -  hexstring``
+
 **Type:**  ``string, required``
 
 ``The hex string of the raw transaction``
 
 ``Argument #2 -  maxfeerate``
+
 **Type:**  ``numeric or string, optional, default=0.10``
 
 ``Reject transactions whose fee rate is higher than the specified value, expressed in BTC/kB.``
