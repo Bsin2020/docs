@@ -21,6 +21,7 @@
 - [Upgrade Old Wallet to v22.0.x](dump_and_importwallet)
 - [Understanding Staking](understand_staking)
 - [Staking, How?](staking_guide)
+- [Wallet Commands](wallet_commands)
 - [WebTool](sin_webtool_guide)
 - [GPU Mining X25X Algo](X25X-PoW-GPU-Mining)
 - [Video Guides](video_guides)
