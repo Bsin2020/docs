@@ -3395,3 +3395,166 @@ sendmany "" "{\"Sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl\":0.01,\"Sc1q02ad21ed
 ```
 curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "sendmany", "params": ["", {"Sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl":0.01,"Sc1q02ad21edsxd23d32dfgqqsz4vv4nmtfzuklhy3":0.02}, 6, "testing"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
 ```
+### ``sendrawtransaction  "hexstring"  (  maxfeerate  )``
+
+``Submit a raw transaction (serialized, hex-encoded) to local node and network.``
+
+``Note that the transaction will be sent unconditionally to all peers, so using this for manual rebroadcast may degrade privacy by leaking the transaction’s origin, as nodes will normally not rebroadcast non-wallet transactions already in their mempool.``
+
+``Also see createrawtransaction and signrawtransactionwithkey calls.``
+
+``Argument #1 -  hexstring``
+**Type:**  ``string, required``
+
+``The hex string of the raw transaction``
+
+``Argument #2 -  maxfeerate``
+**Type:**  ``numeric or string, optional, default=0.10``
+
+``Reject transactions whose fee rate is higher than the specified value, expressed in BTC/kB.``
+
+``Set to 0 to accept any fee rate.``
+
+``Examples``
+
+``Create a transaction:``
+```
+createrawtransaction "[{\"txid\" : \"mytxid\",\"vout\":0}]" "{\"myaddress\":0.01}"
+```
+``Sign the transaction, and get back the hex:``
+```
+signrawtransactionwithwallet "myhex"
+```
+``Send the transaction (signed hex):``
+```
+sendrawtransaction "signedhex"
+```
+``As a JSON-RPC call:``
+```
+curl --user myusername --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "sendrawtransaction", "params": ["signedhex"]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/
+```
+### ``sendtoaddress  "address"  amount  (  "comment"  "comment_to"  subtractfeefromamount  replaceable  conf_target  "estimate_mode"  avoid_reuse  fee_rate  verbose  )``
+
+``Send an  amount  to a given  address.``
+
+``Requires wallet passphrase to be set with walletpassphrase call if wallet is encrypted.``
+
+``Argument #1 -  address``
+
+**Type:**  ``string, required``
+
+``The sinovate  address  to send to.``
+
+``Argument #2 -  amount``
+
+**Type:**  ``numeric or string, required``
+
+``The  amount  in SIN to send. eg 0.1``
+
+``Argument #3 -  comment``
+
+**Type:**  ``string, optional``
+
+``A  comment  used to store what the transaction is for.
+This is not part of the transaction, just kept in your wallet.``
+
+``Argument #4 -  comment_to``
+
+**Type:**  ``string, optional``
+
+``A  comment  to store the name of the person or organization
+to which you’re sending the transaction. This is not part of the transaction, just kept in your wallet.``
+
+``Argument #5 - subtractfeefromamount``
+
+**Type:**  ``boolean, optional, default=false``
+
+``The fee will be deducted from the  amount  being sent.
+The recipient will receive less bitcoins than you enter in the  amount  field.``
+
+``Argument #6 -  replaceable``
+
+**Type:**  ``boolean, optional, default=wallet default``
+
+``Allow this transaction to be replaced by a transaction with higher fees via BIP 125``
+
+``Argument #7 -  conf_target``
+
+**Type:**  ``numeric, optional, default=wallet -txconfirmtarget``
+
+``Confirmation target in blocks``
+
+``Argument #8 -  estimate_mode``
+
+**Type:**  ``string, optional, default=unset``
+
+``The fee estimate mode, must be one of (case insensitive):``
+``“unset” “economical” “conservative”``
+
+``Argument #9 -  avoid_reuse``
+
+**Type:**  ``boolean, optional, default=true``
+
+``(only available if  avoid_reuse  wallet flag is set) Avoid spending from dirty  addresses; addresses are considered
+dirty if they have previously been used in a transaction.``
+
+``Result (if  verbose  is not set or set to false)``
+```
+Name : hex
+Type : string
+Description : The transaction id.
+```
+
+`` Result (if  verbose  is set to true)``
+```
+{                          (json object)
+  "txid" : "hex",          (string) The transaction id.
+  "fee reason" : "str"     (string) The transaction fee reason.
+}
+```
+``Examples``
+
+``Send 0.1 SIN:``
+```
+sendtoaddress "sbc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl" 0.1
+```
+``Send 0.1 SIN with a confirmation target of 6 blocks in economical fee estimate mode using positional arguments:``
+```
+sendtoaddress "sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl" 0.1 "donation" "sean's outpost" false true 6 economical
+```
+Send 0.1 SIN with a fee rate of 1.1 sat/vB, subtract fee from  amount, BIP125-replaceable, using positional arguments:
+```
+sendtoaddress "sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl" 0.1 "drinks" "room77" true true null "unset" null 1.1
+```
+``Send 0.2 SIN with a confirmation target of 6 blocks in economical fee estimate mode using named arguments:``
+```
+-named sendtoaddress address="sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl" amount=0.2 conf_target=6 estimate_mode="economical"
+```
+``Send 0.5 SINwith a fee rate of 25 sat/vB using named arguments:``
+```
+-named sendtoaddress address="sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl" amount=0.5 fee_rate=25
+```
+```
+-named sendtoaddress address="sc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl" amount=0.5 fee_rate=25 subtractfeefromamount=false replaceable=true avoid_reuse=true comment="2 pizzas" comment_to="jeremy" verbose=true
+```
+
+### ``setban "subnet" "add|remove" (bantime) (absolute)``
+
+``Attempts to add or remove an IP address from the banned list. Use "add" to add a ban, and give the duration of the ban in seconds. Returns "null" if successful. Here we add a ban for one day and confirm the result with listbanned:``
+```
+setban "116.61.213.45" "add" 86400
+null
+
+listbanned
+
+[
+
+{
+
+"address": "116.61.213.45/32",
+"banned_until": 1547586400,
+"ban_created": 1547500000,
+"ban_reason": "manually added"
+}
+]
+```  
