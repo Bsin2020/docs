@@ -14,6 +14,7 @@
 - **Staking**
 - [What is Staking?](what_is_staking)
 - [Staking, How?](staking_guide)
+- [Vps Staking with GUI](vps_staking_with_gui)
 
 - **Tutorials & Guides**
 - [Bootstrap](bootstrap)
