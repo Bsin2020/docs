@@ -91,6 +91,9 @@ sudo adduser newuser
 sudo passwd newuser
 ```
 ```
+sudo usermod -aG sudo newuser
+```
+```
 sudo reboot
 ```
 Now you should be able to log in (via newuser username) to your VPS with GUI through the console.
@@ -112,7 +115,6 @@ sudo cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.bak
 sudo sed -i 's/3389/3390/g' /etc/xrdp/xrdp.ini
 sudo sed -i 's/max_bpp=32/#max_bpp=32\nmax_bpp=128/g' /etc/xrdp/xrdp.ini
 sudo sed -i 's/xserverbpp=24/#xserverbpp=24\nxserverbpp=128/g' /etc/xrdp/xrdp.ini
-echo gnome-session > ~/.xsession
 ```
     
 2.  Allow the RDP default port on the UFW firewall.  
@@ -138,6 +140,9 @@ return polkit.Result.YES;
 ```
  sudo /etc/init.d/xrdp restart
 ```
+```
+sudo reboot
+```
 
 ### Connect To Ubuntu VPS with RDC
 
@@ -149,10 +154,6 @@ After you logged in to the remote environment, you will see some options for con
 
 ![connect to linux vps with gui through Xorg](https://lh6.googleusercontent.com/kclRSDWI_D7CnyQsBupxOUF3qGra5LeEsYeh8F9FaznsBibn36-MraOn97sRLg6PDsCR4038p2riYS4g-zxWfkueGicfZIWkSZhpGjvdyEtkE1r4poZaipKKc7xtKx9URSvUbK2h)
 
-Before finishing the installation, do the folllowing command in the SSH terminal:
-```
-sudo usermod -aG sudo newuser
-```
 STEP 4: Installation of the Linux Wallet
 
 The GUI Desktop allows you to use the wallet in a graphical way. 
@@ -170,13 +171,13 @@ sudo chmod a+x sin-qt
 ```
 To launch the wallet, do the command:
 ```
-./sin-qt
+./sin-qt -prune=0
 ```
 
 Or you can add sin-qt as a shortcut to the main menu.
 
 ```
-cd  /usr/share/applications/
+wget -O Pictures/sin.png https://github.com/SINOVATEblockchain/sinovate/blob/release/src/qt/res/icons/bitcoin.png
 ```
 ```
 sudo nano sinovate.desktop
@@ -185,10 +186,15 @@ sudo nano sinovate.desktop
 [Desktop Entry]
 Name=SIN-CORE Wallet
 Comment=SINOVATE Linux GUI Wallet 64 Bit
-Exec=/home/newuser/sin-qt
+Exec=/home/newuser/sin-qt -prune=0
 Icon=/home/newuser/Pictures/sin.png # Add this for icon
 Terminal=false
 Type=Application
+```
+CTRL+O
+CTRL+X Enter
+```
+sudo desktop-file-install sinovate.desktop
 ```
 
 To update quickly the wallet, please follow this guide:
