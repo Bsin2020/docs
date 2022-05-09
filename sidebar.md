@@ -8,7 +8,6 @@
 - [Desktop 1-Click InfinityNode setUP](inwallet_1click_guide)
 - [InfinityNode Manual VPS setup](din_manual_vps_configuration_setup)
 - [Mobile Wallet InfinitNnode setUP](mobile_wallet_infinitynode_setup)
-- [Pecunia InfinityNode Hosting Guide](pecunianodesetup)
 - [DIN 1-Click setUP Migration GUIDE](din_setup_migration_guide)
 
 - **Staking**
