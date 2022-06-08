@@ -5,24 +5,24 @@
 
 - **InfinityNodes (DIN)**
 - [Understanding InfinityNodes](understandinginfinitynodes)
-- [Desktop 1-Click InfinityNode setUP](inwallet_1click_guide)
-- [InfinityNode Manual VPS setup](din_manual_vps_configuration_setup)
-- [Mobile Wallet InfinitNnode setUP](mobile_wallet_infinitynode_setup)
-- [DIN 1-Click setUP Migration GUIDE](din_setup_migration_guide)
+- [setUP Desktop Guide](inwallet_1click_guide)
+- [Self-Hosted Installation Guide](din_manual_vps_configuration_setup)
+- [setUP Mobile Guide](mobile_wallet_infinitynode_setup)
+- [setUP Migration Guide](din_setup_migration_guide)
 
 - **Staking**
 - [What is Staking?](what_is_staking)
 - [Vps Staking with GUI](vps_staking_with_gui)
 
 - **Tutorials & Guides**
-- [Bootstrap](bootstrap)
-- [Wallet Upgrade](wallet_upgrade)
-- [Node Update Guide](node_update_guide)
-- [Upgrade Old Wallet to v22.0.x](dump_and_importwallet)
+- [Bootstrap Installation Guide](bootstrap)
+- [Standard Wallet Upgrade Guide](wallet_upgrade)
+- [Full-Node Upgrade Guide](node_update_guide)
+- [Old Wallet to v22.0.x Wallet Upgrade Guide](dump_and_importwallet)
 - [Understanding Staking](understand_staking)
-- [Wallet Commands](wallet_commands)
-- [WebTool](sin_webtool_guide)
-- [GPU Mining X25X Algo](X25X-PoW-GPU-Mining)
+- [Wallet Command Lines](wallet_commands)
+- [Web Browser Wallet](sin_webtool_guide)
+- [X25X GPU Mining Guide](X25X-PoW-GPU-Mining)
 - [Video Guides](video_guides)
 - [F.A.Q.](faq)
 - **Whitepapers**
@@ -31,8 +31,8 @@
 - **Troubleshooting**
 - [DIN 1-Click setUP Tips & Help](din_setup_tips_and_help)
 - [DIN Manual VPS Troubleshooting](din_vps_setup_troubleshoot)
-- [Coin Control](Coincontrolenable)
-- [Transaction too large](transactiontoohigh)
+- [Coin Control Option](Coincontrolenable)
+- [Transaction Troubleshot](transactiontoohigh)
 - **Links**
 - [![Home ](https://icongr.am/feather/home.svg?size=16&color=808080)Sinovate Home](https://www.sinovate.io)
 - [![Explorer ](https://icongr.am/clarity/block.svg?size=16&color=808080)Block Explorer](https://explorer.sinovate.io)
