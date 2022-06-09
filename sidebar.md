@@ -1,38 +1,42 @@
 - **Introduction**
 - [What is SINOVATE?](/)
+- [One-Page Overview](https://pbs.twimg.com/media/FQT9s1TUcAo5C8A?format=jpg&name=large)
+- [Litepaper](https://sinovate.io/SINOVATE_litepaper.pdf)
+- [Whitepaper](https://sinovate.io/sin-whitepaper)
+
 - **SINOVATE Wallet**
-- [Desktop QT Wallet](desktopqtwallet) 
+- [Desktop Wallet Overview](desktopqtwallet) 
+- [Bootstrap Installation Guide](bootstrap)
+- [Standard Wallet Upgrade Guide](wallet_upgrade)
+- [22.0.0 (and more) Update Guide](dump_and_importwallet)
+- [Full-Node Upgrade Guide](node_update_guide)
+- [Coin Control Option](Coincontrolenable)
+- [Transaction Troubleshots](transactiontoohigh)
+- [Wallet Command Lines](wallet_commands)
+
+- **Proof-of-Work (X25X)**
+- [Whitepaper](https://sinovate.io/x25x.pdf)
+- [GPU Mining Guide](X25X-PoW-GPU-Mining)
 
 - **InfinityNodes (DIN)**
 - [Understanding InfinityNodes](understandinginfinitynodes)
-- [setUP Desktop Guide](inwallet_1click_guide)
 - [Self-Hosted Installation Guide](din_manual_vps_configuration_setup)
+- [Self-Hosted Troubleshots](din_vps_setup_troubleshoot)
+- [setUP Desktop Guide](inwallet_1click_guide)
 - [setUP Mobile Guide](mobile_wallet_infinitynode_setup)
 - [setUP Migration Guide](din_setup_migration_guide)
+- [setUP Tips and Helps](din_setup_tips_and_help)
 
-- **Staking**
-- [What is Staking?](what_is_staking)
-- [Vps Staking with GUI](vps_staking_with_gui)
+- **Proof-of-Stake (PoS4)**
+- [Understanding Staking](what_is_staking)
+- [User Guide](explore_staking)
+- [GUI-based VPS Installation Guide](vps_staking_with_gui)
 
-- **Tutorials & Guides**
-- [Bootstrap Installation Guide](bootstrap)
-- [Standard Wallet Upgrade Guide](wallet_upgrade)
-- [Full-Node Upgrade Guide](node_update_guide)
-- [Old Wallet to v22.0.x Wallet Upgrade Guide](dump_and_importwallet)
-- [Understanding Staking](understand_staking)
-- [Wallet Command Lines](wallet_commands)
+- **Other Resources**
 - [Web Browser Wallet](sin_webtool_guide)
-- [X25X GPU Mining Guide](X25X-PoW-GPU-Mining)
 - [Video Guides](video_guides)
-- [F.A.Q.](faq)
-- **Whitepapers**
-- [Whitepaper Light](https://sinovate.io/SINOVATE_litepaper.pdf)
-- [X25X PoW Algorithm Whitepaper](https://sinovate.io/x25x.pdf)
-- **Troubleshooting**
-- [DIN 1-Click setUP Tips & Help](din_setup_tips_and_help)
-- [DIN Manual VPS Troubleshooting](din_vps_setup_troubleshoot)
-- [Coin Control Option](Coincontrolenable)
-- [Transaction Troubleshot](transactiontoohigh)
+- [FAQ](faq)
+
 - **Links**
 - [![Home ](https://icongr.am/feather/home.svg?size=16&color=808080)Sinovate Home](https://www.sinovate.io)
 - [![Explorer ](https://icongr.am/clarity/block.svg?size=16&color=808080)Block Explorer](https://explorer.sinovate.io)

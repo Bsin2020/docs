@@ -1,47 +1,41 @@
  
-# STAKING
+# Understanding Staking
 
-SIN coins participate in the network by validating transaction blocks, increasing the network’s scalability, and making profits with the distribution of rewards. SINOVATE uses this approach alongside the PoW mechanism, which guarantees decentralization, scalability (+2,000 TPS), and security (InfinityNode LockReward and Proof-of-Burn).
+## **1.  Prerequisites**
 
-  
-# The features of SINOVATE Proof-of-Stake
+We recommend you to read carefully the following articles to understand the Proof-of-Stake (PoS) consensus and the different in-depth technical overviews made by Giaki3003, SINOVATE Blockchain lead:
 
-PoS of SINOVATE (PoS4) integrates a novel feature called LockStake, where a transaction must not be spent for a considerable time to be eligible for staking. This safety guard ensures a lower attack surface of an already complex vector. Hence, the staker must wait for around 14,440 blocks (10 days approximately one block per minute) to become a staking validator. The daily block confirmations are about 1,440 blocks every 60 seconds.
+**Introduction**: https://academy.binance.com/en/articles/proof-of-stake-explained
+**In-Depth Technical Overview**: https://giaki3003.tech/proof-of-stake-by-giaki3003-part-1
 
-The long waiting time and the long confirmation period allow the attacker to reduce the attacker’s success rate. Last but not least, the PoS mechanism will discourage centralized exchanges from using the coins they have in hand for staking.
+We will resume here the essential information to guide you in the SINOVATE Proof-of-Stake solution called 4th generation of Proof-of-Stake (PoS4). 
 
-  
+## **2.  What is Proof-of-Stake?**
 
-In a more straightforward explanation, The SIN coins can only be used for staking if they remain in the user wallet for at least ten days. Once a staking reward is received, it is locked for one day (after that, it can only be spent); the received reward is automatically staked only after ten days of remaining in your wallet.
+A PoS algorithm is mainly a peer-to-peer solution based on the “stake” of peers to reach a consensus for validating blocks. A “stake” is simply the fact of having a native wallet with native coins of the blockchain that are allocated to validate the blocks of transactions. In this way, a SIN hodler wins a reward if its stake successfully confirms a new block. 
+PoS shows a considerable energy efficiency compared to Proof-of-Work solutions and its implementation in the SINOVATE blockchain guarantees a green decentralized data storage. (https://cointelegraph.com/news/tezos-blockchain-notes-power-savings-after-pos-switch-pwc-report)
+Compared to Byzantine Fault Tolerance (BFT) solutions, this consensus mechanism allows the blockchain a fair scalability with a real decentralization and security by trusting the holders of the SINOVATE coins. Anyone can participate in this consensus as a self-governed peer and do not need to trust a third-party service. Of course, third-party services can ease the process for individuals and businesses that cannot respect the specific constraints of PoS4 based on UTXOs and permanent Internet connection.
 
-**Note:** The address that has the coins should not be moved between inside wallet addresses. To be eligible for staking, the inputs (received coins) must have confirmations of at least 14400 blocks (10 days).
+## **3.  What is an UTXO?**
 
-  
+You have probably seen this abbreviation in different discussions about staking. You can read the article in the following: 
+https://www.investopedia.com/terms/u/utxo.asp#:~:text=A%20UTXO%20is%20the%20amount,and%20end%20of%20each%20transaction
 
-https://sinovate.io/blog/weekly-update/proof-of-stake-enters-in-the-sinovate-blockchain/
+Basically, UTXO means then an unspent transaction output (UTXO). When a user A sends 500 coins to a user B to an address B1, then it creates a UTXO in the address B1 with an amount of 500 SIN coins. Hence, if user A does again a transaction to user B to the address B1 of 300 SIN coins. Then, the address B1 finally has 2 UTXOs: One of 500 SIN coins and one of 300 SIN coins.
+
+## **4.  What is the Fourth-Generation of Proof-of-Stake (Pos4)?** 
+
+The PoS4 development is a complex integration requiring different steps of development. The first step released in April 2022 was to have a stable association between the PoW mechanism with the X25X algorithm and to implement a novel feature called LockStake. The principle uses the UTXO of addresses of all the wallets that participate in the network consensus. 
+Additionally, two safety guards have been added to the PoS4. The first is that the UTXO maturity must be at least 14,400 blocks (around 10 days) to be eligible as a staking validator. This reduces considerably the attack surface of an already complex vector. The second is the coinbase validation from a PoS block which is 1,440 blocks (around 1 day). This means all the validators (PoS validator + InfinityNodes) must wait 1 day to have a mature reward. If an attack occurs, the spend of this attack in the marketplace would have to wait 1 day.
+
+## **5.  What are the benefits?**
+
+The major benefit of PoS4 compared to all the other staking solutions is the reward distribution does not contribute to whales directly. Indeed, as the UTXO is locked for 10 days, it makes it unreliable to have coins centralized on one UTXO. Hence, a whale would have to split its stake into UTXO staking chunks that allows a fair reward accumulation. For instance, a theoretical supply of 720,000,000 SIN coins and 14,400 blocks at the best rate would guarantee that a UTXO staking chunk of 50,000 SIN coins would earn a reward every 14,400 blocks round. A wallet with only one chunk of 50,000 SIN coins has then the same luck to produce a block.
+The second major benefit is the increase of transactions per second (TPS) by 20 from the previous version. Hence, the blockchain can support 2,000 TPS and 4,000 TPS with SegWit that is originally implemented with the Bitcoin core. This is possible by reducing the block time interval from 2 minutes to 1 minute and increasing the block size from 2 to 32 MB (64MB in SegWit). The block reward with PoS4 is 50 SIN coins.
+This scalability will guarantee to manage the transactions relative to the data storage and payments with SIN coins. It brings a different decentralization from GPU miners and a security alongside the Proof-of-Burn and LockReward solutions.
+
+## **6.  What are the next development phases?**
+
+The first development step of PoS4 brings basic bricks of staking security, decentralization, and scalability. SINOVATE blockchain developers believe PoS’ should integrate the last features provided by Casper and Slasher approaches. Of course, the already-integrated PoB will make these implementations quite straightforward and efficient.
 
 
-
-
-
-
-
-# Desktop Wallet Staking Menu
-    
-
-For staking to take place, it is required to:
-
-1.  Have SIN coins
-    
-2.  Unlock the wallet before staking.
-    
-3.  Keep the wallet open at all times; otherwise, it is not possible to stake it even if the coins are matured.
-    
-![](assets/img/qtwallet/staking.png)
-  
-
-First, select the "Staking" menu to show the Staking page. Next, click the Stake button on the right. After reading the warning, click Yes and enter the passphrase, tick "unlock for staking only" box for staking activation.
-
- ![](assets/img/qtwallet/warningstaking.png)
-
-**IMPORTANT:** The Staking menu Stake button must be turned on for staking activation. The wallet must be online 24/7 for the staking to work.
