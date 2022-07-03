@@ -3,6 +3,7 @@
 - [One-Page Overview](https://pbs.twimg.com/media/FQT9s1TUcAo5C8A?format=jpg&name=large)
 - [Litepaper](https://sinovate.io/SINOVATE_litepaper.pdf)
 - [Whitepaper](https://sinovate.io/sin-whitepaper)
+- [Tokenomics](tokenomics)
 
 - **SINOVATE Wallet**
 - [Desktop Wallet Overview](desktopqtwallet) 

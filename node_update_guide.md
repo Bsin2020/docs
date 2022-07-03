@@ -1,4 +1,4 @@
-## Node Update Guide from v1.0.0.2 to v22.0.0
+## Update Guide for Mandatory Network Upgrade
 
 
 - Login to VPS as node user

@@ -139,6 +139,7 @@ getstakinginfo
 
 }
 ```
+
 After the word “Staking available”, a unit will indicate the number of UTXOs competing for a block reward.
 
 After leaving the wallet in staking mode for about 1-2 hours, the word “staking: true” could also be seen. If the entire Sinovate network doesn’t have 5 million SIN staking, this will also not display true.
